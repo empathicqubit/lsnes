@@ -22,4 +22,5 @@ alwaysinline bool irq_test();
 
 //joypad.cpp
 void step_auto_joypad_poll();
-void step_auto_joypad_poll_NEW(bool polarity);
+void step_auto_joypad_poll_NEW(bool polarity, bool new2);
+void step_auto_joypad_poll_NEW2(bool polarity);

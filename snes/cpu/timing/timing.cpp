@@ -17,12 +17,12 @@ void CPU::add_clocks(unsigned clocks) {
 
   step(clocks);
 
-  if(config.cpu.alt_poll_timings) {
+  if(config.cpu.alt_poll_timings || config.cpu.bus_fixes) {
     bool opolarity = (status.auto_joypad_clock & 128);
     status.auto_joypad_clock = (status.auto_joypad_clock + clocks) & 0xFF;
     bool npolarity = (status.auto_joypad_clock & 128);
     if(opolarity != npolarity)
-      step_auto_joypad_poll_NEW(opolarity);
+      step_auto_joypad_poll_NEW(opolarity, config.cpu.bus_fixes);
   } else {
     status.auto_joypad_clock += clocks;
     if(status.auto_joypad_clock >= 256) {
@@ -53,7 +53,8 @@ void CPU::scanline() {
     status.hdma_init_position = (cpu_version == 1 ? 12 + 8 - dma_counter() : 12 + dma_counter());
     status.hdma_init_triggered = false;
 
-    status.auto_joypad_counter = 0;
+    //Only clear the low 6 bits (counter).
+    status.auto_joypad_counter &= ~63;
   }
 
   //DRAM refresh occurs once every scanline
@@ -200,7 +201,9 @@ void CPU::timing_reset() {
 
   status.auto_joypad_active  = false;
   status.auto_joypad_latch   = false;
-  status.auto_joypad_counter = 0;
+  //Set bit 7 of joypad counter if bus fixes are active (for combined
+  //latch behavior).
+  status.auto_joypad_counter = config.cpu.bus_fixes ? 128 : 0;
   status.auto_joypad_clock   = 0;
 }
 

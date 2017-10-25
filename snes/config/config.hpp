@@ -14,6 +14,7 @@ struct Configuration {
     unsigned pal_frequency;
     unsigned wram_init_value;
     bool alt_poll_timings;
+    bool bus_fixes;
   } cpu;
 
   struct SMP {

@@ -1,5 +1,7 @@
 #include <snes/snes.hpp>
 #include <cstdio>
+#include <iostream>
+#include <cassert>
 
 #define CPU_CPP
 namespace SNES {

@@ -15,6 +15,7 @@ Configuration::Configuration() {
   cpu.pal_frequency   = 21281370;
   cpu.wram_init_value = 0x55;
   cpu.alt_poll_timings = false;
+  cpu.bus_fixes = false;
 
   smp.ntsc_frequency = 24607104;   //32040.5 * 768
   smp.pal_frequency  = 24607104;
