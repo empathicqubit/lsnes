@@ -299,7 +299,7 @@ rom_image_handle construct_rom(const std::string& movie_filename, const std::vec
 			//Okay, load as ROM bundle and check validity.
 			auto cr = new rom_image(r[1], requested_core);
 			for(auto j : sysregs) {
-				if(cr->is_of_type(j->get_type()))
+				if(!cr->is_of_type(j->get_type()))
 					continue;
 				for(auto k : cr->get_regions())
 					if(k == &j->get_region())
