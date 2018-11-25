@@ -228,6 +228,16 @@ namespace
 		return 1;
 	}
 
+	int get_last_movie(lua::state& L, lua::parameters& P)
+	{
+		auto m = CORE().mlogic->get_mfile().get_filename();
+		if(m != "")
+			L.pushlstring(m);
+		else
+			L.pushnil();
+		return 1;
+	}
+
 	lua::functions LUA_movie_fns(lua_func_misc, "movie", {
 		{"currentframe", currentframe},
 		{"lagcount", lagcounter},
@@ -243,5 +253,6 @@ namespace
 		{"rom_loaded", rom_loaded},
 		{"get_rom_info", get_rom_info},
 		{"get_game_info", get_game_info},
+		{"get_last_movie", get_last_movie},
 	});
 }

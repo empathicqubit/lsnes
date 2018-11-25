@@ -115,6 +115,7 @@ moviefile::moviefile() throw(std::bad_alloc)
 	movie_rtc_subsecond = dyn.rtc_subsecond = DEFAULT_RTC_SUBSECOND;
 	start_paused = false;
 	lazy_project_create = true;
+	this->filename = "";
 }
 
 moviefile::moviefile(loaded_rom& rom, std::map<std::string, std::string>& c_settings, uint64_t rtc_sec,
@@ -130,6 +131,7 @@ moviefile::moviefile(loaded_rom& rom, std::map<std::string, std::string>& c_sett
 	movie_rtc_subsecond = dyn.rtc_subsecond = rtc_subsec;
 	start_paused = false;
 	lazy_project_create = true;
+	this->filename = "";
 	settings = c_settings;
 	input = NULL;
 	auto ctrldata = rom.controllerconfig(settings);
@@ -159,6 +161,7 @@ moviefile::moviefile(const std::string& movie, core_type& romtype) throw(std::ba
 		copy_fields(s);
 		return;
 	}
+	this->filename = movie;
 	input = NULL;
 	start_paused = false;
 	force_corrupt = false;

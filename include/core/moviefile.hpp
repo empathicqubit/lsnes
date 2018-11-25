@@ -315,6 +315,10 @@ struct moviefile
  * Clear the dynamic state to power-on defaults.
  */
 	void clear_dynstate();
+/**
+ * Get the filename of the movie.
+ */
+	std::string get_filename() { return filename; }
 private:
 	moviefile(const moviefile&);
 	moviefile& operator=(const moviefile&);
@@ -323,6 +327,7 @@ private:
 	void save(zip::writer& w, rrdata_set& rrd, bool as_state) throw(std::bad_alloc, std::runtime_error);
 	void load(zip::reader& r, core_type& romtype) throw(std::bad_alloc, std::runtime_error);
 	memtracker::autorelease tracker;
+	std::string filename;
 };
 
 void emerg_save_movie(const moviefile& mv, rrdata_set& rrd);
