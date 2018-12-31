@@ -2127,3 +2127,64 @@ rr2-β23 [Thursday May 28th 2015]
 * Memory tracker: Add tracking of render objects
 * Rework how memory tracking works
 * Small whitespace cleanup
+
+rr2-β24 [Monday December 31st 2018]
+===================================
+* Don't overflow buffers if bsnes goes bonkers* Lua: get_directory_contents & get_file_type
+* Fix multiple problems with text drawing
+* Fix load preserving movie displaying wrong screenshot
+* Eliminate sloppy types from headers
+* Don't crash on trying to create 0x0 bitmap or tilemap
+* Lua: CUSTOMFONT:dump(): Dump font to file
+* Fix build breakage on Win32
+* Close the ROM on quit to avoid crashes
+* Remove bogus comments in gui-tilemap.cpp
+* Merge remote-tracking branch 'origin/master'
+* Cleanup bitmap and tilemap rendering a bit
+* Merge some common drawing code between bitmaps and tilemaps
+* Use standard bitmap composition for rendered text bitmaps
+* ss_int24_t and ss_uint24_t are integers
+* Fix do_load_rom() in readonly case
+* Add movie.subframe_to_frame
+* movie::frame_subframes: Gracefully handle invalid frame numbers
+* Fix crash on loading invalid PNG files
+* Fix gamepad reset
+* Fix bsnes compilation for GCC 5.X
+* Fix MSU-1 bug where write to MSU1BASE+4 is mirred to MSUBASE+5
+* When loading gamepaks, use #1 as MSU-1 base only if system has BIOS
+* Fix help for +tangent/-tangent to be less obscure
+* Fix disassembly of SNES BRL instruction
+* Fix crash if loading type0 PNG without tRNS chunk
+* Fix compilation with Lua 5.1
+* Nuke last remains of boost::regex from outside string.cpp
+* Add regex sanity checks on startup and add --sanity-check
+* Fix Valgrind warning about uninitialized variable
+* Add bit.fextract, bit.bfields
+* bsnes: Add Lua function to dump 2bpp sprites (and allow 4-color palettes)
+* Fix "empty path points to root" bug
+* Don't try to uninstall handlers for active core
+* Allow modifying button to be autofire/autohold/typed
+* Lua Add getters for various paths
+* Some new hotkeys
+* Small cleanup: move up some lsnes_instance stuff
+* Virtualize audio system for instances
+* Fix crash if mouse_x or mouse_y are hooked
+* Don't try to enter loadstate with loadstate already in progress
+* Fix crash if text containing \n is printed at nonzero x
+* PIX_FMT_* constants are deprecated, use AV_PIX_FMT_* instead
+* Support uncompressing ZIP compression method 12 (bzip2)
+* Lua: Fix type confusion between signed and unsigned
+* When redrawing screen, read the last written frame
+* Fix few uninitialized variables and a stack smash in AVI dumper
+* Linear transformed texture sampling for (d)bitmap
+* Specialize (D)BITMAP:sample_texture when s is power of two
+* Lua (d)bitmap: add hflip and vflip functions
+* Save: Fix issues with adding an extension if missing
+* De-header SNES games with headers submultiple of 512 bytes correctly
+* Make wrapper for boost::lexical_cast
+* Bus fixes: Reading of CPU MMIO registers does not update MDR
+* Add <functional> to files that use std::function
+* Delay committing fullscreen until seeing window size change
+* Track all window size changes while in fullscreen
+* Fix bogus ROM type mismatch when using --rom
+* movie.get_last_movie()
