@@ -315,8 +315,8 @@ bool node::number_holder::operator==(const number_holder& h) const
 node::node() throw() : node(null) {}
 node::node(null_tag) throw() { vtype = null; }
 node::node(boolean_tag, bool b) throw() { vtype = boolean; _boolean = b; }
-node::node(string_tag, const std::u32string& str) throw(std::bad_alloc) { vtype = string; _string = str; }
-node::node(string_tag, const std::string& str) throw(std::bad_alloc) { vtype = string; _string = utf8::to32(str); }
+node::node(string_tag, const std::u32string& str) { vtype = string; _string = str; }
+node::node(string_tag, const std::string& str) { vtype = string; _string = utf8::to32(str); }
 node::node(number_tag, double n) throw() { vtype = number; _number.from<double>(n); }
 node::node(number_tag, int64_t n) throw() { vtype = number; _number.from<int64_t>(n); }
 node::node(number_tag, uint64_t n) throw() { vtype = number; _number.from<uint64_t>(n); }
@@ -330,7 +330,7 @@ node& node::set(number_tag, double n) throw() { set_helper<double>(n); return *t
 node& node::set(number_tag, int64_t n) throw() { set_helper<int64_t>(n); return *this; }
 node& node::set(number_tag, uint64_t n) throw() { set_helper<int64_t>(n); return *this; }
 
-node& node::set(string_tag, const std::u32string& key) throw(std::bad_alloc)
+node& node::set(string_tag, const std::u32string& key)
 {
 	std::u32string tmp = key;
 	std::swap(_string, tmp);
@@ -340,36 +340,36 @@ node& node::set(string_tag, const std::u32string& key) throw(std::bad_alloc)
 	return *this;
 }
 
-double node::as_double() const throw(error)
+double node::as_double() const
 {
 	return get_number_helper<double>();
 }
 
-int64_t node::as_int() const throw(error)
+int64_t node::as_int() const
 {
 	return get_number_helper<int64_t>();
 }
 
-uint64_t node::as_uint() const throw(error)
+uint64_t node::as_uint() const
 {
 	return get_number_helper<uint64_t>();
 }
 
-const std::u32string& node::as_string() const throw(std::bad_alloc, error)
+const std::u32string& node::as_string() const
 {
 	if(vtype != string)
 		throw error(ERR_NOT_A_STRING);
 	return _string;
 }
 
-bool node::as_bool() const throw(error)
+bool node::as_bool() const
 {
 	if(vtype != boolean)
 		throw error(ERR_NOT_A_BOOLEAN);
 	return _boolean;
 }
 
-size_t node::index_count() const throw(error)
+size_t node::index_count() const
 {
 	if(vtype != array)
 		throw error(ERR_NOT_AN_ARRAY);
@@ -396,7 +396,7 @@ errorcode node::index_soft(size_t index, node*& out) throw()
 	return ERR_OK;
 }
 
-size_t node::field_count(const std::u32string& key) const throw(error)
+size_t node::field_count(const std::u32string& key) const
 {
 	if(vtype != object)
 		throw error(ERR_NOT_AN_OBJECT);
@@ -405,7 +405,7 @@ size_t node::field_count(const std::u32string& key) const throw(error)
 	return xobject.find(key)->second.size();
 }
 
-bool node::field_exists(const std::u32string& key) const throw(error)
+bool node::field_exists(const std::u32string& key) const
 {
 	return (field_count(key) > 0);
 }
@@ -444,7 +444,7 @@ errorcode node::field_soft(const std::u32string& key, size_t subindex, node*& ou
 	return ERR_INSTANCE_INVALID;
 }
 
-node::node(const node& _node) throw(std::bad_alloc)
+node::node(const node& _node)
 {
 	std::u32string tmp1 = _node._string;
 	std::list<node> tmp2 = _node.xarray;
@@ -461,7 +461,7 @@ node::node(const node& _node) throw(std::bad_alloc)
 	fixup_nodes(_node);
 }
 
-node& node::operator=(const node& _node) throw(std::bad_alloc)
+node& node::operator=(const node& _node)
 {
 	if(this == &_node)
 		return *this;
@@ -481,7 +481,7 @@ node& node::operator=(const node& _node) throw(std::bad_alloc)
 	return *this;
 }
 
-node& node::append(const node& _node) throw(std::bad_alloc, error)
+node& node::append(const node& _node)
 {
 	if(vtype != array)
 		throw error(ERR_NOT_AN_ARRAY);
@@ -499,7 +499,7 @@ node& node::append(const node& _node) throw(std::bad_alloc, error)
 	}
 }
 
-node& node::insert(const std::u32string& key, const node& _node) throw(std::bad_alloc, error)
+node& node::insert(const std::u32string& key, const node& _node)
 {
 	if(vtype != object)
 		throw error(ERR_NOT_AN_OBJECT);
@@ -546,7 +546,7 @@ namespace
 
 }
 
-errorcode node::follow_soft(const std::u32string& pointer, const node*& current) const throw(std::bad_alloc)
+errorcode node::follow_soft(const std::u32string& pointer, const node*& current) const
 {
 	current = this;
 	size_t ptr = 0;
@@ -575,7 +575,7 @@ errorcode node::follow_soft(const std::u32string& pointer, const node*& current)
 	return ERR_OK;
 }
 
-errorcode node::follow_soft(const std::u32string& pointer, node*& current) throw(std::bad_alloc)
+errorcode node::follow_soft(const std::u32string& pointer, node*& current)
 {
 	current = this;
 	size_t ptr = 0;
@@ -875,7 +875,7 @@ bad:
 		}
 	}
 
-	std::u32string pointer_escape_field(const std::u32string& orig) throw(std::bad_alloc)
+	std::u32string pointer_escape_field(const std::u32string& orig)
 	{
 		std::basic_stringstream<char32_t> x;
 		for(auto i : orig) {
@@ -889,7 +889,7 @@ bad:
 		return x.str();
 	}
 
-	std::u32string pointer_escape_index(uint64_t idx) throw(std::bad_alloc)
+	std::u32string pointer_escape_index(uint64_t idx)
 	{
 		std::string orig = (stringfmt() << idx).str();
 		std::basic_ostringstream<char32_t> x;
@@ -899,7 +899,7 @@ bad:
 	}
 }
 
-std::string node::serialize(printer* _printer) const throw(std::bad_alloc, error)
+std::string node::serialize(printer* _printer) const
 {
 	printer xprinter;
 	_printer = _printer ? _printer : &xprinter;
@@ -939,7 +939,7 @@ std::string node::serialize(printer* _printer) const throw(std::bad_alloc, error
 	throw error(ERR_UNKNOWN_TYPE);
 }
 
-node::node(const std::string& doc) throw(std::bad_alloc, error)
+node::node(const std::string& doc)
 {
 	size_t tmp = 0;
 	ctor(doc, tmp, doc.length());
@@ -948,7 +948,7 @@ node::node(const std::string& doc) throw(std::bad_alloc, error)
 		throw error(ERR_GARBAGE_AFTER_END, PARSE_END_OF_DOCUMENT, tmp);
 }
 
-void node::ctor(const std::string& doc, size_t& ptr, size_t len) throw(std::bad_alloc, error)
+void node::ctor(const std::string& doc, size_t& ptr, size_t len)
 {
 	size_t tmp3;
 	tmp3 = ptr;
@@ -1038,12 +1038,12 @@ void node::ctor(const std::string& doc, size_t& ptr, size_t len) throw(std::bad_
 	}
 }
 
-node::node(const std::string& doc, size_t& ptr, size_t len) throw(std::bad_alloc, error)
+node::node(const std::string& doc, size_t& ptr, size_t len)
 {
 	ctor(doc, ptr, len);
 }
 
-node& node::operator[](const std::u32string& pointer) throw(std::bad_alloc, error)
+node& node::operator[](const std::u32string& pointer)
 {
 	node* current = this;
 	size_t ptr = 0;
@@ -1078,7 +1078,7 @@ node& node::operator[](const std::u32string& pointer) throw(std::bad_alloc, erro
 	return *current;
 }
 
-node& node::insert_node(const std::u32string& pointer, const node& nwn) throw(std::bad_alloc, error)
+node& node::insert_node(const std::u32string& pointer, const node& nwn)
 {
 	size_t s = pointer.find_last_of(U"/");
 	node* base;
@@ -1129,7 +1129,7 @@ node& node::insert_node(const std::u32string& pointer, const node& nwn) throw(st
 		throw error(ERR_NOT_ARRAY_NOR_OBJECT);
 }
 
-node node::delete_node(const std::u32string& pointer) throw(std::bad_alloc, error)
+node node::delete_node(const std::u32string& pointer)
 {
 	size_t s = pointer.find_last_of(U"/");
 	node* base;
@@ -1170,7 +1170,7 @@ node node::delete_node(const std::u32string& pointer) throw(std::bad_alloc, erro
 		throw error(ERR_NOT_ARRAY_NOR_OBJECT);
 }
 
-node node::patch(const node& patch) const throw(std::bad_alloc, error)
+node node::patch(const node& patch) const
 {
 	node obj(*this);
 	if(patch.type() != array)
@@ -1234,7 +1234,7 @@ node node::patch(const node& patch) const throw(std::bad_alloc, error)
 
 node::iterator::iterator() throw() { n = NULL; }
 
-node::iterator::iterator(node& _n) throw(error)
+node::iterator::iterator(node& _n)
 {
 	n = &_n;
 	idx = 0;
@@ -1250,21 +1250,21 @@ node::iterator::iterator(node& _n) throw(error)
 		throw error(ERR_NOT_ARRAY_NOR_OBJECT);
 }
 
-std::u32string node::iterator::key() throw(std::bad_alloc, error)
+std::u32string node::iterator::key()
 {
 	if(!n)
 		throw error(ERR_ITERATOR_END);
 	return (n->type() == object) ? _key : U"";
 }
 
-size_t node::iterator::index() throw(error)
+size_t node::iterator::index()
 {
 	if(!n)
 		throw error(ERR_ITERATOR_END);
 	return idx;
 }
 
-node& node::iterator::operator*() throw(error)
+node& node::iterator::operator*()
 {
 	if(!n)
 		throw error(ERR_ITERATOR_END);
@@ -1285,19 +1285,19 @@ node& node::iterator::operator*() throw(error)
 	}
 }
 
-node* node::iterator::operator->() throw(error)
+node* node::iterator::operator->()
 {
 	return &**this;
 }
 
-node::iterator node::iterator::operator++(int) throw(error)
+node::iterator node::iterator::operator++(int)
 {
 	iterator tmp = *this;
 	++*this;
 	return tmp;
 }
 
-node::iterator& node::iterator::operator++() throw(error)
+node::iterator& node::iterator::operator++()
 {
 	if(!n)
 		throw error(ERR_ITERATOR_END);
@@ -1331,7 +1331,7 @@ bool node::iterator::operator!=(const iterator& i) throw() { return !(*this == i
 
 node::const_iterator::const_iterator() throw() { n = NULL; }
 
-node::const_iterator::const_iterator(const node& _n) throw(error)
+node::const_iterator::const_iterator(const node& _n)
 {
 	n = &_n;
 	idx = 0;
@@ -1347,21 +1347,21 @@ node::const_iterator::const_iterator(const node& _n) throw(error)
 		throw error(ERR_NOT_ARRAY_NOR_OBJECT);
 }
 
-std::u32string node::const_iterator::key() throw(std::bad_alloc, error)
+std::u32string node::const_iterator::key()
 {
 	if(!n)
 		throw error(ERR_ITERATOR_END);
 	return (n->type() == object) ? _key : U"";
 }
 
-size_t node::const_iterator::index() throw(error)
+size_t node::const_iterator::index()
 {
 	if(!n)
 		throw error(ERR_ITERATOR_END);
 	return idx;
 }
 
-const node& node::const_iterator::operator*() throw(error)
+const node& node::const_iterator::operator*()
 {
 	if(!n)
 		throw error(ERR_ITERATOR_END);
@@ -1382,19 +1382,19 @@ const node& node::const_iterator::operator*() throw(error)
 	}
 }
 
-const node* node::const_iterator::operator->() throw(error)
+const node* node::const_iterator::operator->()
 {
 	return &**this;
 }
 
-node::const_iterator node::const_iterator::operator++(int) throw(error)
+node::const_iterator node::const_iterator::operator++(int)
 {
 	const_iterator tmp = *this;
 	++*this;
 	return tmp;
 }
 
-node::const_iterator& node::const_iterator::operator++() throw(error)
+node::const_iterator& node::const_iterator::operator++()
 {
 	if(!n)
 		throw error(ERR_ITERATOR_END);
@@ -1426,7 +1426,7 @@ bool node::const_iterator::operator==(const const_iterator& i) throw()
 
 bool node::const_iterator::operator!=(const const_iterator& i) throw() { return !(*this == i); }
 
-void node::erase_index(size_t idx) throw(error)
+void node::erase_index(size_t idx)
 {
 	if(type() == array) {
 		if(idx >= xarray_index.size())
@@ -1442,7 +1442,7 @@ void node::erase_index(size_t idx) throw(error)
 		throw error(ERR_NOT_AN_ARRAY);
 }
 
-void node::erase_field(const std::u32string& fld, size_t idx) throw(error)
+void node::erase_field(const std::u32string& fld, size_t idx)
 {
 	if(type() == object) {
 		if(xobject.count(fld)) {
@@ -1460,7 +1460,7 @@ void node::erase_field(const std::u32string& fld, size_t idx) throw(error)
 		throw error(ERR_NOT_AN_OBJECT);
 }
 
-void node::erase_field_all(const std::u32string& fld) throw(error)
+void node::erase_field_all(const std::u32string& fld)
 {
 	if(type() == object) {
 		if(xobject.count(fld))
@@ -1469,7 +1469,7 @@ void node::erase_field_all(const std::u32string& fld) throw(error)
 		throw error(ERR_NOT_AN_OBJECT);
 }
 
-void node::clear() throw(error)
+void node::clear()
 {
 	if(type() == object)
 		xobject.clear();
@@ -1480,7 +1480,7 @@ void node::clear() throw(error)
 		throw error(ERR_NOT_ARRAY_NOR_OBJECT);
 }
 
-node::iterator node::erase(node::iterator itr) throw(error)
+node::iterator node::erase(node::iterator itr)
 {
 	if(itr.n != this)
 		throw error(ERR_WRONG_OBJECT);
@@ -1555,7 +1555,7 @@ bool node::operator==(const node& n) const
 	}
 }
 
-int node::type_of(const std::u32string& pointer) const throw(std::bad_alloc)
+int node::type_of(const std::u32string& pointer) const
 {
 	try {
 		const node* n;
@@ -1570,7 +1570,7 @@ int node::type_of(const std::u32string& pointer) const throw(std::bad_alloc)
 	}
 }
 
-int node::type_of_indirect(const std::u32string& pointer) const throw(std::bad_alloc)
+int node::type_of_indirect(const std::u32string& pointer) const
 {
 	try {
 		const node* n;
@@ -1588,7 +1588,7 @@ int node::type_of_indirect(const std::u32string& pointer) const throw(std::bad_a
 	}
 }
 
-std::u32string node::resolve_indirect(const std::u32string& pointer) const throw(std::bad_alloc)
+std::u32string node::resolve_indirect(const std::u32string& pointer) const
 {
 	try {
 		const node& n = follow(pointer);
@@ -1607,17 +1607,17 @@ pointer::pointer()
 {
 }
 
-pointer::pointer(const std::string& ptr) throw(std::bad_alloc)
+pointer::pointer(const std::string& ptr)
 {
 	_pointer = utf8::to32(ptr);
 }
 
-pointer::pointer(const std::u32string& ptr) throw(std::bad_alloc)
+pointer::pointer(const std::u32string& ptr)
 {
 	_pointer = ptr;
 }
 
-pointer pointer::index(uint64_t idx) const throw(std::bad_alloc)
+pointer pointer::index(uint64_t idx) const
 {
 	if(_pointer.length())
 		return pointer(_pointer + U"/" + pointer_escape_index(idx));
@@ -1625,7 +1625,7 @@ pointer pointer::index(uint64_t idx) const throw(std::bad_alloc)
 		return pointer(pointer_escape_index(idx));
 }
 
-pointer& pointer::index_inplace(uint64_t idx) throw(std::bad_alloc)
+pointer& pointer::index_inplace(uint64_t idx)
 {
 	if(_pointer.length())
 		_pointer = _pointer + U"/" + pointer_escape_index(idx);
@@ -1634,7 +1634,7 @@ pointer& pointer::index_inplace(uint64_t idx) throw(std::bad_alloc)
 	return *this;
 }
 
-pointer pointer::field(const std::u32string& fld) const throw(std::bad_alloc)
+pointer pointer::field(const std::u32string& fld) const
 {
 	if(_pointer.length())
 		return pointer(_pointer + U"/" + pointer_escape_field(fld));
@@ -1642,7 +1642,7 @@ pointer pointer::field(const std::u32string& fld) const throw(std::bad_alloc)
 		return pointer(pointer_escape_field(fld));
 }
 
-pointer& pointer::field_inplace(const std::u32string& fld) throw(std::bad_alloc)
+pointer& pointer::field_inplace(const std::u32string& fld)
 {
 	if(_pointer.length())
 		_pointer = _pointer + U"/" + pointer_escape_field(fld);
@@ -1651,7 +1651,7 @@ pointer& pointer::field_inplace(const std::u32string& fld) throw(std::bad_alloc)
 	return *this;
 }
 
-pointer pointer::remove() const throw(std::bad_alloc)
+pointer pointer::remove() const
 {
 	size_t p = _pointer.find_last_of(U"/");
 	if(p >= _pointer.length())
@@ -1660,7 +1660,7 @@ pointer pointer::remove() const throw(std::bad_alloc)
 		return pointer(_pointer.substr(0, p));
 }
 
-pointer& pointer::remove_inplace() throw(std::bad_alloc)
+pointer& pointer::remove_inplace()
 {
 	size_t p = _pointer.find_last_of(U"/");
 	if(p >= _pointer.length())

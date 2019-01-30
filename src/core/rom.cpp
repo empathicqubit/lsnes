@@ -56,14 +56,13 @@ loaded_rom::loaded_rom() throw()
 	region = &image->get_region();
 }
 
-loaded_rom::loaded_rom(rom_image_handle _image) throw(std::bad_alloc, std::runtime_error)
+loaded_rom::loaded_rom(rom_image_handle _image)
 {
 	image = _image;
 	region = &image->get_region();
 }
 
 void loaded_rom::load(std::map<std::string, std::string>& settings, uint64_t rtc_sec, uint64_t rtc_subsec)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	auto& core = CORE();
 	core_type* old_type = current_rom_type;
@@ -109,7 +108,6 @@ void loaded_rom::load(std::map<std::string, std::string>& settings, uint64_t rtc
 }
 
 std::map<std::string, std::vector<char>> load_sram_commandline(const std::vector<std::string>& cmdline)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	std::map<std::string, std::vector<char>> ret;
 	regex_results opt;
@@ -146,7 +144,7 @@ std::map<std::string, std::vector<char>> load_sram_commandline(const std::vector
 	return ret;
 }
 
-std::vector<char> loaded_rom::save_core_state(bool nochecksum) throw(std::bad_alloc, std::runtime_error)
+std::vector<char> loaded_rom::save_core_state(bool nochecksum)
 {
 	std::vector<char> ret;
 	rtype().serialize(ret);
@@ -164,7 +162,7 @@ std::vector<char> loaded_rom::save_core_state(bool nochecksum) throw(std::bad_al
 	return ret;
 }
 
-void loaded_rom::load_core_state(const std::vector<char>& buf, bool nochecksum) throw(std::runtime_error)
+void loaded_rom::load_core_state(const std::vector<char>& buf, bool nochecksum)
 {
 	if(nochecksum) {
 		rtype().unserialize(&buf[0], buf.size());

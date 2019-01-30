@@ -6,7 +6,7 @@
 
 namespace opus
 {
-void ogg_header::parse(struct ogg::packet& packet) throw(std::runtime_error)
+void ogg_header::parse(struct ogg::packet& packet)
 {
 	struct ogg_header h;
 	if(!packet.get_atomic())
@@ -53,7 +53,7 @@ void ogg_header::parse(struct ogg::packet& packet) throw(std::runtime_error)
 	*this = h;
 }
 
-void ogg_tags::parse(struct ogg::packet& packet) throw(std::bad_alloc, std::runtime_error)
+void ogg_tags::parse(struct ogg::packet& packet)
 {
 	struct ogg_tags h;
 	if(!packet.get_first_page() || !packet.get_last_page())
@@ -90,7 +90,7 @@ void ogg_tags::parse(struct ogg::packet& packet) throw(std::bad_alloc, std::runt
 	*this = h;
 }
 
-ogg::page ogg_header::serialize() throw(std::runtime_error)
+ogg::page ogg_header::serialize()
 {
 	struct ogg::page page;
 	unsigned char buffer[276];
@@ -128,7 +128,7 @@ ogg::page ogg_header::serialize() throw(std::runtime_error)
 }
 
 uint32_t ogg_tags::serialize(std::function<void(const ogg::page& p)> output,
-	uint32_t strmid) throw(std::bad_alloc, std::runtime_error)
+	uint32_t strmid)
 {
 	size_t needed = 8;
 	needed += vendor.length();

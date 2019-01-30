@@ -194,7 +194,7 @@ public:
 /**
  * Create a new state.
  */
-	state() throw(std::bad_alloc);
+	state();
 /**
  * Create a new state with specified master state.
  */
@@ -235,7 +235,7 @@ public:
 /**
  * Reset the state.
  */
-	void reset() throw(std::runtime_error, std::bad_alloc);
+	void reset();
 /**
  * Deinit the state.
  */
@@ -308,7 +308,7 @@ public:
  * Returns: The string.
  * Throws std::runtime_error: The specified argument is not a string.
  */
-	std::string get_string(int argindex, const std::string& fname) throw(std::runtime_error, std::bad_alloc)
+	std::string get_string(int argindex, const std::string& fname)
 	{
 		if(isnone(argindex))
 			(stringfmt() << "argument #" << argindex << " to " << fname << " must be string").throwex();
@@ -326,7 +326,7 @@ public:
  * Returns: The string.
  * Throws std::runtime_error: The specified argument is not a boolean.
  */
-	bool get_bool(int argindex, const std::string& fname) throw(std::runtime_error, std::bad_alloc)
+	bool get_bool(int argindex, const std::string& fname)
 	{
 		if(isnone(argindex) || !isboolean(argindex))
 			(stringfmt() << "argument #" << argindex << " to " << fname << " must be boolean").throwex();

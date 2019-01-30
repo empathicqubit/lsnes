@@ -420,7 +420,7 @@ page::page() throw()
 	memset(packets, 0, sizeof(packets));
 }
 
-page::page(const char* buffer, size_t& advance) throw(std::runtime_error)
+page::page(const char* buffer, size_t& advance)
 {
 	//Check validity of page header.
 	if(buffer[0] != 'O' || buffer[1] != 'g' || buffer[2] != 'g' || buffer[3] != 'S')
@@ -551,12 +551,12 @@ bool page::scan(const char* buffer, size_t bufferlen, bool eof, size_t& advance)
 	return false;
 }
 
-std::string page::stream_debug_id() const throw(std::bad_alloc)
+std::string page::stream_debug_id() const
 {
 	return (stringfmt() << "Stream " << hex::to(stream)).str();
 }
 
-std::string page::page_debug_id() const throw(std::bad_alloc)
+std::string page::page_debug_id() const
 {
 	return (stringfmt() << stream_debug_id() << " page " << sequence).str();
 }
@@ -670,7 +670,7 @@ void stream_reader::set_errors_to(std::ostream& os)
 	errors_to = &os;
 }
 
-bool stream_reader::get_page(page& spage) throw(std::exception)
+bool stream_reader::get_page(page& spage)
 {
 	size_t advance;
 	bool f;
@@ -719,7 +719,7 @@ stream_writer::~stream_writer() throw()
 {
 }
 
-void stream_writer::put_page(const page& page) throw(std::exception)
+void stream_writer::put_page(const page& page)
 {
 	char buffer[65536];
 	size_t s = page.serialize_size();
@@ -736,7 +736,7 @@ stream_reader_iostreams::~stream_reader_iostreams() throw()
 {
 }
 
-size_t stream_reader_iostreams::read(char* buffer, size_t size) throw(std::exception)
+size_t stream_reader_iostreams::read(char* buffer, size_t size)
 {
 	if(!is)
 		return 0;
@@ -753,7 +753,7 @@ stream_writer_iostreams::~stream_writer_iostreams() throw()
 {
 }
 
-void stream_writer_iostreams::write(const char* buffer, size_t size) throw(std::exception)
+void stream_writer_iostreams::write(const char* buffer, size_t size)
 {
 	if(!os)
 		throw std::runtime_error("Error writing data");

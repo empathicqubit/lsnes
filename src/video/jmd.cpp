@@ -377,7 +377,7 @@ out:
 			ctor_notify();
 		}
 		~adv_jmd_dumper() throw();
-		std::set<std::string> list_submodes() throw(std::bad_alloc)
+		std::set<std::string> list_submodes()
 		{
 			std::set<std::string> x;
 			x.insert("file");
@@ -392,16 +392,15 @@ out:
 		{
 			return "jmd";	//Ignored if tcp mode.
 		}
-		std::string name() throw(std::bad_alloc)
+		std::string name()
 		{
 			return "JMD";
 		}
-		std::string modename(const std::string& mode) throw(std::bad_alloc)
+		std::string modename(const std::string& mode)
 		{
 			return (mode == "tcp") ? "over TCP/IP" : "to file";
 		}
 		jmd_dump_obj* start(master_dumper& _mdumper, const std::string& mode, const std::string& prefix)
-			throw(std::bad_alloc, std::runtime_error)
 		{
 			return new jmd_dump_obj(_mdumper, *this, mode, prefix);
 		}

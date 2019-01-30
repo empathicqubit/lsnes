@@ -185,7 +185,7 @@ rom_image::rom_image() throw()
 	account_images();
 }
 
-rom_image::rom_image(const std::string& file, core_type& ctype) throw(std::bad_alloc, std::runtime_error)
+rom_image::rom_image(const std::string& file, core_type& ctype)
 	: tracker(memtracker::singleton(), romimage_id, sizeof(*this))
 {
 	rtype = &ctype;
@@ -216,8 +216,7 @@ rom_image::rom_image(const std::string& file, core_type& ctype) throw(std::bad_a
 	return;
 }
 
-rom_image::rom_image(const std::string& file, const std::string& tmpprefer) throw(std::bad_alloc,
-	std::runtime_error)
+rom_image::rom_image(const std::string& file, const std::string& tmpprefer)
 	: tracker(memtracker::singleton(), romimage_id, sizeof(*this))
 {
 	std::istream& spec = zip::openrel(file, "");
@@ -267,7 +266,6 @@ rom_image::rom_image(const std::string& file, const std::string& tmpprefer) thro
 }
 
 void rom_image::load_bundle(const std::string& file, std::istream& spec, const std::string& tmpprefer)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	std::string s;
 	load_filename = file;
@@ -461,7 +459,7 @@ rom_image::rom_image(const std::string file[ROM_SLOT_COUNT], const std::string& 
 	account_images();
 }
 
-bool rom_image::is_gamepak(const std::string& filename) throw(std::bad_alloc, std::runtime_error)
+bool rom_image::is_gamepak(const std::string& filename)
 {
 	std::istream* spec = NULL;
 	try {

@@ -182,21 +182,21 @@ class pointer
 {
 public:
 	pointer();
-	pointer(const std::string& ptr) throw(std::bad_alloc);
-	pointer(const std::u32string& ptr) throw(std::bad_alloc);
-	pointer pastend() const throw(std::bad_alloc) { return field(U"-"); }
-	pointer& pastend_inplace() throw(std::bad_alloc) { return field_inplace(U"-"); }
-	pointer index(uint64_t idx) const throw(std::bad_alloc);
-	pointer& index_inplace(uint64_t idx) throw(std::bad_alloc);
-	pointer field(const std::string& fld) const throw(std::bad_alloc) { return field(utf8::to32(fld)); }
-	pointer& field_inplace(const std::string& fld) throw(std::bad_alloc)
+	pointer(const std::string& ptr);
+	pointer(const std::u32string& ptr);
+	pointer pastend() const { return field(U"-"); }
+	pointer& pastend_inplace() { return field_inplace(U"-"); }
+	pointer index(uint64_t idx) const;
+	pointer& index_inplace(uint64_t idx);
+	pointer field(const std::string& fld) const { return field(utf8::to32(fld)); }
+	pointer& field_inplace(const std::string& fld)
 	{
 		return field_inplace(utf8::to32(fld));
 	}
-	pointer field(const std::u32string& fld) const throw(std::bad_alloc);
-	pointer& field_inplace(const std::u32string& fld) throw(std::bad_alloc);
-	pointer remove() const throw(std::bad_alloc);
-	pointer& remove_inplace() throw(std::bad_alloc);
+	pointer field(const std::u32string& fld) const;
+	pointer& field_inplace(const std::u32string& fld);
+	pointer remove() const;
+	pointer& remove_inplace();
 	std::string as_string8() const { return utf8::to8(_pointer); }
 	std::u32string as_string() const { return _pointer; }
 	friend std::ostream& operator<<(std::ostream& s, const pointer& p);
@@ -299,8 +299,8 @@ public:
  */
 	node(null_tag) throw();
 	node(boolean_tag, bool b) throw();
-	node(string_tag, const std::u32string& str) throw(std::bad_alloc);
-	node(string_tag, const std::string& str) throw(std::bad_alloc);
+	node(string_tag, const std::u32string& str);
+	node(string_tag, const std::string& str);
 	node(number_tag, double n) throw();
 	node(number_tag, int64_t n) throw();
 	node(number_tag, uint64_t n) throw();
@@ -314,15 +314,15 @@ public:
 /**
  * Copy Constructor.
  */
-	node(const node& _node) throw(std::bad_alloc);
+	node(const node& _node);
 /**
  * Construct object from description.
  */
-	node(const std::string& doc) throw(std::bad_alloc, error);
+	node(const std::string& doc);
 /**
  * Serialize document.
  */
-	std::string serialize(printer* printer = NULL) const throw(std::bad_alloc, error);
+	std::string serialize(printer* printer = NULL) const;
 /**
  * Get type of node.
  */
@@ -330,68 +330,68 @@ public:
 /**
  * Get type of node by pointer.
  */
-	int type_of(const std::u32string& pointer) const throw(std::bad_alloc);
-	int type_of(const std::string& pointer) const throw(std::bad_alloc)
+	int type_of(const std::u32string& pointer) const;
+	int type_of(const std::string& pointer) const
 	{
 		return type_of(utf8::to32(pointer));
 	}
-	int type_of(const pointer& ptr) const throw(std::bad_alloc)
+	int type_of(const pointer& ptr) const
 	{
 		return type_of(ptr._pointer);
 	}
 /**
  * Get type of node by pointer (indirect).
  */
-	int type_of_indirect(const std::u32string& pointer) const throw(std::bad_alloc);
-	int type_of_indirect(const std::string& pointer) const throw(std::bad_alloc)
+	int type_of_indirect(const std::u32string& pointer) const;
+	int type_of_indirect(const std::string& pointer) const
 	{
 		return type_of_indirect(utf8::to32(pointer));
 	}
-	int type_of_indirect(const pointer& ptr) const throw(std::bad_alloc)
+	int type_of_indirect(const pointer& ptr) const
 	{
 		return type_of_indirect(ptr._pointer);
 	}
 /**
  * Resolve an indirect pointer
  */
-	std::u32string resolve_indirect(const std::u32string& pointer) const throw(std::bad_alloc);
-	std::string resolve_indirect(const std::string& pointer) const throw(std::bad_alloc)
+	std::u32string resolve_indirect(const std::u32string& pointer) const;
+	std::string resolve_indirect(const std::string& pointer) const
 	{
 		return utf8::to8(resolve_indirect(utf8::to32(pointer)));
 	}
-	pointer resolve_indirect(const pointer& ptr) const throw(std::bad_alloc)
+	pointer resolve_indirect(const pointer& ptr) const
 	{
 		return pointer(resolve_indirect(ptr._pointer));
 	}
 /**
  * Get double numeric value (NT_NUMBER).
  */
-	double as_double() const throw(error);
+	double as_double() const;
 /**
  * Get int64_t value (NT_NUMBER).
  */
-	int64_t as_int() const throw(error);
+	int64_t as_int() const;
 /**
  * Get uint64_t value (NT_NUMBER).
  */
-	uint64_t as_uint() const throw(error);
+	uint64_t as_uint() const;
 /**
  * Read the string as UTF-8 (NT_STRING).
  */
-	const std::u32string& as_string() const throw(std::bad_alloc, error);
-	std::string as_string8() const throw(std::bad_alloc, error) { return utf8::to8(as_string()); }
+	const std::u32string& as_string() const;
+	std::string as_string8() const { return utf8::to8(as_string()); }
 /**
  * Get boolean value (NT_BOOLEAN).
  */
-	bool as_bool() const throw(error);
+	bool as_bool() const;
 /**
  * Read number of indices in array (NT_ARRAY).
  */
-	size_t index_count() const throw(error);
+	size_t index_count() const;
 /**
  * Read specified index from array (NT_ARRAY).
  */
-	const node& index(size_t idx) const throw(error)
+	const node& index(size_t idx) const
 	{
 		const node* n;
 		auto e = index_soft(idx, n);
@@ -401,30 +401,30 @@ public:
 /**
  * Read number of indices in object key (NT_OBJECT).
  */
-	size_t field_count(const std::u32string& key) const throw(error);
-	size_t field_count(const std::string& key) const throw(std::bad_alloc, error)
+	size_t field_count(const std::u32string& key) const;
+	size_t field_count(const std::string& key) const
 	{
 		return field_count(utf8::to32(key));
 	}
 /**
  * Specified field exists (NT_OBJECT)
  */
-	bool field_exists(const std::u32string& key) const throw(error);
-	bool field_exists(const std::string& key) const throw(std::bad_alloc, error)
+	bool field_exists(const std::u32string& key) const;
+	bool field_exists(const std::string& key) const
 	{
 		return field_exists(utf8::to32(key));
 	}
 /**
  * Read specified key from object (NT_OBJECT).
  */
-	const node& field(const std::u32string& key, size_t subindex = 0) const throw(error)
+	const node& field(const std::u32string& key, size_t subindex = 0) const
 	{
 		const node* n;
 		auto e = field_soft(key, subindex, n);
 		if(e != ERR_OK) throw error(e);
 		return *n;
 	}
-	const node& field(const std::string& key, size_t subindex = 0) const throw(std::bad_alloc, error)
+	const node& field(const std::string& key, size_t subindex = 0) const
 	{
 		return field(utf8::to32(key), subindex);
 	}
@@ -432,40 +432,40 @@ public:
 /**
  * Apply JSON pointer (RFC 6901).
  */
-	const node& follow(const std::u32string& pointer) const throw(std::bad_alloc, error)
+	const node& follow(const std::u32string& pointer) const
 	{
 		const node* n;
 		auto e = follow_soft(pointer, n);
 		if(e != ERR_OK) throw error(e);
 		return *n;
 	}
-	const node& follow(const std::string& pointer) const throw(std::bad_alloc, error)
+	const node& follow(const std::string& pointer) const
 	{
 		return follow(utf8::to32(pointer));
 	}
-	const node& follow(const pointer& ptr) const throw(std::bad_alloc, error)
+	const node& follow(const pointer& ptr) const
 	{
 		return follow(ptr._pointer);
 	}
 /**
  * Apply JSON pointer (RFC 6901) following strings as indirect references.
  */
-	const node& follow_indirect(const std::u32string& pointer) const throw(std::bad_alloc, error)
+	const node& follow_indirect(const std::u32string& pointer) const
 	{
 		return follow(resolve_indirect(pointer));
 	}
-	const node& follow_indirect(const std::string& pointer) const throw(std::bad_alloc, error)
+	const node& follow_indirect(const std::string& pointer) const
 	{
 		return follow_indirect(utf8::to32(pointer));
 	}
-	const node& follow_indirect(const pointer& ptr) const throw(std::bad_alloc, error)
+	const node& follow_indirect(const pointer& ptr) const
 	{
 		return follow_indirect(ptr._pointer);
 	}
 /**
  * Set value of node (any).
  */
-	node& operator=(const node& node) throw(std::bad_alloc);
+	node& operator=(const node& node);
 /**
  * Set value of node.
  */
@@ -474,15 +474,15 @@ public:
 	node& set(number_tag, double number) throw();
 	node& set(number_tag, int64_t number) throw();
 	node& set(number_tag, uint64_t number) throw();
-	node& set(string_tag, const std::u32string& key) throw(std::bad_alloc);
-	node& set(string_tag tag, const std::string& key) throw(std::bad_alloc)
+	node& set(string_tag, const std::u32string& key);
+	node& set(string_tag tag, const std::string& key)
 	{
 		return set(tag, utf8::to32(key));
 	}
 /**
  * Read/Write specified index from array (NT_ARRAY).
  */
-	node& index(size_t idx) throw(error)
+	node& index(size_t idx)
 	{
 		node* n;
 		auto e = index_soft(idx, n);
@@ -492,141 +492,141 @@ public:
 /**
  * Append new element to array (NT_ARRAY).
  */
-	node& append(const node& node) throw(std::bad_alloc, error);
+	node& append(const node& node);
 /**
  * Read/Write specified key from object (NT_OBJECT).
  */
-	node& field(const std::u32string& key, size_t subindex = 0) throw(error)
+	node& field(const std::u32string& key, size_t subindex = 0)
 	{
 		node* n;
 		auto e = field_soft(key, subindex, n);
 		if(e != ERR_OK) throw error(e);
 		return *n;
 	}
-	node& field(const std::string& key, size_t subindex = 0) throw(std::bad_alloc, error)
+	node& field(const std::string& key, size_t subindex = 0)
 	{
 		return field(utf8::to32(key), subindex);
 	}
 /**
  * Insert new element to object (NT_OBJECT).
  */
-	node& insert(const std::u32string& key, const node& node) throw(std::bad_alloc, error);
-	node& insert(const std::string& key, const node& node) throw(std::bad_alloc, error)
+	node& insert(const std::u32string& key, const node& node);
+	node& insert(const std::string& key, const node& node)
 	{
 		return insert(utf8::to32(key), node);
 	}
 /**
  * Apply JSON pointer (RFC 6901).
  */
-	node& follow(const std::u32string& pointer) throw(std::bad_alloc, error)
+	node& follow(const std::u32string& pointer)
 	{
 		node* n;
 		auto e = follow_soft(pointer, n);
 		if(e != ERR_OK) throw error(e);
 		return *n;
 	}
-	node& follow(const std::string& pointer) throw(std::bad_alloc, error)
+	node& follow(const std::string& pointer)
 	{
 		return follow(utf8::to32(pointer));
 	}
-	node& follow(const pointer& ptr) throw(std::bad_alloc, error)
+	node& follow(const pointer& ptr)
 	{
 		return follow(ptr._pointer);
 	}
 /**
  * Apply JSON pointer (RFC 6901) following strings as indirect references.
  */
-	node& follow_indirect(const std::u32string& pointer) throw(std::bad_alloc, error)
+	node& follow_indirect(const std::u32string& pointer)
 	{
 		return follow(resolve_indirect(pointer));
 	}
-	node& follow_indirect(const std::string& pointer) throw(std::bad_alloc, error)
+	node& follow_indirect(const std::string& pointer)
 	{
 		return follow_indirect(utf8::to32(pointer));
 	}
-	node& follow_indirect(const pointer& ptr) throw(std::bad_alloc, error)
+	node& follow_indirect(const pointer& ptr)
 	{
 		return follow_indirect(ptr._pointer);
 	}
 /**
  * Return node specified by JSON pointer (RFC 6901). If the last component doesn't exist, it is created as NULL.
  */
-	node& operator[](const std::u32string& pointer) throw(std::bad_alloc, error);
-	node& operator[](const std::string& pointer) throw(std::bad_alloc, error)
+	node& operator[](const std::u32string& pointer);
+	node& operator[](const std::string& pointer)
 	{
 		return (*this)[utf8::to32(pointer)];
 	}
-	node& operator[](const pointer& ptr) throw(std::bad_alloc, error)
+	node& operator[](const pointer& ptr)
 	{
 		return (*this)[ptr._pointer];
 	}
 /**
  * Create node at specified pointer and return it.
  */
-	node& insert_node(const std::u32string& pointer, const node& nwn) throw(std::bad_alloc, error);
-	node& insert_node(const std::string& pointer, const node& nwn) throw(std::bad_alloc, error)
+	node& insert_node(const std::u32string& pointer, const node& nwn);
+	node& insert_node(const std::string& pointer, const node& nwn)
 	{
 		return insert_node(utf8::to32(pointer), nwn);
 	}
-	node& insert_node(const pointer& ptr, const node& nwn) throw(std::bad_alloc, error)
+	node& insert_node(const pointer& ptr, const node& nwn)
 	{
 		return insert_node(ptr._pointer, nwn);
 	}
 /**
  * Delete a node by pointer and return what was deleted.
  */
-	node delete_node(const std::u32string& pointer) throw(std::bad_alloc, error);
-	node delete_node(const std::string& pointer) throw(std::bad_alloc, error)
+	node delete_node(const std::u32string& pointer);
+	node delete_node(const std::string& pointer)
 	{
 		return delete_node(utf8::to32(pointer));
 	}
-	node delete_node(const pointer& ptr) throw(std::bad_alloc, error)
+	node delete_node(const pointer& ptr)
 	{
 		return delete_node(ptr._pointer);
 	}
 /**
  * Synonym for follow().
  */
-	const node& operator[](const std::u32string& pointer) const throw(std::bad_alloc, error)
+	const node& operator[](const std::u32string& pointer) const
 	{
 		return follow(pointer);
 	}
-	const node& operator[](const std::string& pointer) const throw(std::bad_alloc, error)
+	const node& operator[](const std::string& pointer) const
 	{
 		return follow(pointer);
 	}
-	const node& operator[](const pointer& ptr) const throw(std::bad_alloc, error)
+	const node& operator[](const pointer& ptr) const
 	{
 		return follow(ptr._pointer);
 	}
 /**
  * Delete an array index. The rest are shifted.
  */
-	void erase_index(size_t idx) throw(error);
+	void erase_index(size_t idx);
 /**
  * Delete an array field. The rest are shifted.
  */
-	void erase_field(const std::u32string& fld, size_t idx = 0) throw(error);
-	void erase_field(const std::string& fld, size_t idx = 0) throw(std::bad_alloc, error)
+	void erase_field(const std::u32string& fld, size_t idx = 0);
+	void erase_field(const std::string& fld, size_t idx = 0)
 	{
 		erase_field(utf8::to32(fld), idx);
 	}
 /**
  * Delete an entiere array field.
  */
-	void erase_field_all(const std::u32string& fld) throw(error);
-	void erase_field_all(const std::string& fld) throw(std::bad_alloc, error)
+	void erase_field_all(const std::u32string& fld);
+	void erase_field_all(const std::string& fld)
 	{
 		erase_field_all(utf8::to32(fld));
 	}
 /**
  * Apply a JSON patch.
  */
-	node patch(const node& patch) const throw(std::bad_alloc, error);
+	node patch(const node& patch) const;
 /**
  * Clear entiere array or object.
  */
-	void clear() throw(error);
+	void clear();
 /**
  * Iterator.
  */
@@ -639,14 +639,14 @@ public:
 		typedef node& reference;
 		typedef node* pointer;
 		iterator() throw();
-		iterator(node& n) throw(error);
-		std::u32string key() throw(std::bad_alloc, error);
-		std::string key8() throw(std::bad_alloc, error) { return utf8::to8(key()); }
-		size_t index() throw(error);
-		node& operator*() throw(error);
-		node* operator->() throw(error);
-		iterator operator++(int) throw(error);
-		iterator& operator++() throw(error);
+		iterator(node& n);
+		std::u32string key();
+		std::string key8() { return utf8::to8(key()); }
+		size_t index();
+		node& operator*();
+		node* operator->();
+		iterator operator++(int);
+		iterator& operator++();
 		bool operator==(const iterator& i) throw();
 		bool operator!=(const iterator& i) throw();
 	private:
@@ -667,14 +667,14 @@ public:
 		typedef const node& reference;
 		typedef const node* pointer;
 		const_iterator() throw();
-		const_iterator(const node& n) throw(error);
-		std::u32string key() throw(std::bad_alloc, error);
-		std::string key8() throw(std::bad_alloc, error) { return utf8::to8(key()); }
-		size_t index() throw(error);
-		const node& operator*() throw(error);
-		const node* operator->() throw(error);
-		const_iterator operator++(int) throw(error);
-		const_iterator& operator++() throw(error);
+		const_iterator(const node& n);
+		std::u32string key();
+		std::string key8() { return utf8::to8(key()); }
+		size_t index();
+		const node& operator*();
+		const node* operator->();
+		const_iterator operator++(int);
+		const_iterator& operator++();
 		bool operator==(const const_iterator& i) throw();
 		bool operator!=(const const_iterator& i) throw();
 	private:
@@ -685,14 +685,14 @@ public:
 /**
  * Iterators
  */
-	const_iterator begin() const throw(error) { return const_iterator(*this); }
+	const_iterator begin() const { return const_iterator(*this); }
 	const_iterator end() const throw() { return const_iterator(); }
-	iterator begin() throw(error) { return iterator(*this); }
+	iterator begin() { return iterator(*this); }
 	iterator end() throw() { return iterator(); }
 /**
  * Delete item pointed by iterator. The rest are shifted and new iterator is returned.
  */
-	iterator erase(iterator itr) throw(error);
+	iterator erase(iterator itr);
 private:
 	class number_holder
 	{
@@ -723,8 +723,8 @@ private:
 	friend class iterator;
 	friend class const_iterator;
 	void fixup_nodes(const node& _node);
-	void ctor(const std::string& doc, size_t& ptr, size_t len) throw(std::bad_alloc, error);
-	node(const std::string& doc, size_t& ptr, size_t len) throw(std::bad_alloc, error);
+	void ctor(const std::string& doc, size_t& ptr, size_t len);
+	node(const std::string& doc, size_t& ptr, size_t len);
 	template<typename T> void set_helper(T v)
 	{
 		std::u32string tmp;
@@ -748,8 +748,8 @@ private:
 	std::list<node> xarray;
 	std::vector<node*> xarray_index;
 	std::map<std::u32string, std::list<node>> xobject;
-	errorcode follow_soft(const std::u32string& pointer, const node*& out) const throw(std::bad_alloc);
-	errorcode follow_soft(const std::u32string& pointer, node*& out) throw(std::bad_alloc);
+	errorcode follow_soft(const std::u32string& pointer, const node*& out) const;
+	errorcode follow_soft(const std::u32string& pointer, node*& out);
 	errorcode field_soft(const std::u32string& key, size_t subindex, node*& out) throw();
 	errorcode field_soft(const std::u32string& key, size_t subindex, const node*& out) const throw();
 	errorcode index_soft(size_t index, node*& out) throw();

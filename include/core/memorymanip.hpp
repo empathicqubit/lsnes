@@ -15,7 +15,7 @@ class cart_mappings_refresher
 {
 public:
 	cart_mappings_refresher(memory_space& _mspace, movie_logic& _mlogic, loaded_rom& _rom);
-	void operator()() throw(std::bad_alloc);
+	void operator()();
 private:
 	memory_space& mspace;
 	movie_logic& mlogic;

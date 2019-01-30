@@ -183,7 +183,7 @@ namespace
 			ctor_notify();
 		}
 		~adv_raw_dumper() throw();
-		std::set<std::string> list_submodes() throw(std::bad_alloc)
+		std::set<std::string> list_submodes()
 		{
 			std::set<std::string> x;
 			for(size_t i = 0; i < (socket_address::supported() ? 2 : 1); i++)
@@ -201,11 +201,11 @@ namespace
 		{
 			return "";	//Nothing interesting.
 		}
-		std::string name() throw(std::bad_alloc)
+		std::string name()
 		{
 			return "RAW";
 		}
-		std::string modename(const std::string& mode) throw(std::bad_alloc)
+		std::string modename(const std::string& mode)
 		{
 			unsigned _mode = strhash(mode);
 			std::string x = std::string((IS_RGB(_mode) ? "RGB" : "BGR")) +
@@ -213,7 +213,6 @@ namespace
 			return x;
 		}
 		raw_dump_obj* start(master_dumper& _mdumper, const std::string& mode, const std::string& prefix)
-			throw(std::bad_alloc, std::runtime_error)
 		{
 			return new raw_dump_obj(_mdumper, *this, mode, prefix);
 		}

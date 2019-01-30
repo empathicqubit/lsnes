@@ -102,7 +102,7 @@ moviefile::brief_info::brief_info(const std::string& filename)
 	load(r);
 }
 
-moviefile::moviefile() throw(std::bad_alloc)
+moviefile::moviefile()
 	: tracker(memtracker::singleton(), movie_file_id, sizeof(*this))
 {
 	force_corrupt = false;
@@ -150,7 +150,7 @@ moviefile::moviefile(loaded_rom& rom, std::map<std::string, std::string>& c_sett
 	}
 }
 
-moviefile::moviefile(const std::string& movie, core_type& romtype) throw(std::bad_alloc, std::runtime_error)
+moviefile::moviefile(const std::string& movie, core_type& romtype)
 	: tracker(memtracker::singleton(), movie_file_id, sizeof(*this))
 {
 	regex_results rr;
@@ -192,7 +192,6 @@ void moviefile::fixup_current_branch(const moviefile& mv)
 }
 
 void moviefile::save(const std::string& movie, unsigned compression, bool binary, rrdata_set& rrd, bool as_state)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	regex_results rr;
 	if(rr = regex("\\$MEMORY:(.*)", movie)) {
@@ -235,7 +234,7 @@ void moviefile::save(const std::string& movie, unsigned compression, bool binary
 	save(w, rrd, as_state);
 }
 
-void moviefile::save(std::ostream& stream, rrdata_set& rrd, bool as_state) throw(std::bad_alloc, std::runtime_error)
+void moviefile::save(std::ostream& stream, rrdata_set& rrd, bool as_state)
 {
 	zip::writer w(stream, 0);
 	save(w, rrd, as_state);

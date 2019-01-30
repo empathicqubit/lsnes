@@ -458,12 +458,12 @@ void core_core::uninstall_all_handlers()
 		i->uninstall_handler();
 }
 
-std::map<std::string, std::vector<char>> core_core::save_sram() throw(std::bad_alloc)
+std::map<std::string, std::vector<char>> core_core::save_sram()
 {
 	return c_save_sram();
 }
 
-void core_core::load_sram(std::map<std::string, std::vector<char>>& sram) throw(std::bad_alloc)
+void core_core::load_sram(std::map<std::string, std::vector<char>>& sram)
 {
 	c_load_sram(sram);
 }

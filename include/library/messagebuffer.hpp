@@ -23,7 +23,7 @@ public:
 /**
  * Handle update.
  */
-		virtual void messagebuffer_update() throw(std::bad_alloc, std::runtime_error) = 0;
+		virtual void messagebuffer_update() = 0;
 	};
 /**
  * Create new message buffer with specified maximum message count.
@@ -33,7 +33,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::logic_error: Windowsize is greater than maxmessages or maxmessages is zero.
  */
-	messagebuffer(size_t maxmessages, size_t windowsize) throw(std::bad_alloc, std::logic_error);
+	messagebuffer(size_t maxmessages, size_t windowsize);
 
 /**
  * Add a new message to the buffer.
@@ -42,7 +42,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Thrown through from update handler.
  */
-	void add_message(const std::string& msg) throw(std::bad_alloc, std::runtime_error);
+	void add_message(const std::string& msg);
 
 /**
  * Read a message.
@@ -52,7 +52,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::logic_error: Invalid message number.
  */
-	const std::string& get_message(size_t msgnum) throw(std::bad_alloc, std::logic_error);
+	const std::string& get_message(size_t msgnum);
 
 /**
  * Get the number of first message present.
@@ -117,7 +117,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Thrown through from update handler.
  */
-	void scroll_beginning() throw(std::bad_alloc, std::runtime_error);
+	void scroll_beginning();
 
 /**
  * Scroll up one page.
@@ -125,7 +125,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Thrown through from update handler.
  */
-	void scroll_up_page() throw(std::bad_alloc, std::runtime_error);
+	void scroll_up_page();
 
 /**
  * Scroll up one line.
@@ -133,7 +133,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Thrown through from update handler.
  */
-	void scroll_up_line() throw(std::bad_alloc, std::runtime_error);
+	void scroll_up_line();
 
 /**
  * Scroll down one line.
@@ -141,7 +141,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Thrown through from update handler.
  */
-	void scroll_down_line() throw(std::bad_alloc, std::runtime_error);
+	void scroll_down_line();
 
 /**
  * Scroll down one page.
@@ -149,7 +149,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Thrown through from update handler.
  */
-	void scroll_down_page() throw(std::bad_alloc, std::runtime_error);
+	void scroll_down_page();
 
 /**
  * Scroll to beginning.
@@ -157,7 +157,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Thrown through from update handler.
  */
-	void scroll_end() throw(std::bad_alloc, std::runtime_error);
+	void scroll_end();
 
 /**
  * Register an update handler.
@@ -165,7 +165,7 @@ public:
  * Parameter handler: The new handler.
  * Throws std::bad_alloc: Not enough memory.
  */
-	void register_handler(update_handler& handler) throw(std::bad_alloc);
+	void register_handler(update_handler& handler);
 
 /**
  * Unregister an update handler.
@@ -182,7 +182,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::logic_error: Windowsize is greater than maxmessages or maxmessages is zero.
  */
-	void set_max_window_size(size_t windowsize) throw(std::bad_alloc, std::logic_error);
+	void set_max_window_size(size_t windowsize);
 
 /**
  * Read the window size.

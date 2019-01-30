@@ -300,7 +300,7 @@ std::ostream& operator<<(std::ostream& os, const std::u32string& lkey)
 	return os;
 }
 
-void font2::add(const std::u32string& key, const glyph& fglyph) throw(std::bad_alloc)
+void font2::add(const std::u32string& key, const glyph& fglyph)
 {
 	glyphs[key] = fglyph;
 	if(fglyph.height > rowadvance)
@@ -308,7 +308,6 @@ void font2::add(const std::u32string& key, const glyph& fglyph) throw(std::bad_a
 }
 
 std::u32string font2::best_ligature_match(const std::u32string& codepoints, size_t start) const
-	throw(std::bad_alloc)
 {
 	std::u32string tmp;
 	if(start >= codepoints.length())

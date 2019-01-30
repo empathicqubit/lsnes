@@ -127,7 +127,7 @@ public:
  * parameter lazy: If true, just switch to project, don't read the IDs.
  * throws std::bad_alloc: Not enough memory
  */
-	void read_base(const std::string& projectfile, bool lazy) throw(std::bad_alloc);
+	void read_base(const std::string& projectfile, bool lazy);
 /**
  * Is lazy?
  */
@@ -143,7 +143,7 @@ public:
  *
  * parameter i: The load ID to add.
  */
-	void add(const struct instance& i) throw(std::bad_alloc);
+	void add(const struct instance& i);
 /**
  * Write compressed representation of current load ID set to stream.
  *
@@ -151,7 +151,7 @@ public:
  * returns: Rerecord count.
  * throws std::bad_alloc: Not enough memory.
  */
-	uint64_t write(std::vector<char>& strm) throw(std::bad_alloc);
+	uint64_t write(std::vector<char>& strm);
 /**
  * Get size for compressed representation.
  *
@@ -178,7 +178,7 @@ public:
  * returns: Rerecord count.
  * throws std::bad_alloc: Not enough memory.
  */
-	uint64_t read(std::vector<char>& strm) throw(std::bad_alloc);
+	uint64_t read(std::vector<char>& strm);
 /**
  * Load compressed representation of load ID set from stream, but don't do anything to it.
  *
@@ -186,7 +186,7 @@ public:
  * returns: Rerecord count.
  * throws std::bad_alloc: Not enough memory.
  */
-	static uint64_t count(std::vector<char>& strm) throw(std::bad_alloc);
+	static uint64_t count(std::vector<char>& strm);
 /**
  * Count number of rerecords.
  *

@@ -21,7 +21,7 @@ std::string pcs_write_classes(const std::vector<controller_set*>& p, unsigned& t
 
 struct type_generic : public type
 {
-	type_generic(const JSON::node& root, const std::string& ptr) throw(std::exception);
+	type_generic(const JSON::node& root, const std::string& ptr);
 	~type_generic() throw();
 	struct ser_instruction
 	{

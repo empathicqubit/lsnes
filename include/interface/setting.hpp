@@ -40,7 +40,7 @@ struct core_setting_value
 /**
  * Create a new setting value.
  */
-	core_setting_value(const core_setting_value_param& p) throw(std::bad_alloc);
+	core_setting_value(const core_setting_value_param& p);
 /**
  * Internal value.
  */
@@ -95,15 +95,15 @@ struct core_setting
 /**
  * Get set of human-readable strings.
  */
-	std::vector<std::string> hvalues() const throw(std::runtime_error);
+	std::vector<std::string> hvalues() const;
 /**
  * Translate hvalue to ivalue.
  */
-	std::string hvalue_to_ivalue(const std::string& hvalue) const throw(std::runtime_error);
+	std::string hvalue_to_ivalue(const std::string& hvalue) const;
 /**
  * Translate ivalue to index.
  */
-	signed ivalue_to_index(const std::string& ivalue) const throw(std::runtime_error);
+	signed ivalue_to_index(const std::string& ivalue) const;
 /**
  * Validate a value.
  *
@@ -138,14 +138,13 @@ struct core_setting_group
  * Translate ivalue to index.
  */
 	signed ivalue_to_index(std::map<std::string, std::string>& values, const std::string& name) const
-		throw(std::runtime_error)
 	{
 		return settings.find(name)->second.ivalue_to_index(values[name]);
 	}
 /**
  * Fill a map of settings with defaults.
  */
-	void fill_defaults(std::map<std::string, std::string>& values) throw(std::bad_alloc);
+	void fill_defaults(std::map<std::string, std::string>& values);
 /**
  * Get set of settings.
  */

@@ -20,7 +20,7 @@ void fatal_error() throw();
  * \return The config directory path.
  * \throw std::bad_alloc Not enough memory.
  */
-std::string get_config_path() throw(std::bad_alloc);
+std::string get_config_path();
 
 /**
  * \brief Panic on OOM.

@@ -288,7 +288,7 @@ public:
  * Parameter ssize: The storage size in bytes.
  * Throws std::bad_alloc: Not enough memory.
  */
-	type(const std::string& iname, const std::string& hname, size_t ssize) throw(std::bad_alloc);
+	type(const std::string& iname, const std::string& hname, size_t ssize);
 /**
  * Unregister a port type.
  */
@@ -396,8 +396,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Illegal port types.
  */
-	static type_set& make(std::vector<type*> types, struct index_map control_map)
-		throw(std::bad_alloc, std::runtime_error);
+	static type_set& make(std::vector<type*> types, struct index_map control_map);
 /**
  * Compare sets for equality.
  */
@@ -413,7 +412,7 @@ public:
  * Returns: The offset of port.
  * Throws std::runtime_error: Bad port number.
  */
-	size_t port_offset(unsigned port) const throw(std::runtime_error)
+	size_t port_offset(unsigned port) const
 	{
 		if(port >= port_count)
 			throw std::runtime_error("Invalid port index");
@@ -426,7 +425,7 @@ public:
  * Returns: The port type.
  * Throws std::runtime_error: Bad port number.
  */
-	const class type& port_type(unsigned port) const throw(std::runtime_error)
+	const class type& port_type(unsigned port) const
 	{
 		if(port >= port_count)
 			throw std::runtime_error("Invalid port index");
@@ -464,7 +463,7 @@ public:
  * Returns: The triplet (may not be valid).
  * Throws std::runtime_error: Index out of range.
  */
-	index_triple index_to_triple(unsigned index) const throw(std::runtime_error)
+	index_triple index_to_triple(unsigned index) const
 	{
 		if(index >= _indices.size())
 			throw std::runtime_error("Invalid index");
@@ -478,7 +477,7 @@ public:
  * Parameter _index: The control index.
  * Returns: The index, or 0xFFFFFFFFUL if specified triple is not valid.
  */
-	unsigned triple_to_index(unsigned port, unsigned controller, unsigned _index) const throw(std::runtime_error)
+	unsigned triple_to_index(unsigned port, unsigned controller, unsigned _index) const
 	{
 		size_t place = port * port_multiplier + controller * controller_multiplier + _index;
 		if(place >= indices_size)
@@ -507,7 +506,7 @@ public:
  * Returns: Physical controller index (port, controller).
  * Throws std::runtime_error: No such controller.
  */
-	std::pair<unsigned, unsigned> lcid_to_pcid(unsigned lcid) const throw(std::runtime_error)
+	std::pair<unsigned, unsigned> lcid_to_pcid(unsigned lcid) const
 	{
 		if(lcid >= controllers.size())
 			throw std::runtime_error("Bad logical controller");
@@ -527,7 +526,7 @@ public:
  * Returns: The controller index.
  * Throws std::runtime_error: No such controller.
  */
-	std::pair<unsigned, unsigned> legacy_pcid_to_pair(unsigned pcid) const throw(std::runtime_error)
+	std::pair<unsigned, unsigned> legacy_pcid_to_pair(unsigned pcid) const
 	{
 		if(pcid >= legacy_pcids.size())
 			throw std::runtime_error("Bad legacy PCID");
@@ -560,14 +559,14 @@ public:
  *
  * Throws std::bad_alloc: Not enough memory.
  */
-	counters() throw(std::bad_alloc);
+	counters();
 /**
  * Create new pollcounter vector suitably sized for given type set.
  *
  * Parameter p: The port types.
  * Throws std::bad_alloc: Not enough memory.
  */
-	counters(const type_set& p) throw(std::bad_alloc);
+	counters(const type_set& p);
 /**
  * Destructor.
  */
@@ -575,11 +574,11 @@ public:
 /**
  * Copy the counters.
  */
-	counters(const counters& v) throw(std::bad_alloc);
+	counters(const counters& v);
 /**
  * Assign the counters.
  */
-	counters& operator=(const counters& v) throw(std::bad_alloc);
+	counters& operator=(const counters& v);
 /**
  * Zero all poll counters and clear all DRDY bits. System flag is cleared.
  */
@@ -696,7 +695,7 @@ public:
  * Parameter mem: The memory block to save to.
  * Throws std::bad_alloc: Not enough memory.
  */
-	void save_state(std::vector<uint32_t>& mem) throw(std::bad_alloc);
+	void save_state(std::vector<uint32_t>& mem);
 /**
  * Load state from memory block.
  *
@@ -744,7 +743,7 @@ public:
  *
  * Parameter p: Types of ports.
  */
-	frame(const type_set& p) throw(std::runtime_error);
+	frame(const type_set& p);
 /**
  * Create subframe of controls with specified controller types and specified memory.
  *
@@ -754,8 +753,7 @@ public:
  *
  * Throws std::runtime_error: NULL memory.
  */
-	frame(unsigned char* memory, const type_set& p, frame_vector* host = NULL)
-		throw(std::runtime_error);
+	frame(unsigned char* memory, const type_set& p, frame_vector* host = NULL);
 /**
  * Copy construct a frame. The memory will be dedicated.
  *
@@ -769,7 +767,7 @@ public:
  * Returns: Reference to this.
  * Throws std::runtime_error: The types don't match and memory is not dedicated.
  */
-	frame& operator=(const frame& obj) throw(std::runtime_error);
+	frame& operator=(const frame& obj);
 /**
  * Get type of port.
  *
@@ -800,7 +798,7 @@ public:
  * Parameter ptype: New port types.
  * Throws std::runtime_error: Memory is mapped.
  */
-	void set_types(const type_set& ptype) throw(std::runtime_error)
+	void set_types(const type_set& ptype)
 	{
 		if(memory != backing)
 			throw std::runtime_error("Can't change type of mapped frame");
@@ -832,7 +830,7 @@ public:
  * Returns: The XOR result (dedicated memory).
  * Throws std::runtime_error: Type mismatch.
  */
-	frame operator^(const frame& another) throw(std::runtime_error)
+	frame operator^(const frame& another)
 	{
 		frame x(*this);
 		if(types != another.types)
@@ -959,7 +957,7 @@ public:
  * Parameter buf: The buffer containing text representation. Terminated by NUL, CR or LF.
  * Throws std::runtime_error: Bad serialized representation.
  */
-	inline void deserialize(const char* buf) throw(std::runtime_error);
+	inline void deserialize(const char* buf);
 /**
  * Serialize frame to text format.
  *
@@ -1063,7 +1061,7 @@ public:
  * Parameter obj: The object to copy.
  * Throws std::bad_alloc: Not enough memory.
  */
-	frame_vector(const frame_vector& vector) throw(std::bad_alloc);
+	frame_vector(const frame_vector& vector);
 /**
  * Assign controller frame vector.
  *
@@ -1071,13 +1069,13 @@ public:
  * Returns: Reference to this.
  * Throws std::bad_alloc: Not enough memory.
  */
-	frame_vector& operator=(const frame_vector& vector) throw(std::bad_alloc);
+	frame_vector& operator=(const frame_vector& vector);
 /**
  * Blank vector and change the type of ports.
  *
  * Parameter p: The port types.
  */
-	void clear(const type_set& p) throw(std::runtime_error);
+	void clear(const type_set& p);
 /**
  * Blank vector.
  */
@@ -1125,7 +1123,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Port type mismatch.
  */
-	void append(frame frame) throw(std::bad_alloc, std::runtime_error);
+	void append(frame frame);
 /**
  * Change length of vector.
  *
@@ -1135,7 +1133,7 @@ public:
  * Parameter newsize: New size of vector.
  * Throws std::bad_alloc: Not enough memory.
  */
-	void resize(size_t newsize) throw(std::bad_alloc);
+	void resize(size_t newsize);
 /**
  * Walk the indexes of sync subframes.
  *
@@ -1221,7 +1219,7 @@ public:
  * Parameter stream: The stream to save to.
  * Throws std::runtime_error: Error saving.
  */
-	void save_binary(binarystream::output& stream) const throw(std::runtime_error);
+	void save_binary(binarystream::output& stream) const;
 /**
  * Load from binary form. May partially overwrite on failure.
  *
@@ -1229,7 +1227,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Error saving.
  */
-	void load_binary(binarystream::input& stream) throw(std::bad_alloc, std::runtime_error);
+	void load_binary(binarystream::input& stream);
 /**
  * Check that the movies are compatible up to a point.
  *
@@ -1365,7 +1363,7 @@ void frame::sync(bool x) throw()
 	if(host) host->notify_sync_change((backing[0] & 1) - old);
 }
 
-void frame::deserialize(const char* buf) throw(std::runtime_error)
+void frame::deserialize(const char* buf)
 {
 	short old = sync();
 	size_t offset = 0;

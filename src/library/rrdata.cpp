@@ -108,7 +108,7 @@ rrdata_set::rrdata_set() throw()
 	handle_open = false;
 }
 
-void rrdata_set::read_base(const std::string& projectfile, bool lazy) throw(std::bad_alloc)
+void rrdata_set::read_base(const std::string& projectfile, bool lazy)
 {
 	if(projectfile == current_projectfile && (!lazy_mode || lazy))
 		return;
@@ -171,7 +171,7 @@ void rrdata_set::close() throw()
 	handle_open = false;
 }
 
-void rrdata_set::add(const struct rrdata_set::instance& i) throw(std::bad_alloc)
+void rrdata_set::add(const struct rrdata_set::instance& i)
 {
 	if(_add(i) && handle_open) {
 		//std::cerr << "New symbol: " << i << std::endl;
@@ -258,7 +258,7 @@ uint64_t rrdata_set::emerg_action(struct rrdata_set::esave_state& state, char* b
 	return rsize;
 }
 
-uint64_t rrdata_set::write(std::vector<char>& strm) throw(std::bad_alloc)
+uint64_t rrdata_set::write(std::vector<char>& strm)
 {
 	uint64_t scount = 0;
 	esave_state cstate;
@@ -281,7 +281,6 @@ uint64_t rrdata_set::write(std::vector<char>& strm) throw(std::bad_alloc)
 namespace
 {
 	uint64_t read_set(std::vector<char>& strm, std::function<void(rrdata_set::instance& d, unsigned rep)> fn)
-		throw(std::bad_alloc)
 	{
 		uint64_t scount = 0;
 		rrdata_set::instance decoding;
@@ -321,7 +320,7 @@ namespace
 	}
 }
 
-uint64_t rrdata_set::read(std::vector<char>& strm) throw(std::bad_alloc)
+uint64_t rrdata_set::read(std::vector<char>& strm)
 {
 	return read_set(strm, [this](instance& d, unsigned rep) {
 		bool any = false;
@@ -340,7 +339,7 @@ uint64_t rrdata_set::read(std::vector<char>& strm) throw(std::bad_alloc)
 	});
 }
 
-uint64_t rrdata_set::count(std::vector<char>& strm) throw(std::bad_alloc)
+uint64_t rrdata_set::count(std::vector<char>& strm)
 {
 	return read_set(strm, [](instance& d, unsigned rep) {});
 }

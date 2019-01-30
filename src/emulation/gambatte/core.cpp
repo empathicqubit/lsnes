@@ -569,7 +569,7 @@ namespace
 			else
 				return std::make_pair(32768, 1);
 		}
-		std::map<std::string, std::vector<char>> c_save_sram() throw(std::bad_alloc) {
+		std::map<std::string, std::vector<char>> c_save_sram() {
 			std::map<std::string, std::vector<char>> s;
 			if(!internal_rom)
 				return s;
@@ -582,7 +582,7 @@ namespace
 				s["rtc"][i] = ((unsigned long long)timebase >> (8 * i));
 			return s;
 		}
-		void c_load_sram(std::map<std::string, std::vector<char>>& sram) throw(std::bad_alloc) {
+		void c_load_sram(std::map<std::string, std::vector<char>>& sram) {
 			if(!internal_rom)
 				return;
 			std::vector<char> x = sram.count("main") ? sram["main"] : std::vector<char>();
@@ -967,15 +967,13 @@ namespace
 
 	std::vector<char> cmp_save;
 
-	command::fnptr<> cmp_save1(lsnes_cmds, "set-cmp-save", "", "\n", []() throw(std::bad_alloc,
-		std::runtime_error) {
+	command::fnptr<> cmp_save1(lsnes_cmds, "set-cmp-save", "", "\n", []() {
 		if(!internal_rom)
 			return;
 		instance->saveState(cmp_save);
 	});
 
-	command::fnptr<> cmp_save2(lsnes_cmds, "do-cmp-save", "", "\n", []() throw(std::bad_alloc,
-		std::runtime_error) {
+	command::fnptr<> cmp_save2(lsnes_cmds, "do-cmp-save", "", "\n", []() {
 		std::vector<char> x;
 		if(!internal_rom)
 			return;

@@ -123,7 +123,7 @@ public:
  * Parameter whole_sequence: If true, after seeing one separator, throw away separators until none more are found.
  */
 	token_iterator(const std::basic_string<T>& s, std::initializer_list<const T*> sep,
-		bool whole_sequence = false) throw(std::bad_alloc) : str(s) { ctor_itr(sep, whole_sequence); }
+		bool whole_sequence = false) : str(s) { ctor_itr(sep, whole_sequence); }
 /**
  * Compare.
  */
@@ -139,11 +139,11 @@ public:
 /**
  * Increment.
  */
-	token_iterator<T>& operator++() throw(std::bad_alloc) { return preincrement(); }
+	token_iterator<T>& operator++() { return preincrement(); }
 /**
  * Increment.
  */
-	token_iterator<T> operator++(int) throw(std::bad_alloc) { return postincrement(); }
+	token_iterator<T> operator++(int) { return postincrement(); }
 /**
  * Do nothing, pull everything.
  */
@@ -177,9 +177,9 @@ private:
 	};
 
 	void ctor_eos();
-	void ctor_itr(std::initializer_list<const T*> sep, bool whole_sequence = false) throw(std::bad_alloc);
-	token_iterator<T> postincrement() throw(std::bad_alloc);
-	token_iterator<T>& preincrement() throw(std::bad_alloc);
+	void ctor_itr(std::initializer_list<const T*> sep, bool whole_sequence = false);
+	token_iterator<T> postincrement();
+	token_iterator<T>& preincrement();
 	const std::basic_string<T>& dereference() const throw();
 	bool equals_op(const token_iterator<T>& itr) const throw();
 	size_t is_sep(size_t pos);
@@ -228,8 +228,7 @@ private:
  * Parameter ex: If non-null and string does not match, throw this as std::runtime_error.
  * Returns: The captures.
  */
-regex_results regex(const std::string& regex, const std::string& str, const char* ex = NULL)
-	throw(std::bad_alloc, std::runtime_error);
+regex_results regex(const std::string& regex, const std::string& str, const char* ex = NULL);
 
 enum regex_match_mode
 {
@@ -247,8 +246,7 @@ enum regex_match_mode
  * Parameter mode: Match mode.
  * Returns: True if matches, false if not.
  */
-bool regex_match(const std::string& regex, const std::string& str, enum regex_match_mode mode = REGEX_MATCH_REGEX)
-	throw(std::bad_alloc, std::runtime_error);
+bool regex_match(const std::string& regex, const std::string& str, enum regex_match_mode mode = REGEX_MATCH_REGEX);
 
 /**
  * Try match a case-insensitive string fragment and return the result.
@@ -274,7 +272,7 @@ template<typename T> T raw_lexical_cast(const std::string& value)
 /**
  * \brief Typeconvert string.
  */
-template<typename T> inline T parse_value(const std::string& value) throw(std::bad_alloc, std::runtime_error)
+template<typename T> inline T parse_value(const std::string& value)
 {
 	//Floating-point case.
 	try {
@@ -327,7 +325,7 @@ template<typename T> inline T parse_value(const std::string& value) throw(std::b
 	}
 }
 
-template<> inline ss_int24_t parse_value(const std::string& value) throw(std::bad_alloc, std::runtime_error)
+template<> inline ss_int24_t parse_value(const std::string& value)
 {
 	int32_t v = parse_value<int32_t>(value);
 	if(v < -8388608 || v > 8388607)
@@ -335,7 +333,7 @@ template<> inline ss_int24_t parse_value(const std::string& value) throw(std::ba
 	return v;
 }
 
-template<> inline ss_uint24_t parse_value(const std::string& value) throw(std::bad_alloc, std::runtime_error)
+template<> inline ss_uint24_t parse_value(const std::string& value)
 {
 	uint32_t v = parse_value<uint32_t>(value);
 	if(v > 0xFFFFFF)
@@ -343,7 +341,7 @@ template<> inline ss_uint24_t parse_value(const std::string& value) throw(std::b
 	return v;
 }
 
-template<> inline std::string parse_value(const std::string& value) throw(std::bad_alloc, std::runtime_error)
+template<> inline std::string parse_value(const std::string& value)
 {
 	return value;
 }

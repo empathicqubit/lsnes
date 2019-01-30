@@ -954,7 +954,6 @@ namespace
 
 	void create_region(std::list<core_vma_info>& inf, const std::string& name, uint64_t base, uint64_t size,
 		uint8_t (*readfn)(uint64_t offset), void (*writefn)(uint64_t offset, uint8_t data))
-		throw(std::bad_alloc)
 	{
 		if(size == 0)
 			return;
@@ -971,7 +970,7 @@ namespace
 	}
 
 	void create_region(std::list<core_vma_info>& inf, const std::string& name, uint64_t base, uint8_t* memory,
-		uint64_t size, bool readonly, bool native_endian = false) throw(std::bad_alloc)
+		uint64_t size, bool readonly, bool native_endian = false)
 	{
 		if(size == 0)
 			return;
@@ -993,7 +992,7 @@ namespace
 	}
 
 	void create_region(std::list<core_vma_info>& inf, const std::string& name, uint64_t base,
-		SNES::MappedRAM& memory, bool readonly, bool native_endian = false) throw(std::bad_alloc)
+		SNES::MappedRAM& memory, bool readonly, bool native_endian = false)
 	{
 		create_region(inf, name, base, memory.data(), memory.size(), readonly, native_endian);
 	}
@@ -1177,7 +1176,7 @@ namespace
 				return std::make_pair(64081, 2);
 			return std::make_pair(SNES::system.apu_frequency(), static_cast<uint32_t>(768));
 		}
-		std::map<std::string, std::vector<char>> c_save_sram() throw(std::bad_alloc) {
+		std::map<std::string, std::vector<char>> c_save_sram() {
 			std::map<std::string, std::vector<char>> out;
 			if(!internal_rom)
 				return out;
@@ -1191,7 +1190,7 @@ namespace
 			}
 			return out;
 		}
-		void c_load_sram(std::map<std::string, std::vector<char>>& sram) throw(std::bad_alloc) {
+		void c_load_sram(std::map<std::string, std::vector<char>>& sram) {
 			std::set<std::string> used;
 			if(!internal_rom) {
 				for(auto i : sram)
@@ -1902,7 +1901,7 @@ again2:
 
 	command::fnptr<command::arg_filename> dump_core(lsnes_cmds, "dump-core", "No description available",
 		"No description available\n",
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			std::vector<char> out;
 			bsnes_core.serialize(out);
 			std::ofstream x(args, std::ios_base::out | std::ios_base::binary);
@@ -2087,7 +2086,7 @@ again2:
 
 	command::fnptr<const std::string&> start_trace(lsnes_cmds, "set-trace", "No description available",
 		"No description available\n",
-		[](const std::string& r) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& r) {
 			CORE().command->invoke("tracelog cpu " + r);
 		});
 

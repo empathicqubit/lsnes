@@ -17,7 +17,7 @@ namespace hex
  * Returns: Hex string.
  * Throws std::bad_alloc: Not enough memory.
  */
-std::string b_to(const uint8_t* data, size_t datalen, bool uppercase = false) throw(std::bad_alloc);
+std::string b_to(const uint8_t* data, size_t datalen, bool uppercase = false);
 
 /**
  * Transform unsigned integer into full-width hexadecimal.
@@ -27,7 +27,7 @@ std::string b_to(const uint8_t* data, size_t datalen, bool uppercase = false) th
  * Returns: The hex string.
  * Throws std::bad_alloc: Not enough memory.
  */
-template<typename T> std::string to(T data, bool prefix = false) throw(std::bad_alloc);
+template<typename T> std::string to(T data, bool prefix = false);
 
 /**
  * Transform uint8 into full-width hexadecimal.
@@ -37,7 +37,7 @@ template<typename T> std::string to(T data, bool prefix = false) throw(std::bad_
  * Returns: The hex string.
  * Throws std::bad_alloc: Not enough memory.
  */
-inline std::string to8(uint8_t data, bool prefix = false) throw(std::bad_alloc) { return to<uint8_t>(data, prefix); }
+inline std::string to8(uint8_t data, bool prefix = false) { return to<uint8_t>(data, prefix); }
 
 /**
  * Transform uint16 into full-width hexadecimal.
@@ -47,7 +47,7 @@ inline std::string to8(uint8_t data, bool prefix = false) throw(std::bad_alloc) 
  * Returns: The hex string.
  * Throws std::bad_alloc: Not enough memory.
  */
-inline std::string to16(uint16_t data, bool prefix = false) throw(std::bad_alloc)
+inline std::string to16(uint16_t data, bool prefix = false)
 {
 	return to<uint16_t>(data, prefix);
 }
@@ -60,7 +60,7 @@ inline std::string to16(uint16_t data, bool prefix = false) throw(std::bad_alloc
  * Returns: The hex string.
  * Throws std::bad_alloc: Not enough memory.
  */
-std::string to24(uint32_t data, bool prefix = false) throw(std::bad_alloc);
+std::string to24(uint32_t data, bool prefix = false);
 
 /**
  * Transform uint32 into full-width hexadecimal.
@@ -70,7 +70,7 @@ std::string to24(uint32_t data, bool prefix = false) throw(std::bad_alloc);
  * Returns: The hex string.
  * Throws std::bad_alloc: Not enough memory.
  */
-inline std::string to32(uint32_t data, bool prefix = false) throw(std::bad_alloc)
+inline std::string to32(uint32_t data, bool prefix = false)
 {
 	return to<uint32_t>(data, prefix);
 }
@@ -83,7 +83,7 @@ inline std::string to32(uint32_t data, bool prefix = false) throw(std::bad_alloc
  * Returns: The hex string.
  * Throws std::bad_alloc: Not enough memory.
  */
-inline std::string to64(uint64_t data, bool prefix = false) throw(std::bad_alloc)
+inline std::string to64(uint64_t data, bool prefix = false)
 {
 	return to<uint64_t>(data, prefix);
 }
@@ -95,7 +95,7 @@ inline std::string to64(uint64_t data, bool prefix = false) throw(std::bad_alloc
  * Parameter hex: The hexadecimal string.
  * Throws std::runtime_error: Bad hexadecimal character in string.
  */
-void b_from(uint8_t* buf, const std::string& hex) throw(std::runtime_error);
+void b_from(uint8_t* buf, const std::string& hex);
 
 /**
  * Transform hexadecimal into unsigned integer.
@@ -103,7 +103,7 @@ void b_from(uint8_t* buf, const std::string& hex) throw(std::runtime_error);
  * Parameter hex: The hexadecimal string.
  * Throws std::runtime_error: Bad hexadecimal character in string.
  */
-template<typename T> T from(const std::string& hex) throw(std::runtime_error);
+template<typename T> T from(const std::string& hex);
 }
 
 #endif

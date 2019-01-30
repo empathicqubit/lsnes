@@ -25,7 +25,7 @@ namespace
 		{
 		}
 
-		void invoke(const std::string& filename) throw(std::bad_alloc, std::runtime_error)
+		void invoke(const std::string& filename)
 		{
 			if(filename == "") {
 				(*output) << "Syntax: run-script <scriptfile>" << std::endl;
@@ -45,12 +45,12 @@ namespace
 			}
 		}
 
-		std::string get_short_help() throw(std::bad_alloc)
+		std::string get_short_help()
 		{
 			return "Run file as a script";
 		}
 
-		std::string get_long_help() throw(std::bad_alloc)
+		std::string get_long_help()
 		{
 			return "Syntax: run-script <file>\nRuns file <file> just as it would have been entered in "
 				"the command line\n";
@@ -93,7 +93,7 @@ set::listener::~listener()
 {
 }
 
-void factory_base::_factory_base(set& _set, const std::string& cmd) throw(std::bad_alloc)
+void factory_base::_factory_base(set& _set, const std::string& cmd)
 {
 	threads::arlock h(get_cmd_lock());
 	in_set = &_set;
@@ -113,7 +113,7 @@ void factory_base::set_died() throw()
 	in_set = NULL;
 }
 
-base::base(group& group, const std::string& cmd, bool dynamic) throw(std::bad_alloc)
+base::base(group& group, const std::string& cmd, bool dynamic)
 {
 	in_group = &group;
 	is_dynamic = dynamic;
@@ -136,17 +136,17 @@ void base::group_died() throw()
 	if(is_dynamic) delete this;
 }
 
-std::string base::get_short_help() throw(std::bad_alloc)
+std::string base::get_short_help()
 {
 	return "No description available";
 }
 
-std::string base::get_long_help() throw(std::bad_alloc)
+std::string base::get_long_help()
 {
 	return "No help available on command " + commandname;
 }
 
-set::set() throw(std::bad_alloc)
+set::set()
 {
 }
 
@@ -169,7 +169,7 @@ set::~set() throw()
 	set_internal_t::clear(this);
 }
 
-void set::do_register(const std::string& name, factory_base& cmd) throw(std::bad_alloc)
+void set::do_register(const std::string& name, factory_base& cmd)
 {
 	threads::arlock h(get_cmd_lock());
 	auto& state = set_internal_t::get(this);
@@ -183,7 +183,7 @@ void set::do_register(const std::string& name, factory_base& cmd) throw(std::bad
 		i->create(*this, name, cmd);
 }
 
-void set::do_unregister(const std::string& name, factory_base& cmd) throw(std::bad_alloc)
+void set::do_unregister(const std::string& name, factory_base& cmd)
 {
 	threads::arlock h(get_cmd_lock());
 	auto state = set_internal_t::get_soft(this);
@@ -196,7 +196,6 @@ void set::do_unregister(const std::string& name, factory_base& cmd) throw(std::b
 }
 
 void set::add_callback(set::listener& listener)
-	throw(std::bad_alloc)
 {
 	threads::arlock h(get_cmd_lock());
 	auto& state = set_internal_t::get(this);
@@ -219,7 +218,7 @@ void set::drop_callback(set::listener& listener) throw()
 	}
 }
 
-group::group() throw(std::bad_alloc)
+group::group()
 	: _listener(*this)
 {
 	oom_panic_routine = default_oom_panic;
@@ -352,7 +351,7 @@ void group::invoke(const std::string& cmd, const std::string& args) throw()
 	}
 }
 
-std::set<std::string> group::get_aliases() throw(std::bad_alloc)
+std::set<std::string> group::get_aliases()
 {
 	threads::arlock lock(get_cmd_lock());
 	std::set<std::string> r;
@@ -361,7 +360,7 @@ std::set<std::string> group::get_aliases() throw(std::bad_alloc)
 	return r;
 }
 
-std::string group::get_alias_for(const std::string& aname) throw(std::bad_alloc)
+std::string group::get_alias_for(const std::string& aname)
 {
 	threads::arlock lock(get_cmd_lock());
 	if(!valid_alias_name(aname))
@@ -375,7 +374,7 @@ std::string group::get_alias_for(const std::string& aname) throw(std::bad_alloc)
 		return "";
 }
 
-void group::set_alias_for(const std::string& aname, const std::string& avalue) throw(std::bad_alloc)
+void group::set_alias_for(const std::string& aname, const std::string& avalue)
 {
 	threads::arlock lock(get_cmd_lock());
 	if(!valid_alias_name(aname))
@@ -395,7 +394,7 @@ void group::set_alias_for(const std::string& aname, const std::string& avalue) t
 		aliases[aname] = newlist;
 }
 
-bool group::valid_alias_name(const std::string& aliasname) throw(std::bad_alloc)
+bool group::valid_alias_name(const std::string& aliasname)
 {
 	if(aliasname.length() == 0 || aliasname[0] == '?' || aliasname[0] == '*')
 		return false;
@@ -404,7 +403,7 @@ bool group::valid_alias_name(const std::string& aliasname) throw(std::bad_alloc)
 	return true;
 }
 
-void group::do_register(const std::string& name, base& cmd) throw(std::bad_alloc)
+void group::do_register(const std::string& name, base& cmd)
 {
 	threads::arlock h(get_cmd_lock());
 	auto& state = group_internal_t::get(this);
@@ -413,7 +412,7 @@ void group::do_register(const std::string& name, base& cmd) throw(std::bad_alloc
 	state.commands[name] = &cmd;
 }
 
-void group::do_unregister(const std::string& name, base& cmd) throw(std::bad_alloc)
+void group::do_unregister(const std::string& name, base& cmd)
 {
 	threads::arlock h(get_cmd_lock());
 	auto state = group_internal_t::get_soft(this);
@@ -435,7 +434,7 @@ void group::set_oom_panic(void (*fn)())
 		oom_panic_routine = default_oom_panic;
 }
 
-void group::add_set(set& s) throw(std::bad_alloc)
+void group::add_set(set& s)
 {
 	threads::arlock h(get_cmd_lock());
 	auto& state = group_internal_t::get(this);

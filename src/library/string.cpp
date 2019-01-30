@@ -91,8 +91,7 @@ std::pair<size_t, size_t> regex_results::match(size_t i) const
 	return matches[i];
 }
 
-regex_results regex(const std::string& regexp, const std::string& str, const char* ex) throw(std::bad_alloc,
-	std::runtime_error)
+regex_results regex(const std::string& regexp, const std::string& str, const char* ex)
 {
 	static threads::lock m;
 	threads::alock h(m);
@@ -128,7 +127,6 @@ regex_results regex(const std::string& regexp, const std::string& str, const cha
 }
 
 bool regex_match(const std::string& regexp, const std::string& str, enum regex_match_mode mode)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	static threads::lock m;
 	static std::map<std::string, map_pointer<regex_ns::regex>> regexps;
@@ -366,7 +364,6 @@ template<typename T> void token_iterator<T>::ctor_eos()
 }
 
 template<typename T> void token_iterator<T>::ctor_itr(std::initializer_list<const T*> sep, bool whole_sequence)
-	throw(std::bad_alloc)
 {
 	whole_seq = whole_sequence;
 	is_end_iterator = false;
@@ -398,14 +395,14 @@ template<typename T> const std::basic_string<T>& token_iterator<T>::dereference(
 	return tmp;
 }
 
-template<typename T> token_iterator<T> token_iterator<T>::postincrement() throw(std::bad_alloc)
+template<typename T> token_iterator<T> token_iterator<T>::postincrement()
 {
 	token_iterator<T> t = *this;
 	++*this;
 	return t;
 }
 
-template<typename T> token_iterator<T>& token_iterator<T>::preincrement() throw(std::bad_alloc)
+template<typename T> token_iterator<T>& token_iterator<T>::preincrement()
 {
 	bidx = eidx + is_sep(eidx);
 	load_helper();

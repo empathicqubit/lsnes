@@ -46,7 +46,7 @@ public:
 /**
  * Create a new set.
  */
-	set() throw(std::bad_alloc);
+	set();
 /**
  * Destroy a set.
  */
@@ -54,17 +54,17 @@ public:
 /**
  * Add a command to set.
  */
-	void do_register(const std::string& name, factory_base& cmd) throw(std::bad_alloc);
+	void do_register(const std::string& name, factory_base& cmd);
 /**
  * Remove a command from set.
  */
-	void do_unregister(const std::string& name, factory_base& cmd) throw(std::bad_alloc);
+	void do_unregister(const std::string& name, factory_base& cmd);
 /**
  * Add a notification callback and call ccb on all.
  *
  * Parameter listener: The listener to add.
  */
-	void add_callback(listener& listener) throw(std::bad_alloc);
+	void add_callback(listener& listener);
 /**
  * Drop a notification callback and call dcb on all.
  *
@@ -84,7 +84,7 @@ public:
 /**
  * Create a new command group. This also places some builtin commands in that new group.
  */
-	group() throw(std::bad_alloc);
+	group();
 /**
  * Destroy a group.
  */
@@ -105,31 +105,31 @@ public:
 /**
  * Get set of aliases.
  */
-	std::set<std::string> get_aliases() throw(std::bad_alloc);
+	std::set<std::string> get_aliases();
 /**
  * Get alias
  */
-	std::string get_alias_for(const std::string& aname) throw(std::bad_alloc);
+	std::string get_alias_for(const std::string& aname);
 /**
  * Set alias
  */
-	void set_alias_for(const std::string& aname, const std::string& avalue) throw(std::bad_alloc);
+	void set_alias_for(const std::string& aname, const std::string& avalue);
 /**
  * Is alias name valid.
  */
-	bool valid_alias_name(const std::string& aname) throw(std::bad_alloc);
+	bool valid_alias_name(const std::string& aname);
 /**
  * Register a command.
  */
-	void do_register(const std::string& name, base& cmd) throw(std::bad_alloc);
+	void do_register(const std::string& name, base& cmd);
 /**
  * Unregister a command.
  */
-	void do_unregister(const std::string& name, base& cmd) throw(std::bad_alloc);
+	void do_unregister(const std::string& name, base& cmd);
 /**
  * Add all commands (including future ones) in given set.
  */
-	void add_set(set& s) throw(std::bad_alloc);
+	void add_set(set& s);
 /**
  * Drop a set of commands.
  */
@@ -175,7 +175,7 @@ public:
  * parameter dynamic: Should the object be freed when its parent group dies?
  * throws std::bad_alloc: Not enough memory.
  */
-	base(group& group, const std::string& cmd, bool dynamic) throw(std::bad_alloc);
+	base(group& group, const std::string& cmd, bool dynamic);
 
 /**
  * Deregister a command.
@@ -189,16 +189,16 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Command execution failed.
  */
-	virtual void invoke(const std::string& arguments) throw(std::bad_alloc, std::runtime_error) = 0;
+	virtual void invoke(const std::string& arguments) = 0;
 /**
  * Get short help for command.
  */
-	virtual std::string get_short_help() throw(std::bad_alloc);
+	virtual std::string get_short_help();
 
 /**
  * Get long help for command.
  */
-	virtual std::string get_long_help() throw(std::bad_alloc);
+	virtual std::string get_long_help();
 /**
  * Get name of command.
  */
@@ -231,7 +231,7 @@ public:
  * parameter cmd: The command to register.
  * throws std::bad_alloc: Not enough memory.
  */
-	void _factory_base(set& _set, const std::string& cmd) throw(std::bad_alloc);
+	void _factory_base(set& _set, const std::string& cmd);
 /**
  * Destructor.
  */
@@ -316,7 +316,7 @@ public:
  * parameter dynamic: Should the object be freed when its parent group dies?
  */
 	_fnptr(group& group, const std::string& name, const std::string& _description,
-		const std::string& _help, void (*_fn)(args... arguments), bool dynamic = false) throw(std::bad_alloc)
+		const std::string& _help, void (*_fn)(args... arguments), bool dynamic = false)
 		: base(group, name, dynamic)
 	{
 		shorthelp = _description;
@@ -331,7 +331,7 @@ public:
  * parameter fn: Function to call on command.
  * parameter description Description&Help for the command
  */
-	_fnptr(group& _group, stub _name, std::function<void(args... arguments)> _fn) throw(std::bad_alloc)
+	_fnptr(group& _group, stub _name, std::function<void(args... arguments)> _fn)
 		: base(_group, _name.name, false)
 	{
 		shorthelp = _name.desc;
@@ -349,7 +349,7 @@ public:
  *
  * parameter a: Arguments to function.
  */
-	void invoke(const std::string& a) throw(std::bad_alloc, std::runtime_error)
+	void invoke(const std::string& a)
 	{
 		invoke_fn(fn, a);
 	}
@@ -359,7 +359,7 @@ public:
  * returns: Description.
  * throw std::bad_alloc: Not enough memory.
  */
-	std::string get_short_help() throw(std::bad_alloc)
+	std::string get_short_help()
 	{
 		return shorthelp;
 	}
@@ -369,7 +369,7 @@ public:
  * returns: help.
  * throw std::bad_alloc: Not enough memory.
  */
-	std::string get_long_help() throw(std::bad_alloc)
+	std::string get_long_help()
 	{
 		return help;
 	}
@@ -393,7 +393,7 @@ public:
  * parameter desc: Command descriptor.
  * parameter fn: Function to call on command.
  */
-	fnptr(set& _set, stub _name, void (*_fn)(args... arguments)) throw(std::bad_alloc)
+	fnptr(set& _set, stub _name, void (*_fn)(args... arguments))
 	{
 		shorthelp = _name.desc;
 		name = _name.name;
@@ -411,7 +411,7 @@ public:
  * parameter fn: Function to call on command.
  */
 	fnptr(set& _set, const std::string& _name, const std::string& _description,
-		const std::string& _help, void (*_fn)(args... arguments)) throw(std::bad_alloc)
+		const std::string& _help, void (*_fn)(args... arguments))
 	{
 		shorthelp = _description;
 		name = _name;
@@ -428,7 +428,7 @@ public:
 /**
  * Make a command.
  */
-	base* make(group& grp) throw(std::bad_alloc)
+	base* make(group& grp)
 	{
 		return new _fnptr<args...>(grp, name, shorthelp, help, fn, true);
 	}
@@ -463,7 +463,7 @@ public:
 /**
  * Make a command.
  */
-	base* make(group& grp) throw(std::bad_alloc)
+	base* make(group& grp)
 	{
 		return new T(grp, name);
 	}

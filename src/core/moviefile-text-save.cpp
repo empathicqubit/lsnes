@@ -47,7 +47,7 @@ namespace
 		}
 	}
 
-	void write_rrdata(zip::writer& w, rrdata_set& rrd) throw(std::bad_alloc, std::runtime_error)
+	void write_rrdata(zip::writer& w, rrdata_set& rrd)
 	{
 		uint64_t count;
 		std::vector<char> out;
@@ -66,7 +66,6 @@ namespace
 	}
 
 	void write_authors_file(zip::writer& w, std::vector<std::pair<std::string, std::string>>& authors)
-		throw(std::bad_alloc, std::runtime_error)
 	{
 		std::ostream& m = w.create_file("authors");
 		try {
@@ -85,7 +84,6 @@ namespace
 	}
 
 	void write_input(zip::writer& w, const std::string& mname, portctrl::frame_vector& input)
-		throw(std::bad_alloc, std::runtime_error)
 	{
 		std::ostream& m = w.create_file(mname);
 		try {
@@ -139,7 +137,7 @@ namespace
 	}
 }
 
-void moviefile::save(zip::writer& w, rrdata_set& rrd, bool as_state) throw(std::bad_alloc, std::runtime_error)
+void moviefile::save(zip::writer& w, rrdata_set& rrd, bool as_state)
 {
 	w.write_linefile("gametype", gametype->get_name());
 	moviefile_write_settings<zip::writer>(w, settings, gametype->get_type().get_settings(), [](zip::writer& w,

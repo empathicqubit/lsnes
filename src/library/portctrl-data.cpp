@@ -78,7 +78,7 @@ type& get_default_system_port_type()
 	return x;
 }
 
-type::type(const std::string& iname, const std::string& _hname, size_t ssize) throw(std::bad_alloc)
+type::type(const std::string& iname, const std::string& _hname, size_t ssize)
 	: hname(_hname), storage_size(ssize), name(iname)
 {
 }
@@ -138,7 +138,6 @@ type_set::type_set() throw()
 }
 
 type_set& type_set::make(std::vector<class type*> types, struct index_map control_map)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	for(auto i : bindings())
 		if(i.matches(types))
@@ -315,21 +314,21 @@ void frame::display(unsigned port, unsigned controller_n, char32_t* buf) throw()
 	*buf = '\0';
 }
 
-counters::counters() throw(std::bad_alloc)
+counters::counters()
 {
 	types = &dummytypes();
 	ctrs = new uint32_t[types->indices()];
 	clear();
 }
 
-counters::counters(const type_set& p) throw(std::bad_alloc)
+counters::counters(const type_set& p)
 {
 	types = &p;
 	ctrs = new uint32_t[types->indices()];
 	clear();
 }
 
-counters::counters(const counters& p) throw(std::bad_alloc)
+counters::counters(const counters& p)
 {
 	ctrs = new uint32_t[p.types->indices()];
 	types = p.types;
@@ -337,7 +336,7 @@ counters::counters(const counters& p) throw(std::bad_alloc)
 	framepflag = p.framepflag;
 }
 
-counters& counters::operator=(const counters& p) throw(std::bad_alloc)
+counters& counters::operator=(const counters& p)
 {
 	if(this == &p)
 		return *this;
@@ -407,7 +406,7 @@ uint32_t counters::max_polls() throw()
 	return max;
 }
 
-void counters::save_state(std::vector<uint32_t>& mem) throw(std::bad_alloc)
+void counters::save_state(std::vector<uint32_t>& mem)
 {
 	mem.resize(types->indices());
 	//Compatiblity fun.
@@ -437,7 +436,7 @@ bool counters::get_framepflag() const throw()
 	return framepflag;
 }
 
-frame::frame(const type_set& p) throw(std::runtime_error)
+frame::frame(const type_set& p)
 {
 	memset(memory, 0, sizeof(memory));
 	backing = memory;
@@ -446,7 +445,6 @@ frame::frame(const type_set& p) throw(std::runtime_error)
 }
 
 frame::frame(unsigned char* mem, const type_set& p, frame_vector* _host)
-	throw(std::runtime_error)
 {
 	if(!mem)
 		throw std::runtime_error("NULL backing memory not allowed");
@@ -465,7 +463,7 @@ frame::frame(const frame& obj) throw()
 	host = NULL;
 }
 
-frame& frame::operator=(const frame& obj) throw(std::runtime_error)
+frame& frame::operator=(const frame& obj)
 {
 	if(backing != memory && types != obj.types)
 		throw std::runtime_error("Port types do not match");
@@ -540,7 +538,7 @@ size_t frame_vector::recount_frames() throw()
 	return ret;
 }
 
-void frame_vector::clear(const type_set& p) throw(std::runtime_error)
+void frame_vector::clear(const type_set& p)
 {
 	uint64_t old_frame_count = real_frame_count;
 	frame_size = p.size();
@@ -575,7 +573,7 @@ frame_vector::frame_vector(const type_set& p) throw()
 	clear(p);
 }
 
-void frame_vector::append(frame cframe) throw(std::bad_alloc, std::runtime_error)
+void frame_vector::append(frame cframe)
 {
 	frame check(*types);
 	if(!check.types_match(cframe))
@@ -596,7 +594,7 @@ void frame_vector::append(frame cframe) throw(std::bad_alloc, std::runtime_error
 	frames++;
 }
 
-frame_vector::frame_vector(const frame_vector& vector) throw(std::bad_alloc)
+frame_vector::frame_vector(const frame_vector& vector)
 	: tracker(memtracker::singleton(), movie_page_id, sizeof(*this))
 {
 	real_frame_count = 0;
@@ -606,7 +604,6 @@ frame_vector::frame_vector(const frame_vector& vector) throw(std::bad_alloc)
 }
 
 frame_vector& frame_vector::operator=(const frame_vector& v)
-	throw(std::bad_alloc)
 {
 	if(this == &v)
 		return *this;
@@ -631,7 +628,7 @@ frame_vector& frame_vector::operator=(const frame_vector& v)
 	return *this;
 }
 
-void frame_vector::resize(size_t newsize) throw(std::bad_alloc)
+void frame_vector::resize(size_t newsize)
 {
 	clear_cache();
 	if(newsize == 0) {
@@ -747,7 +744,7 @@ uint64_t frame_vector::binary_size() const throw()
 	return size() * get_stride();
 }
 
-void frame_vector::save_binary(binarystream::output& stream) const throw(std::runtime_error)
+void frame_vector::save_binary(binarystream::output& stream) const
 {
 	uint64_t stride = get_stride();
 	uint64_t pageframes = get_frames_per_page();
@@ -762,7 +759,7 @@ void frame_vector::save_binary(binarystream::output& stream) const throw(std::ru
 	}
 }
 
-void frame_vector::load_binary(binarystream::input& stream) throw(std::bad_alloc, std::runtime_error)
+void frame_vector::load_binary(binarystream::input& stream)
 {
 	uint64_t stride = get_stride();
 	uint64_t pageframes = get_frames_per_page();

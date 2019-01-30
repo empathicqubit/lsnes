@@ -680,7 +680,7 @@ ser_nothing:
 	return DESERIALIZE_SPECIAL_BLANK;
 }
 
-type_generic::type_generic(const JSON::node& root, const std::string& ptr) throw(std::exception)
+type_generic::type_generic(const JSON::node& root, const std::string& ptr)
 	: type(port_iname(root, ptr), port_hname(root, ptr), port_size(root, ptr))
 {
 	controller_info = pcs_parse_set(root, ptr);

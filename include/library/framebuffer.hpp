@@ -100,13 +100,13 @@ struct raw
  *
  * Parameter info: The framebuffer info.
  */
-	raw(const info& finfo) throw(std::bad_alloc);
+	raw(const info& finfo);
 /**
  * Create a new framebuffer backed by memory buffer.
  *
  * The resulting framebuffer can be written to.
  */
-	raw() throw(std::bad_alloc);
+	raw();
 /**
  * Copy a framebuffer.
  *
@@ -114,34 +114,34 @@ struct raw
  *
  * Parameter f: The framebuffer.
  */
-	raw(const raw& f) throw(std::bad_alloc);
+	raw(const raw& f);
 /**
  * Assign a framebuffer.
  *
  * Parameter f: The framebuffer.
  * Throws std::runtime_error: The target framebuffer is not writable.
  */
-	raw& operator=(const raw& f) throw(std::bad_alloc, std::runtime_error);
+	raw& operator=(const raw& f);
 /**
  * Load contents of framebuffer.
  *
  * parameter data: The data to load.
  * throws std::runtime_error: The target framebuffer is not writable.
  */
-	void load(const std::vector<char>& data) throw(std::bad_alloc, std::runtime_error);
+	void load(const std::vector<char>& data);
 /**
  * Save contents of framebuffer.
  *
  * parameter data: The vector to write the data to (in format compatible with load()).
  */
-	void save(std::vector<char>& data) throw(std::bad_alloc);
+	void save(std::vector<char>& data);
 /**
  * Save contents of framebuffer as a PNG.
  *
  * parameter file: The filename to save to.
  * throws std::runtime_error: Can't save the PNG.
  */
-	void save_png(const std::string& file) throw(std::bad_alloc, std::runtime_error);
+	void save_png(const std::string& file);
 /**
  * Get width.
  *
@@ -226,7 +226,7 @@ struct fb
  * parameter upside_down: If true, image is upside down in memory.
  * throws std::bad_alloc: Not enough memory.
  */
-	void reallocate(size_t _width, size_t _height, bool upside_down = false) throw(std::bad_alloc);
+	void reallocate(size_t _width, size_t _height, bool upside_down = false);
 
 /**
  * Set origin
@@ -278,7 +278,7 @@ struct fb
  * parameter g Shift for green component
  * parameter b Shift for blue component
  */
-	void set_palette(uint32_t r, uint32_t g, uint32_t b) throw(std::bad_alloc);
+	void set_palette(uint32_t r, uint32_t g, uint32_t b);
 /**
  * Get stride of image.
  *
@@ -375,7 +375,7 @@ struct object
 /**
  * Clone the object.
  */
-	virtual void clone(struct queue& q) const throw(std::bad_alloc) = 0;
+	virtual void clone(struct queue& q) const = 0;
 };
 
 /**
@@ -422,7 +422,7 @@ struct color
 		set_palette(default_shift_r << 1, default_shift_g << 1, default_shift_b << 1, true);
 		//std::cerr << "Color " << color << " -> hi=" << hi << " lo=" << lo << " inv=" << inv << std::endl;
 	}
-	color(const std::string& color) throw(std::bad_alloc, std::runtime_error);
+	color(const std::string& color);
 	static std::string stringify(int64_t number);
 	void set_palette(unsigned rshift, unsigned gshift, unsigned bshift, bool X) throw();
 	template<bool X> void set_palette(struct fb<X>& s) throw()
@@ -518,7 +518,7 @@ struct font
 /**
  * Constructor.
  */
-	font() throw(std::bad_alloc);
+	font();
 /**
  * Load a .hex format font.
  *
@@ -526,7 +526,7 @@ struct font
  * Parameter size: The font data size in bytes.
  * Throws std::runtime_error: Bad font data.
  */
-	void load_hex(const char* data, size_t size) throw(std::bad_alloc, std::runtime_error);
+	void load_hex(const char* data, size_t size);
 /**
  * Locate glyph.
  *
@@ -548,7 +548,7 @@ struct font
  * Parameter string: The string to get layout of.
  * Returns: String layout.
  */
-	std::vector<layout> dolayout(const std::string& string) throw(std::bad_alloc);
+	std::vector<layout> dolayout(const std::string& string);
 /**
  * Get width of string.
  *
@@ -604,7 +604,7 @@ private:
 	std::map<uint32_t, glyph> glyphs;
 	size_t tabstop;
 	std::vector<uint32_t> memory;
-	void load_hex_glyph(const char* data, size_t size) throw(std::bad_alloc, std::runtime_error);
+	void load_hex_glyph(const char* data, size_t size);
 };
 
 
@@ -633,7 +633,7 @@ struct queue
 /**
  * Get memory from internal allocator.
  */
-	void* alloc(size_t block) throw(std::bad_alloc);
+	void* alloc(size_t block);
 
 /**
  * Call object constructor on internal memory.
@@ -645,7 +645,7 @@ struct queue
 /**
  * Copy objects from another render queue.
  */
-	void copy_from(queue& q) throw(std::bad_alloc);
+	void copy_from(queue& q);
 /**
  * Helper for clone.
  */
@@ -675,7 +675,7 @@ struct queue
  */
 	~queue() throw();
 private:
-	void add(struct object& obj) throw(std::bad_alloc);
+	void add(struct object& obj);
 	struct node { struct object* obj; struct node* next; bool killed; };
 	struct page {
 		char content[RENDER_PAGE_SIZE];

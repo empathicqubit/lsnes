@@ -41,7 +41,7 @@ public:
  * Parameter id: The ID of dumper.
  * Throws std::bad_alloc: Not enough memory.
  */
-	dumper_factory_base(const std::string& id) throw(std::bad_alloc);
+	dumper_factory_base(const std::string& id);
 /**
  * Unregister a dumper.
  */
@@ -58,14 +58,14 @@ public:
  * Returns: The set.
  * Throws std::bad_alloc: Not enough memory.
  */
-	static std::set<dumper_factory_base*> get_dumper_set() throw(std::bad_alloc);
+	static std::set<dumper_factory_base*> get_dumper_set();
 /**
  * List all valid submodes.
  *
  * Returns: List of all valid submodes. Empty list means this dumper has no submodes.
  * Throws std::bad_alloc: Not enough memory.
  */
-	virtual std::set<std::string> list_submodes() throw(std::bad_alloc) = 0;
+	virtual std::set<std::string> list_submodes() = 0;
 /**
  * Get mode details
  *
@@ -86,7 +86,7 @@ public:
  * Returns: The name.
  * Throws std::bad_alloc: Not enough memory.
  */
-	virtual std::string name() throw(std::bad_alloc) = 0;
+	virtual std::string name() = 0;
 /**
  * Get human-readable name for submode.
  *
@@ -94,7 +94,7 @@ public:
  * Returns: The name.
  * Throws std::bad_alloc: Not enough memory.
  */
-	virtual std::string modename(const std::string& mode) throw(std::bad_alloc) = 0;
+	virtual std::string modename(const std::string& mode) = 0;
 /**
  * Start dump.
  *
@@ -105,7 +105,7 @@ public:
  * Throws std::runtime_error: Can't start dump.
  */
 	virtual dumper_base* start(master_dumper& _mdumper, const std::string& mode, const std::string& targetname)
-		throw(std::bad_alloc, std::runtime_error) = 0;
+		= 0;
 /**
  * Is hidden?
  */
@@ -142,7 +142,7 @@ public:
 /**
  * Construct game info.
  */
-		gameinfo() throw(std::bad_alloc);
+		gameinfo();
 /**
  * Game name.
  */
@@ -167,7 +167,7 @@ public:
  * Returns: The time formated.
  * Throws std::bad_alloc: Not enough memory.
  */
-		std::string get_readable_time(unsigned digits) const throw(std::bad_alloc);
+		std::string get_readable_time(unsigned digits) const;
 /**
  * Get number of authors.
  *
@@ -181,7 +181,7 @@ public:
  * Returns: The short name.
  * Throws std::bad_alloc: Not enough memory.
  */
-		std::string get_author_short(size_t idx) const throw(std::bad_alloc);
+		std::string get_author_short(size_t idx) const;
 /**
  * Get long name of author (full name and nickname if present).
  *
@@ -189,7 +189,7 @@ public:
  * Returns: The long name.
  * Throws std::bad_alloc: Not enough memory.
  */
-		std::string get_author_long(size_t idx) const throw(std::bad_alloc);
+		std::string get_author_long(size_t idx) const;
 /**
  * Get rerecord count as a number. If rerecord count is too high, returns the maximum representatible count.
  *
@@ -224,8 +224,7 @@ public:
 /**
  * Call start on dumper.
  */
-	dumper_base* start(dumper_factory_base& factory, const std::string& mode, const std::string& targetname)
-		throw(std::bad_alloc, std::runtime_error);
+	dumper_base* start(dumper_factory_base& factory, const std::string& mode, const std::string& targetname);
 /**
  * Add dumper update notifier object.
  */

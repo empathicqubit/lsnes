@@ -31,9 +31,8 @@ public:
 	font2();
 	font2(const std::string& file);
 	font2(struct font& bfont);
-	void add(const std::u32string& key, const glyph& fglyph) throw(std::bad_alloc);
-	std::u32string best_ligature_match(const std::u32string& codepoints, size_t start) const
-		throw(std::bad_alloc);
+	void add(const std::u32string& key, const glyph& fglyph);
+	std::u32string best_ligature_match(const std::u32string& codepoints, size_t start) const;
 	const glyph& lookup_glyph(const std::u32string& key) const throw();
 	unsigned get_rowadvance() const throw() { return rowadvance; }
 	std::pair<uint32_t, uint32_t>  get_metrics(const std::u32string& str, uint32_t xalign) const;

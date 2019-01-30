@@ -6,7 +6,7 @@
 #include "int24.hpp"
 #include <iostream>
 
-memory_search::memory_search(memory_space& space) throw(std::bad_alloc)
+memory_search::memory_search(memory_space& space)
 	: mspace(space)
 {
 	candidates = 0;
@@ -455,7 +455,7 @@ uint64_t memory_search::get_candidate_count() throw()
 	return candidates;
 }
 
-std::list<uint64_t> memory_search::get_candidates() throw(std::bad_alloc)
+std::list<uint64_t> memory_search::get_candidates()
 {
 	std::list<uint64_t> out;
 	auto t = mspace.lookup_linear(0);
@@ -563,7 +563,7 @@ uint64_t memory_search::cycle_candidate_vma(uint64_t addr, bool next) throw()
 	return addr;
 }
 
-void memory_search::reset() throw(std::bad_alloc)
+void memory_search::reset()
 {
 	uint64_t linearram = mspace.get_linear_size();
 	previous_content.resize(linearram);

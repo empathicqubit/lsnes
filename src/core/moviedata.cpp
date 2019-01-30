@@ -48,13 +48,13 @@ namespace
 	}
 
 	command::fnptr<const std::string&> test4(lsnes_cmds, CMOVIEDATA::panic,
-		[](const std::string& args) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& args) {
 		auto& core = CORE();
 		if(*core.mlogic) emerg_save_movie(core.mlogic->get_mfile(), core.mlogic->get_rrdata());
 	});
 
 	command::fnptr<const std::string&> CMD_dump_coresave(lsnes_cmds, CMOVIEDATA::dumpcore,
-		[](const std::string& name) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& name) {
 			auto& core = CORE();
 			auto x = core.rom->save_core_state();
 			x.resize(x.size() - 32);
@@ -186,8 +186,7 @@ std::string translate_name_mprefix(std::string original, int& binary, int save)
 	}
 }
 
-std::pair<std::string, std::string> split_author(const std::string& author) throw(std::bad_alloc,
-	std::runtime_error)
+std::pair<std::string, std::string> split_author(const std::string& author)
 {
 	std::string _author = author;
 	std::string fullname;
@@ -215,8 +214,7 @@ std::string resolve_relative_path(const std::string& path)
 }
 
 //Save state.
-void do_save_state(const std::string& filename, int binary) throw(std::bad_alloc,
-	std::runtime_error)
+void do_save_state(const std::string& filename, int binary)
 {
 	auto& core = CORE();
 	if(!*core.mlogic || !core.mlogic->get_mfile().gametype) {
@@ -271,7 +269,7 @@ void do_save_state(const std::string& filename, int binary) throw(std::bad_alloc
 }
 
 //Save movie.
-void do_save_movie(const std::string& filename, int binary) throw(std::bad_alloc, std::runtime_error)
+void do_save_movie(const std::string& filename, int binary)
 {
 	auto& core = CORE();
 	if(!*core.mlogic || !core.mlogic->get_mfile().gametype) {
@@ -452,7 +450,7 @@ namespace
 	}
 }
 
-void do_load_rom() throw(std::bad_alloc, std::runtime_error)
+void do_load_rom()
 {
 	auto& core = CORE();
 	bool load_readwrite = !*core.mlogic || !core.mlogic->get_movie().readonly_mode();
@@ -563,7 +561,7 @@ void do_load_rom() throw(std::bad_alloc, std::runtime_error)
 	messages << "ROM reloaded." << std::endl;
 }
 
-void do_load_rewind() throw(std::bad_alloc, std::runtime_error)
+void do_load_rewind()
 {
 	auto& core = CORE();
 	if(!*core.mlogic || !core.mlogic->get_mfile().gametype)

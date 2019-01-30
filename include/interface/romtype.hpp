@@ -324,8 +324,8 @@ struct core_core
 	double get_PAR();
 	std::pair<uint32_t, uint32_t> get_audio_rate();
 	std::string get_core_identifier() const;
-	std::map<std::string, std::vector<char>> save_sram() throw(std::bad_alloc);
-	void load_sram(std::map<std::string, std::vector<char>>& sram) throw(std::bad_alloc);
+	std::map<std::string, std::vector<char>> save_sram();
+	void load_sram(std::map<std::string, std::vector<char>>& sram);
 	void serialize(std::vector<char>& out);
 	void unserialize(const char* in, size_t insize);
 	core_region& get_region();
@@ -393,13 +393,13 @@ protected:
 /**
  * Save all SRAMs.
  */
-	virtual std::map<std::string, std::vector<char>> c_save_sram() throw(std::bad_alloc) = 0;
+	virtual std::map<std::string, std::vector<char>> c_save_sram() = 0;
 /**
  * Load all SRAMs.
  *
  * Note: Must handle SRAM being missing or shorter or longer than expected.
  */
-	virtual void c_load_sram(std::map<std::string, std::vector<char>>& sram) throw(std::bad_alloc) = 0;
+	virtual void c_load_sram(std::map<std::string, std::vector<char>>& sram) = 0;
 /**
  * Serialize the system state.
  */
@@ -578,8 +578,8 @@ public:
 	std::pair<uint32_t, uint32_t> get_audio_rate() { return core->get_audio_rate(); }
 	std::string get_core_identifier() { return core->get_core_identifier(); }
 	std::string get_core_shortname() const { return core->get_core_shortname(); }
-	std::map<std::string, std::vector<char>> save_sram() throw(std::bad_alloc) { return core->save_sram(); }
-	void load_sram(std::map<std::string, std::vector<char>>& sram) throw(std::bad_alloc)
+	std::map<std::string, std::vector<char>> save_sram() { return core->save_sram(); }
+	void load_sram(std::map<std::string, std::vector<char>>& sram)
 	{
 		core->load_sram(sram);
 	}

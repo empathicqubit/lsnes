@@ -41,7 +41,7 @@ void _pixfmt_lrgb::decode(uint64_t* target, const uint8_t* src, size_t width,
 }
 
 void _pixfmt_lrgb::set_palette(auxpalette<false>& auxp, uint8_t rshift, uint8_t gshift,
-	uint8_t bshift) throw(std::bad_alloc)
+	uint8_t bshift)
 {
 	auxp.pcache.resize(0x80000);
 	for(size_t i = 0; i < 0x80000; i++) {
@@ -59,7 +59,7 @@ void _pixfmt_lrgb::set_palette(auxpalette<false>& auxp, uint8_t rshift, uint8_t 
 }
 
 void _pixfmt_lrgb::set_palette(auxpalette<true>& auxp, uint8_t rshift, uint8_t gshift,
-	uint8_t bshift) throw(std::bad_alloc)
+	uint8_t bshift)
 {
 	auxp.pcache.resize(0x80000);
 	for(size_t i = 0; i < 0x80000; i++) {

@@ -93,7 +93,7 @@ cart_mappings_refresher::cart_mappings_refresher(memory_space& _mspace, movie_lo
 {
 }
 
-void cart_mappings_refresher::operator()() throw(std::bad_alloc)
+void cart_mappings_refresher::operator()()
 {
 	std::list<memory_space::region*> cur_regions = mspace.get_regions();
 	std::list<memory_space::region*> regions;
@@ -170,13 +170,13 @@ namespace
 	class memorymanip_command : public command::base
 	{
 	public:
-		memorymanip_command(command::group& grp, const std::string& cmd) throw(std::bad_alloc)
+		memorymanip_command(command::group& grp, const std::string& cmd)
 			: command::base(grp, cmd, true)
 		{
 			_command = cmd;
 		}
 		~memorymanip_command() throw() {}
-		void invoke(const std::string& args) throw(std::bad_alloc, std::runtime_error)
+		void invoke(const std::string& args)
 		{
 			regex_results t = regex("(([^ \t]+)([ \t]+([^ \t]+)([ \t]+([^ \t].*)?)?)?)?", args);
 			if(!t) {
@@ -208,7 +208,7 @@ namespace
 			}
 			invoke2();
 		}
-		virtual void invoke2() throw(std::bad_alloc, std::runtime_error) = 0;
+		virtual void invoke2() = 0;
 		std::string firstword;
 		std::string secondword;
 		uint64_t address;
@@ -226,12 +226,12 @@ namespace
 	class read_command : public memorymanip_command
 	{
 	public:
-		read_command(command::group& grp, const std::string& cmd) throw(std::bad_alloc)
+		read_command(command::group& grp, const std::string& cmd)
 			: memorymanip_command(grp, cmd)
 		{
 		}
 		~read_command() throw() {}
-		void invoke2() throw(std::bad_alloc, std::runtime_error)
+		void invoke2()
 		{
 			if(address_bad || has_value || has_tail)
 				throw std::runtime_error("Syntax: " + _command + " <address>");
@@ -249,8 +249,8 @@ namespace
 				messages << x.str() << std::endl;
 			}
 		}
-		std::string get_short_help() throw(std::bad_alloc) { return "Read memory"; }
-		std::string get_long_help() throw(std::bad_alloc)
+		std::string get_short_help() { return "Read memory"; }
+		std::string get_long_help()
 		{
 			return "Syntax: " + _command + " <address>\n"
 				"Reads data from memory.\n";
@@ -262,12 +262,11 @@ namespace
 	{
 	public:
 		write_command(command::group& grp, const std::string& cmd)
-			throw(std::bad_alloc)
 			: memorymanip_command(grp, cmd)
 		{
 		}
 		~write_command() throw() {}
-		void invoke2() throw(std::bad_alloc, std::runtime_error)
+		void invoke2()
 		{
 			if(address_bad || value_bad || has_tail)
 				throw std::runtime_error("Syntax: " + _command + " <address> <value>");
@@ -276,8 +275,8 @@ namespace
 				throw std::runtime_error("Value to write out of range");
 			(CORE().memory->*_wfn)(address, value & high);
 		}
-		std::string get_short_help() throw(std::bad_alloc) { return "Write memory"; }
-		std::string get_long_help() throw(std::bad_alloc)
+		std::string get_short_help() { return "Write memory"; }
+		std::string get_long_help()
 		{
 			return "Syntax: " + _command + " <address> <value>\n"
 				"Writes data to memory.\n";
@@ -289,19 +288,18 @@ namespace
 	{
 	public:
 		writef_command(command::group& grp, const std::string& cmd)
-			throw(std::bad_alloc)
 			: memorymanip_command(grp, cmd)
 		{
 		}
 		~writef_command() throw() {}
-		void invoke2() throw(std::bad_alloc, std::runtime_error)
+		void invoke2()
 		{
 			if(address_bad || !has_valuef || has_tail)
 				throw std::runtime_error("Syntax: " + _command + " <address> <value>");
 			(CORE().memory->*_wfn)(address, valuef);
 		}
-		std::string get_short_help() throw(std::bad_alloc) { return "Write memory"; }
-		std::string get_long_help() throw(std::bad_alloc)
+		std::string get_short_help() { return "Write memory"; }
+		std::string get_long_help()
 		{
 			return "Syntax: " + _command + " <address> <value>\n"
 				"Writes data to memory.\n";

@@ -35,7 +35,7 @@ struct hash
  * Parameter outbits: Number of output bits.
  * Throws std::runtime_error: Variant is invalid.
  */
-	hash(variant v, uint64_t outbits) throw(std::runtime_error);
+	hash(variant v, uint64_t outbits);
 /**
  * Dtor
  */
@@ -50,7 +50,7 @@ struct hash
  *
  * Note: Data types 4 (CONFIG) and 63 (OUTPUT) are not allowed.
  */
-	void write(const uint8_t* data, size_t datalen, datatype type = T_MESSAGE) throw(std::runtime_error);
+	void write(const uint8_t* data, size_t datalen, datatype type = T_MESSAGE);
 /**
  * Read the output hash.
  *
@@ -106,7 +106,7 @@ public:
  * Parameter size: Number of random bytes to write.
  * Throws std::runtime_error: Generator is not seeded.
  */
-	void read(void* buffer, size_t size) throw(std::runtime_error);
+	void read(void* buffer, size_t size);
 /**
  * Is seeded?
  */

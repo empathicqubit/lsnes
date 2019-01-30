@@ -42,7 +42,7 @@ public:
  * parameter _itr: The underlying map iterator.
  * throws std::bad_alloc: Not enough memory.
  */
-		iterator_class(T _itr) throw(std::bad_alloc)
+		iterator_class(T _itr)
 			: itr(_itr)
 		{
 		}
@@ -53,7 +53,7 @@ public:
  * returns: Name of member.
  * throws std::bad_alloc: Not enough memory.
  */
-		reference operator*() throw(std::bad_alloc)
+		reference operator*()
 		{
 			return itr->first;
 		}
@@ -64,7 +64,7 @@ public:
  * returns: Name of member.
  * throws std::bad_alloc: Not enough memory.
  */
-		pointer operator->() throw(std::bad_alloc)
+		pointer operator->()
 		{
 			return &(itr->first);
 		}
@@ -97,7 +97,7 @@ public:
  * returns: The old value of iterator.
  * throws std::bad_alloc: Not enough memory.
  */
-		const iterator_class<T, V> operator++(int) throw(std::bad_alloc)
+		const iterator_class<T, V> operator++(int)
 		{
 			iterator_class<T, V> c(*this);
 			++itr;
@@ -110,7 +110,7 @@ public:
  * returns: The old value of iterator.
  * throws std::bad_alloc: Not enough memory.
  */
-		const iterator_class<T, V> operator--(int) throw(std::bad_alloc)
+		const iterator_class<T, V> operator--(int)
 		{
 			iterator_class<T, V> c(*this);
 			--itr;
@@ -160,7 +160,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Can't open the ZIP file.
  */
-	reader(const std::string& zipfile) throw(std::bad_alloc, std::runtime_error);
+	reader(const std::string& zipfile);
 
 /**
  * Destroy the ZIP reader. Opened input streams continue to be valid.
@@ -173,7 +173,7 @@ public:
  * returns: The member name
  * throws std::bad_alloc: Not enough memory.
  */
-	std::string find_first() throw(std::bad_alloc);
+	std::string find_first();
 
 /**
  * Gives the name of the next member after specified, or "" if that member is the last.
@@ -182,7 +182,7 @@ public:
  * returns: The member name
  * throws std::bad_alloc: Not enough memory.
  */
-	std::string find_next(const std::string& name) throw(std::bad_alloc);
+	std::string find_next(const std::string& name);
 
 /**
  * Starting iterator
@@ -190,7 +190,7 @@ public:
  * returns: The iterator pointing to first name.
  * throws std::bad_alloc: Not enough memory.
  */
-	iterator begin() throw(std::bad_alloc);
+	iterator begin();
 
 /**
  * Ending iterator (one past the end).
@@ -198,7 +198,7 @@ public:
  * returns: The iterator pointing to one past the last name.
  * throws std::bad_alloc: Not enough memory.
  */
-	iterator end() throw(std::bad_alloc);
+	iterator end();
 
 /**
  * Starting reverse iterator
@@ -206,14 +206,14 @@ public:
  * returns: The iterator pointing to last name and acting in reverse.
  * throws std::bad_alloc: Not enough memory.
  */
-	riterator rbegin() throw(std::bad_alloc);
+	riterator rbegin();
 
 /**
  * Ending reverse iterator (one past the start).
  * returrns: The iterator pointing to one before the first name and acting in reverse.
  * throws std::bad_alloc: Not enough memory.
  */
-	riterator rend() throw(std::bad_alloc);
+	riterator rend();
 
 /**
  * Check if member with specified name exists.
@@ -232,7 +232,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: The specified member does not exist
  */
-	std::istream& operator[](const std::string& name) throw(std::bad_alloc, std::runtime_error);
+	std::istream& operator[](const std::string& name);
 /**
  * Reads a file consisting of single line.
  *
@@ -243,8 +243,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Error reading file.
  */
-	bool read_linefile(const std::string& member, std::string& out, bool conditional = false)
-		throw(std::bad_alloc, std::runtime_error);
+	bool read_linefile(const std::string& member, std::string& out, bool conditional = false);
 /**
  * Read a raw file.
  *
@@ -253,8 +252,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Error reading file.
  */
-	void read_raw_file(const std::string& member, std::vector<char>& out) throw(std::bad_alloc,
-		std::runtime_error);
+	void read_raw_file(const std::string& member, std::vector<char>& out);
 /**
  * Reads a file consisting of single numeric constant.
  *
@@ -267,7 +265,6 @@ public:
  */
 	template<typename T>
 	bool read_numeric_file(const std::string& member, T& out, bool conditional = false)
-		throw(std::bad_alloc, std::runtime_error)
 	{
 		std::string _out;
 		if(!read_linefile(member, _out, conditional))
@@ -296,8 +293,7 @@ private:
  * throw std::bad_alloc: Not enough memory.
  * throw std::runtime_error: The file does not exist or can't be opened.
  */
-std::istream& openrel(const std::string& name, const std::string& referencing_path) throw(std::bad_alloc,
-	std::runtime_error);
+std::istream& openrel(const std::string& name, const std::string& referencing_path);
 
 /**
  * As zip::openrel, but instead of returning handle to file, reads the entiere contents of the file and returns
@@ -309,8 +305,7 @@ std::istream& openrel(const std::string& name, const std::string& referencing_pa
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: The file does not exist or can't be opened.
  */
-std::vector<char> readrel(const std::string& name, const std::string& referencing_path)
-	throw(std::bad_alloc, std::runtime_error);
+std::vector<char> readrel(const std::string& name, const std::string& referencing_path);
 
 /**
  * Resolves the final file path that zip::openrel/zip::readrel would open.
@@ -321,8 +316,7 @@ std::vector<char> readrel(const std::string& name, const std::string& referencin
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Bad path.
  */
-std::string resolverel(const std::string& name, const std::string& referencing_path) throw(std::bad_alloc,
-	std::runtime_error);
+std::string resolverel(const std::string& name, const std::string& referencing_path);
 
 /**
  * Does the specified file (maybe inside .zip) exist?
@@ -331,7 +325,7 @@ std::string resolverel(const std::string& name, const std::string& referencing_p
  * returns: True if file exists, false if not.
  * throws std::bad_alloc: Not enough memory.
  */
-bool file_exists(const std::string& name) throw(std::bad_alloc);
+bool file_exists(const std::string& name);
 
 /**
  * This class handles writing a ZIP archives.
@@ -348,8 +342,8 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Can't open archive or invalid argument.
  */
-	writer(const std::string& zipfile, unsigned _compression) throw(std::bad_alloc, std::runtime_error);
-	writer(std::ostream& stream, unsigned _compression) throw(std::bad_alloc, std::runtime_error);
+	writer(const std::string& zipfile, unsigned _compression);
+	writer(std::ostream& stream, unsigned _compression);
 /**
  * Destroys ZIP writer, aborting the transaction (unless commit() has been called).
  */
@@ -362,7 +356,7 @@ public:
  * throws std::logic_error: Existing file open.
  * throws std::runtime_error: Can't commit archive (OS error or member open).
  */
-	void commit() throw(std::bad_alloc, std::logic_error, std::runtime_error);
+	void commit();
 
 /**
  * Create a new member inside ZIP file. No existing member may be open.
@@ -373,8 +367,7 @@ public:
  * throws std::logic_error: Existing file open.
  * throws std::runtime_error: Illegal name.
  */
-	std::ostream& create_file(const std::string& name) throw(std::bad_alloc, std::logic_error,
-		std::runtime_error);
+	std::ostream& create_file(const std::string& name);
 
 /**
  * Closes open member and destroys stream corresponding to it.
@@ -383,7 +376,7 @@ public:
  * throws std::logic_error: No file open.
  * throws std::runtime_error: Error from operating system.
  */
-	void close_file() throw(std::bad_alloc, std::logic_error, std::runtime_error);
+	void close_file();
 /**
  * Write a file consisting of single line. No existing member may be open.
  *
@@ -393,8 +386,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Error from operating system.
  */
-	void write_linefile(const std::string& member, const std::string& value, bool conditional = false)
-		throw(std::bad_alloc, std::runtime_error);
+	void write_linefile(const std::string& member, const std::string& value, bool conditional = false);
 /**
  * Write a raw file. No existing member may be open.
  *
@@ -403,8 +395,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Error from operating system.
  */
-	void write_raw_file(const std::string& member, const std::vector<char>& content)
-		throw(std::bad_alloc, std::runtime_error);
+	void write_raw_file(const std::string& member, const std::vector<char>& content);
 /**
  * Write a file consisting of a single number. No existing member may be open.
  *
@@ -414,7 +405,7 @@ public:
  * throws std::runtime_error: Error from operating system.
  */
 	template<typename T>
-	void write_numeric_file(const std::string& member, T value) throw(std::bad_alloc, std::runtime_error)
+	void write_numeric_file(const std::string& member, T value)
 	{
 		write_linefile(member, (stringfmt() << value).str());
 	}

@@ -422,7 +422,7 @@ void hash::send_idle()
 	progresscb(0xFFFFFFFFFFFFFFFFULL, 0);
 }
 
-image::image() throw(std::bad_alloc)
+image::image()
 {
 	type = info::IT_NONE;
 	sha_256 = hashval("");
@@ -430,7 +430,7 @@ image::image() throw(std::bad_alloc)
 }
 
 image::image(hash& h, const std::string& _filename, const std::string& base,
-	const struct image::info& info) throw(std::bad_alloc, std::runtime_error)
+	const struct image::info& info)
 {
 	if(info.type == info::IT_NONE && _filename != "")
 		throw std::runtime_error("Tried to load NULL image");
@@ -492,7 +492,7 @@ image::image(hash& h, const std::string& _filename, const std::string& base,
 	throw std::runtime_error("Unknown image type");
 }
 
-void image::patch(const std::vector<char>& patch, int32_t offset) throw(std::bad_alloc, std::runtime_error)
+void image::patch(const std::vector<char>& patch, int32_t offset)
 {
 	if(type == info::IT_NONE)
 		throw std::runtime_error("Not an image");

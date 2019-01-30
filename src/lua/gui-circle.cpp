@@ -44,7 +44,7 @@ namespace
 		}
 		void operator()(struct framebuffer::fb<true>& scr) throw()  { op(scr); }
 		void operator()(struct framebuffer::fb<false>& scr) throw() { op(scr); }
-		void clone(framebuffer::queue& q) const throw(std::bad_alloc) { q.clone_helper(this); }
+		void clone(framebuffer::queue& q) const { q.clone_helper(this); }
 	private:
 		int32_t x;
 		int32_t y;

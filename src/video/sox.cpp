@@ -28,8 +28,7 @@ namespace
 	}
 }
 
-sox_dumper::sox_dumper(const std::string& filename, double samplerate, uint32_t channels) throw(std::bad_alloc,
-		std::runtime_error)
+sox_dumper::sox_dumper(const std::string& filename, double samplerate, uint32_t channels)
 {
 	sox_file.open(filename.c_str(), std::ios::out | std::ios::binary);
 	if(!sox_file)
@@ -59,7 +58,7 @@ sox_dumper::~sox_dumper() throw()
 	}
 }
 
-void sox_dumper::close() throw(std::bad_alloc, std::runtime_error)
+void sox_dumper::close()
 {
 	sox_file.seekp(8, std::ios::beg);
 	uint8_t buffer[8];

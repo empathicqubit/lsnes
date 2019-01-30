@@ -81,7 +81,7 @@ public:
 /**
  * Add a callback on new supervariable.
  */
-	void add_callback(listener& listener) throw(std::bad_alloc);
+	void add_callback(listener& listener);
 /**
  * Drop a callback on new supervariable.
  */
@@ -99,7 +99,7 @@ public:
 /**
  * Constructor.
  */
-	group() throw(std::bad_alloc);
+	group();
 /**
  * Destructor.
  */
@@ -107,7 +107,7 @@ public:
 /**
  * Get all settings.
  */
-	std::set<std::string> get_settings_set() throw(std::bad_alloc);
+	std::set<std::string> get_settings_set();
 /**
  * Get setting.
  */
@@ -115,19 +115,19 @@ public:
 /**
  * Add a listener.
  */
-	void add_listener(struct listener& _listener) throw(std::bad_alloc);
+	void add_listener(struct listener& _listener);
 /**
  * Remove a listener.
  */
-	void remove_listener(struct listener& _listener) throw(std::bad_alloc);
+	void remove_listener(struct listener& _listener);
 /**
  * Register a setting.
  */
-	void do_register(const std::string& name, base& _setting) throw(std::bad_alloc);
+	void do_register(const std::string& name, base& _setting);
 /**
  * Unregister a setting.
  */
-	void do_unregister(const std::string& name, base& _setting) throw(std::bad_alloc);
+	void do_unregister(const std::string& name, base& _setting);
 /**
  * Fire listener.
  */
@@ -135,7 +135,7 @@ public:
 /**
  * Add a set of settings.
  */
-	void add_set(set& s) throw(std::bad_alloc);
+	void add_set(set& s);
 /**
  * Remove a set of settings.
  */
@@ -189,8 +189,7 @@ public:
  *
  * Note: If setting has cached value and setting it succeeds, the cached value is cleared.
  */
-	void set(const std::string& name, const std::string& value, bool allow_invalid = false) throw(std::bad_alloc,
-		std::runtime_error);
+	void set(const std::string& name, const std::string& value, bool allow_invalid = false);
 /**
  * Get a value.
  *
@@ -198,12 +197,11 @@ public:
  * Return: Actual value of the setting.
  * Throws std::runtime_error: Setting doesn't exist.
  */
-	std::string get(const std::string& name) throw(std::bad_alloc, std::runtime_error);
+	std::string get(const std::string& name);
 /**
  * Get descriptor for.
  */
-	const description& get_description(const std::string& name) throw(std::bad_alloc,
-		std::runtime_error);
+	const description& get_description(const std::string& name);
 /**
  * Get human-readable name.
  *
@@ -211,7 +209,7 @@ public:
  * Return: Human-readable name of the setting.
  * Throws std::runtime_error: Setting doesn't exist.
  */
-	std::string get_hname(const std::string& name) throw(std::bad_alloc, std::runtime_error);
+	std::string get_hname(const std::string& name);
 private:
 	group& grp;
 	std::map<std::string, std::string> badcache;
@@ -269,7 +267,7 @@ public:
 /**
  * Constructor.
  */
-	void _superbase(set& _s, const std::string& iname) throw(std::bad_alloc);
+	void _superbase(set& _s, const std::string& iname);
 /**
  * Destructor.
  */
@@ -296,7 +294,7 @@ public:
 /**
  * Constructor.
  */
-	base(group& _group, const std::string& iname, const std::string& hname, bool dynamic) throw(std::bad_alloc);
+	base(group& _group, const std::string& iname, const std::string& hname, bool dynamic);
 /**
  * Destructor.
  */
@@ -304,11 +302,11 @@ public:
 /**
  * Set setting.
  */
-	virtual void str(const std::string& val) throw(std::runtime_error, std::bad_alloc) = 0;
+	virtual void str(const std::string& val) = 0;
 /**
  * Get setting.
  */
-	virtual std::string str() const throw(std::runtime_error, std::bad_alloc) = 0;
+	virtual std::string str() const = 0;
 /**
  * Get setting name.
  */
@@ -358,7 +356,7 @@ public:
 /**
  * Set setting.
  */
-	void str(const std::string& val) throw(std::runtime_error, std::bad_alloc)
+	void str(const std::string& val)
 	{
 		{
 			threads::arlock h(get_setting_lock());
@@ -369,7 +367,7 @@ public:
 /**
  * Get setting.
  */
-	std::string str() const throw(std::runtime_error, std::bad_alloc)
+	std::string str() const
 	{
 		threads::arlock h(get_setting_lock());
 		return model::write(value);
@@ -377,7 +375,7 @@ public:
 /**
  * Set setting.
  */
-	void set(valtype_t _value) throw(std::runtime_error, std::bad_alloc)
+	void set(valtype_t _value)
 	{
 		{
 			threads::arlock h(get_setting_lock());
@@ -390,7 +388,7 @@ public:
 /**
  * Get setting.
  */
-	valtype_t get() const throw(std::bad_alloc)
+	valtype_t get() const
 	{
 		threads::arlock h(get_setting_lock());
 		return model::transform(value);
@@ -427,7 +425,6 @@ public:
  * Constructor.
  */
 	supervariable(set& _s, const std::string& _iname, const std::string& _hname, valtype_t _defaultvalue)
-		throw(std::bad_alloc)
 		: s(_s)
 	{
 		iname = _iname;

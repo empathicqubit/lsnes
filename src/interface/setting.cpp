@@ -1,7 +1,7 @@
 #include "interface/setting.hpp"
 #include "library/string.hpp"
 
-core_setting_value::core_setting_value(const core_setting_value_param& p) throw(std::bad_alloc)
+core_setting_value::core_setting_value(const core_setting_value_param& p)
 	: iname(p.iname), hname(p.hname), index(p.index)
 {
 }
@@ -56,7 +56,7 @@ core_setting_group::core_setting_group(std::vector<core_setting_param> _settings
 		settings.insert(std::make_pair(i.iname, core_setting(i)));
 }
 
-void core_setting_group::fill_defaults(std::map<std::string, std::string>& values) throw(std::bad_alloc)
+void core_setting_group::fill_defaults(std::map<std::string, std::string>& values)
 {
 	for(auto i : settings)
 		if(!values.count(i.first))
@@ -71,7 +71,7 @@ std::set<std::string> core_setting_group::get_setting_set()
 	return r;
 }
 
-std::vector<std::string> core_setting::hvalues() const throw(std::runtime_error)
+std::vector<std::string> core_setting::hvalues() const
 {
 	std::vector<std::string> x;
 	if(values.size() == 0)
@@ -81,7 +81,7 @@ std::vector<std::string> core_setting::hvalues() const throw(std::runtime_error)
 	return x;
 }
 
-std::string core_setting::hvalue_to_ivalue(const std::string& hvalue) const throw(std::runtime_error)
+std::string core_setting::hvalue_to_ivalue(const std::string& hvalue) const
 {
 	for(auto i : values)
 		if(i.hname == hvalue)
@@ -89,7 +89,7 @@ std::string core_setting::hvalue_to_ivalue(const std::string& hvalue) const thro
 	throw std::runtime_error("Invalid hvalue for setting");
 }
 
-signed core_setting::ivalue_to_index(const std::string& ivalue) const throw(std::runtime_error)
+signed core_setting::ivalue_to_index(const std::string& ivalue) const
 {
 	for(auto i : values)
 		if(i.iname == ivalue)

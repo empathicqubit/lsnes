@@ -120,7 +120,7 @@ namespace
 	}
 
 	command::fnptr<const std::string&> x(lsnes_cmds, CLIBAOSND::setid,
-		[](const std::string& value) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& value) {
 			driver_id = parse_value<int>(value);
 		});
 

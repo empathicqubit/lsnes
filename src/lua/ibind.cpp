@@ -29,7 +29,7 @@ public:
 		L.pushvalue(idx);
 		L.rawset(LUA_REGISTRYINDEX);
 	}
-	void invoke(const std::string& arguments) throw(std::bad_alloc, std::runtime_error)
+	void invoke(const std::string& arguments)
 	{
 		L.pushlightuserdata(this);
 		L.rawget(LUA_REGISTRYINDEX);

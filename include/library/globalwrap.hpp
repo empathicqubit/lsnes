@@ -13,7 +13,7 @@ public:
 /**
  * Ctor, forces the object to be constructed (to avoid races).
  */
-	globalwrap() throw(std::bad_alloc)
+	globalwrap()
 	{
 		(*this)();
 	}
@@ -23,7 +23,7 @@ public:
  * returns: The wrapped object.
  * throws std::bad_alloc: Not enough memory.
  */
-	T& operator()() throw(std::bad_alloc)
+	T& operator()()
 	{
 		if(!storage) {
 			if(!state)	//State initializes to 0.

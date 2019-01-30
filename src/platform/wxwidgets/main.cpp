@@ -339,27 +339,27 @@ end:
 	}
 }
 
-wxString towxstring(const std::string& str) throw(std::bad_alloc)
+wxString towxstring(const std::string& str)
 {
 	return wxString(str.c_str(), wxConvUTF8);
 }
 
-std::string tostdstring(const wxString& str) throw(std::bad_alloc)
+std::string tostdstring(const wxString& str)
 {
 	return std::string(str.mb_str(wxConvUTF8));
 }
 
-wxString towxstring(const std::u32string& str) throw(std::bad_alloc)
+wxString towxstring(const std::u32string& str)
 {
 	return wxString(utf8::to8(str).c_str(), wxConvUTF8);
 }
 
-std::u32string tou32string(const wxString& str) throw(std::bad_alloc)
+std::u32string tou32string(const wxString& str)
 {
 	return utf8::to32(std::string(str.mb_str(wxConvUTF8)));
 }
 
-std::string pick_archive_member(wxWindow* parent, const std::string& filename) throw(std::bad_alloc)
+std::string pick_archive_member(wxWindow* parent, const std::string& filename)
 {
 	CHECK_UI_THREAD;
 	//Did we pick a .zip file?

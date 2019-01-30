@@ -100,7 +100,7 @@ inline static void _skein1024_compress(uint64_t* a, const uint64_t* b, const uin
 #endif
 }
 
-hash::hash(hash::variant v, uint64_t _outbits) throw(std::runtime_error)
+hash::hash(hash::variant v, uint64_t _outbits)
 {
 	memset(chain, 0, sizeof(chain));
 	memset(buffer, 0, sizeof(buffer));
@@ -163,7 +163,7 @@ void hash::typechange(uint8_t newtype)
 	}
 }
 
-void hash::write(const uint8_t* data, size_t datalen, hash::datatype type) throw(std::runtime_error)
+void hash::write(const uint8_t* data, size_t datalen, hash::datatype type)
 {
 	if(type < 0 || type == 4 || type > 62)
 		throw std::runtime_error("Invalid data type to write");
@@ -260,7 +260,7 @@ void prng::write(const void* buffer, size_t size) throw()
 		_is_seeded = true;
 }
 
-void prng::read(void* buffer, size_t size) throw(std::runtime_error)
+void prng::read(void* buffer, size_t size)
 {
 	if(!_is_seeded)
 		throw std::runtime_error("PRNG is not initialized");

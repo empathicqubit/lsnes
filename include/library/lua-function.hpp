@@ -58,7 +58,7 @@ public:
 /**
  * Register function.
  */
-	function(function_group& group, const std::string& name) throw(std::bad_alloc);
+	function(function_group& group, const std::string& name);
 /**
  * Unregister function.
  */

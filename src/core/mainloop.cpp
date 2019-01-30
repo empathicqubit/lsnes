@@ -86,12 +86,12 @@ void mainloop_signal_need_rewind(void* ptr)
 	unsafe_rewind_obj = ptr;
 }
 
-bool movie_logic::notify_user_poll() throw(std::bad_alloc, std::runtime_error)
+bool movie_logic::notify_user_poll()
 {
 	return CORE().runmode->is_skiplag();
 }
 
-portctrl::frame movie_logic::update_controls(bool subframe, bool forced) throw(std::bad_alloc, std::runtime_error)
+portctrl::frame movie_logic::update_controls(bool subframe, bool forced)
 {
 	auto& core = CORE();
 	if(core.lua2->requests_subframe_paint)
@@ -324,20 +324,20 @@ namespace
 	lsnes_callbacks lsnes_callbacks_obj;
 	command::fnptr<> CMD_segfault(lsnes_cmds, "segfault", "Trigger SIGSEGV",
 		"segfault\nTrigger segmentation fault",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			char* ptr = (char*)0x1234;
 			*ptr = 0;
 		});
 
 	command::fnptr<> CMD_div0(lsnes_cmds, "divide-by-0", "Do div0", "divide-by-0\nDo divide by 0",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			static int ptr = 1;
 			static int ptr2 = 0;
 			ptr = ptr / ptr2;
 		});
 
 	command::fnptr<const std::string&> CMD_test4(lsnes_cmds, "test4", "test", "test",
-		[](const std::string& args) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& args) {
 			auto& core = CORE();
 			std::list<std::string> _args;
 			std::string args2 = args;
@@ -347,7 +347,7 @@ namespace
 		});
 	command::fnptr<> CMD_count_rerecords(lsnes_cmds, "count-rerecords", "Count rerecords",
 		"Syntax: count-rerecords\nCounts rerecords.\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			std::vector<char> tmp;
 			uint64_t x = CORE().mlogic->get_rrdata().write(tmp);
 			messages << x << " rerecord(s)" << std::endl;
@@ -355,7 +355,7 @@ namespace
 
 	command::fnptr<const std::string&> CMD_quit_emulator(lsnes_cmds, "quit-emulator", "Quit the emulator",
 		"Syntax: quit-emulator [/y]\nQuits emulator (/y => don't ask for confirmation).\n",
-		[](const std::string& args) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& args) {
 			CORE().runmode->set_quit();
 			platform::set_paused(false);
 			platform::cancel_wait();
@@ -363,7 +363,7 @@ namespace
 
 	command::fnptr<> CMD_unpause_emulator(lsnes_cmds, "unpause-emulator", "Unpause the emulator",
 		"Syntax: unpause-emulator\nUnpauses the emulator.\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			if(core.runmode->is_special())
 				return;
@@ -374,7 +374,7 @@ namespace
 
 	command::fnptr<> CMD_pause_emulator(lsnes_cmds, "pause-emulator", "(Un)pause the emulator",
 		"Syntax: pause-emulator\n(Un)pauses the emulator.\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			if(core.runmode->is_special())
 				;
@@ -390,44 +390,44 @@ namespace
 		});
 
 	command::fnptr<> CMD_load_jukebox(lsnes_cmds, CLOADSAVE::ldj,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			mark_pending_load(core.jukebox->get_slot_name(), LOAD_STATE_CURRENT);
 		});
 
 	command::fnptr<> CMD_load_jukebox_readwrite(lsnes_cmds, CLOADSAVE::ldjrw,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			mark_pending_load(core.jukebox->get_slot_name(), LOAD_STATE_RW);
 		});
 
 	command::fnptr<> CMD_load_jukebox_readonly(lsnes_cmds, CLOADSAVE::ldjro,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			mark_pending_load(core.jukebox->get_slot_name(), LOAD_STATE_RO);
 		});
 
 	command::fnptr<> CMD_load_jukebox_preserve(lsnes_cmds, CLOADSAVE::ldjp,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			mark_pending_load(core.jukebox->get_slot_name(), LOAD_STATE_PRESERVE);
 		});
 
 	command::fnptr<> CMD_load_jukebox_movie(lsnes_cmds, CLOADSAVE::ldjm,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			mark_pending_load(core.jukebox->get_slot_name(), LOAD_STATE_MOVIE);
 		});
 
 	command::fnptr<> CMD_save_jukebox_c(lsnes_cmds, CLOADSAVE::saj,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			mark_pending_save(core.jukebox->get_slot_name(), SAVE_STATE, -1);
 		});
 
 	command::fnptr<> CMD_padvance_frame(lsnes_cmds, "+advance-frame", "Advance one frame",
 		"Syntax: +advance-frame\nAdvances the emulation by one frame.\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			if(core.runmode->is_special())
 				return;
@@ -438,7 +438,7 @@ namespace
 
 	command::fnptr<> CMD_nadvance_frame(lsnes_cmds, "-advance-frame", "Advance one frame",
 		"No help available\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			CORE().runmode->set_cancel();
 			platform::cancel_wait();
 			platform::set_paused(false);
@@ -446,7 +446,7 @@ namespace
 
 	command::fnptr<> CMD_padvance_poll(lsnes_cmds, "+advance-poll", "Advance one subframe",
 		"Syntax: +advance-poll\nAdvances the emulation by one subframe.\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			if(core.runmode->is_special())
 				return;
@@ -457,7 +457,7 @@ namespace
 
 	command::fnptr<> CMD_nadvance_poll(lsnes_cmds, "-advance-poll", "Advance one subframe",
 		"No help available\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			core.runmode->decay_break();
 			core.runmode->set_cancel();
@@ -467,7 +467,7 @@ namespace
 
 	command::fnptr<> CMD_advance_skiplag(lsnes_cmds, "advance-skiplag", "Skip to next poll",
 		"Syntax: advance-skiplag\nAdvances the emulation to the next poll.\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			CORE().runmode->set_skiplag_pending();
 			platform::cancel_wait();
 			platform::set_paused(false);
@@ -475,7 +475,7 @@ namespace
 
 	command::fnptr<> CMD_reset_c(lsnes_cmds, "reset", "Reset the system",
 		"Syntax: reset\nReset\nResets the system in beginning of the next frame.\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			int sreset_action = core.rom->reset_action(false);
 			if(sreset_action < 0) {
@@ -488,7 +488,7 @@ namespace
 
 	command::fnptr<> CMD_hreset_c(lsnes_cmds, "reset-hard", "Reset the system",
 		"Syntax: reset-hard\nReset-hard\nHard resets the system in beginning of the next frame.\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			int hreset_action = core.rom->reset_action(true);
 			if(hreset_action < 0) {
@@ -500,90 +500,90 @@ namespace
 		});
 
 	command::fnptr<command::arg_filename> CMD_load_c(lsnes_cmds, CLOADSAVE::ld,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_load(args, LOAD_STATE_CURRENT);
 		});
 
 	command::fnptr<command::arg_filename> CMD_load_smart_c(lsnes_cmds, CLOADSAVE::ldsm,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_load(args, LOAD_STATE_DEFAULT);
 		});
 
 	command::fnptr<command::arg_filename> CMD_load_state_c(lsnes_cmds, CLOADSAVE::ldrw,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_load(args, LOAD_STATE_RW);
 		});
 
 	command::fnptr<command::arg_filename> CMD_load_readonly(lsnes_cmds, CLOADSAVE::ldro,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_load(args, LOAD_STATE_RO);
 		});
 
 	command::fnptr<command::arg_filename> CMD_load_preserve(lsnes_cmds, CLOADSAVE::ldp,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_load(args, LOAD_STATE_PRESERVE);
 		});
 
 	command::fnptr<command::arg_filename> CMD_load_movie_c(lsnes_cmds, CLOADSAVE::ldm,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_load(args, LOAD_STATE_MOVIE);
 		});
 
 	command::fnptr<command::arg_filename> CMD_load_allbr_c(lsnes_cmds, CLOADSAVE::ldab,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_load(args, LOAD_STATE_ALLBRANCH);
 		});
 
 	command::fnptr<command::arg_filename> CMD_save_state(lsnes_cmds, CLOADSAVE::sa,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_save(args, SAVE_STATE, -1);
 		});
 
 	command::fnptr<command::arg_filename> CMD_save_state2(lsnes_cmds, CLOADSAVE::sasb,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_save(args, SAVE_STATE, 1);
 		});
 
 	command::fnptr<command::arg_filename> CMD_save_state3(lsnes_cmds, CLOADSAVE::sasz,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_save(args, SAVE_STATE, 0);
 		});
 
 	command::fnptr<command::arg_filename> CMD_save_movie(lsnes_cmds, CLOADSAVE::sam,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_save(args, SAVE_MOVIE, -1);
 		});
 
 	command::fnptr<command::arg_filename> CMD_save_movie2(lsnes_cmds, CLOADSAVE::samb,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_save(args, SAVE_MOVIE, 1);
 		});
 
 	command::fnptr<command::arg_filename> CMD_save_movie3(lsnes_cmds, CLOADSAVE::samz,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			mark_pending_save(args, SAVE_MOVIE, 0);
 		});
 
 	command::fnptr<command::arg_filename> CMD_load_rom(lsnes_cmds, CLOADSAVE::lrom,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			romload_request req;
 			req.packfile = args;
 			load_new_rom(req);
 		});
 
 	command::fnptr<> CMD_reload_rom(lsnes_cmds, CLOADSAVE::rlrom,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			reload_current_rom();
 		});
 
 	command::fnptr<> CMD_close_rom(lsnes_cmds, CLOADSAVE::clrom,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			close_rom();
 		});
 
 	command::fnptr<> CMD_set_rwmode(lsnes_cmds, "set-rwmode", "Switch to recording mode",
 		"Syntax: set-rwmode\nSwitches to recording mode\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			core.lua2->callback_movie_lost("readwrite");
 			core.mlogic->get_movie().readonly_mode(false);
@@ -594,7 +594,7 @@ namespace
 
 	command::fnptr<> CMD_set_romode(lsnes_cmds, "set-romode", "Switch to playback mode",
 		"Syntax: set-romode\nSwitches to playback mode\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			core.mlogic->get_movie().readonly_mode(true);
 			core.dispatch->mode_change(true);
@@ -603,7 +603,7 @@ namespace
 
 	command::fnptr<> CMD_toggle_rwmode(lsnes_cmds, "toggle-rwmode", "Toggle recording mode",
 		"Syntax: toggle-rwmode\nToggles recording mode\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			bool c = core.mlogic->get_movie().readonly_mode();
 			if(c)
@@ -617,12 +617,12 @@ namespace
 
 	command::fnptr<> CMD_repaint(lsnes_cmds, "repaint", "Redraw the screen",
 		"Syntax: repaint\nRedraws the screen\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			CORE().fbuf->redraw_framebuffer();
 		});
 
 	command::fnptr<> CMD_tpon(lsnes_cmds, "toggle-pause-on-end", "Toggle pause on end", "Toggle pause on end\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			auto& core = CORE();
 			bool tmp = SET_pause_on_end(*core.settings);
 			SET_pause_on_end(*core.settings, !tmp);
@@ -630,37 +630,37 @@ namespace
 		});
 
 	command::fnptr<> CMD_spon(lsnes_cmds, "set-pause-on-end", "Set pause on end", "Set pause on end\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			SET_pause_on_end(*CORE().settings, true);
 			messages << "Pause-on-end is now ON" << std::endl;
 		});
 
 	command::fnptr<> CMD_cpon(lsnes_cmds, "clear-pause-on-end", "Clear pause on end", "Clear pause on end\n",
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			SET_pause_on_end(*CORE().settings, false);
 			messages << "Pause-on-end is now OFF" << std::endl;
 		});
 
 	command::fnptr<> CMD_rewind_movie(lsnes_cmds, CLOADSAVE::rewind,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			mark_pending_load("SOME NONBLANK NAME", LOAD_STATE_BEGINNING);
 		});
 
 	command::fnptr<> CMD_cancel_save(lsnes_cmds, CLOADSAVE::cancel,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			queued_saves.clear();
 			messages << "Pending saves canceled." << std::endl;
 		});
 
-	command::fnptr<> CMD_mhold1(lsnes_cmds, CMHOLD::p, []() throw(std::bad_alloc, std::runtime_error) {
+	command::fnptr<> CMD_mhold1(lsnes_cmds, CMHOLD::p, []() {
 		macro_hold_1 = true;
 	});
 
-	command::fnptr<> CMD_mhold2(lsnes_cmds, CMHOLD::r, []() throw(std::bad_alloc, std::runtime_error) {
+	command::fnptr<> CMD_mhold2(lsnes_cmds, CMHOLD::r, []() {
 		macro_hold_1 = false;
 	});
 
-	command::fnptr<> CMD_mhold3(lsnes_cmds, CMHOLD::t, []() throw(std::bad_alloc, std::runtime_error) {
+	command::fnptr<> CMD_mhold3(lsnes_cmds, CMHOLD::t, []() {
 		macro_hold_2 = !macro_hold_2;
 		if(macro_hold_2)
 			messages << "Macros are held for next frame." << std::endl;
@@ -837,8 +837,7 @@ void init_main_callbacks()
 	ecore_callbacks = &lsnes_callbacks_obj;
 }
 
-void main_loop(struct loaded_rom& rom, struct moviefile& initial, bool load_has_to_succeed) throw(std::bad_alloc,
-	std::runtime_error)
+void main_loop(struct loaded_rom& rom, struct moviefile& initial, bool load_has_to_succeed)
 {
 	lsnes_instance.emu_thread = threads::id();
 	auto& core = CORE();

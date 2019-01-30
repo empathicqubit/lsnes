@@ -266,7 +266,7 @@ namespace sky
 		std::pair<uint32_t, uint32_t> c_video_rate() { return std::make_pair(656250, 18227); }
 		double c_get_PAR() { return 5.0/6; }
 		std::pair<uint32_t, uint32_t> c_audio_rate() { return std::make_pair(48000, 1); }
-		std::map<std::string, std::vector<char>> c_save_sram() throw(std::bad_alloc) {
+		std::map<std::string, std::vector<char>> c_save_sram() {
 			std::map<std::string, std::vector<char>> r;
 			std::vector<char> sram;
 			sram.resize(32);
@@ -274,7 +274,7 @@ namespace sky
 			r["sram"] = sram;
 			return r;
 		}
-		void c_load_sram(std::map<std::string, std::vector<char>>& sram) throw(std::bad_alloc) {
+		void c_load_sram(std::map<std::string, std::vector<char>>& sram) {
 			if(sram.count("sram") && sram["sram"].size() == 32)
 				memcpy(corei.state.sram, &sram["sram"][0], 32);
 			else

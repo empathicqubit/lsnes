@@ -17,10 +17,8 @@ struct render_context
 	uint32_t height;
 };
 
-framebuffer::color get_fb_color(lua::state& L, int index, const std::string& fname)
-	throw(std::bad_alloc, std::runtime_error);
-framebuffer::color get_fb_color(lua::state& L, int index, const std::string& fname, int64_t dflt)
-	throw(std::bad_alloc, std::runtime_error);
+framebuffer::color get_fb_color(lua::state& L, int index, const std::string& fname);
+framebuffer::color get_fb_color(lua::state& L, int index, const std::string& fname, int64_t dflt);
 }
 
 #endif

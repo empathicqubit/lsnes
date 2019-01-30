@@ -358,7 +358,7 @@ namespace
 			}
 			return ret;
 		}
-		void c_load_sram(std::map<std::string, std::vector<char>>& sram) throw(std::bad_alloc)
+		void c_load_sram(std::map<std::string, std::vector<char>>& sram)
 		{
 			lsnes_core_load_sram s;
 			if(caps1 & LSNES_CORE_CAP1_SRAM) {
@@ -387,7 +387,7 @@ namespace
 				entrypoint(id, s);
 			}
 		}
-		std::map<std::string, std::vector<char>> c_save_sram() throw(std::bad_alloc)
+		std::map<std::string, std::vector<char>> c_save_sram()
 		{
 			lsnes_core_save_sram s;
 			std::map<std::string, std::vector<char>> ret;

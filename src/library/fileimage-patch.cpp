@@ -18,7 +18,7 @@ namespace
 }
 
 std::vector<char> patch(const std::vector<char>& original, const std::vector<char>& patch,
-	int32_t offset) throw(std::bad_alloc, std::runtime_error)
+	int32_t offset)
 {
 	std::vector<char> out;
 	for(auto i : patchers())
@@ -29,7 +29,7 @@ std::vector<char> patch(const std::vector<char>& original, const std::vector<cha
 	throw std::runtime_error("Unknown patch file format");
 }
 
-patcher::patcher() throw(std::bad_alloc)
+patcher::patcher()
 {
 	patchers().insert(this);
 }

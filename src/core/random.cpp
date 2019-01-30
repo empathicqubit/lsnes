@@ -80,7 +80,7 @@ void contribute_random_entropy(void* buf, size_t bytes)
 	prng.write(buf, sizeof(buf));
 }
 
-std::string get_random_hexstring(size_t length) throw(std::bad_alloc)
+std::string get_random_hexstring(size_t length)
 {
 	std::string out;
 	for(size_t i = 0; i < length; i += 64)
@@ -88,7 +88,7 @@ std::string get_random_hexstring(size_t length) throw(std::bad_alloc)
 	return out.substr(0, length);
 }
 
-void set_random_seed(const std::string& seed) throw(std::bad_alloc)
+void set_random_seed(const std::string& seed)
 {
 	std::vector<char> x(seed.begin(), seed.end());
 	{
@@ -97,7 +97,7 @@ void set_random_seed(const std::string& seed) throw(std::bad_alloc)
 	}
 }
 
-void set_random_seed() throw(std::bad_alloc)
+void set_random_seed()
 {
 	char buf[128];
 	crandom::generate(buf, 128);

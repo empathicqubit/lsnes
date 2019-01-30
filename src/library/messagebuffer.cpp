@@ -4,7 +4,7 @@ messagebuffer::update_handler::~update_handler() throw()
 {
 }
 
-messagebuffer::messagebuffer(size_t maxmessages, size_t windowsize) throw(std::bad_alloc, std::logic_error)
+messagebuffer::messagebuffer(size_t maxmessages, size_t windowsize)
 {
 	if(windowsize > maxmessages)
 		throw std::logic_error("Invalid window size");
@@ -22,7 +22,7 @@ messagebuffer::messagebuffer(size_t maxmessages, size_t windowsize) throw(std::b
 	next_message_number_at_freeze = 0;
 }
 
-void messagebuffer::add_message(const std::string& msg) throw(std::bad_alloc, std::runtime_error)
+void messagebuffer::add_message(const std::string& msg)
 {
 	messages_buf[next_message_number++] = msg;
 	//If too many messages, erase one.
@@ -41,7 +41,7 @@ void messagebuffer::add_message(const std::string& msg) throw(std::bad_alloc, st
 	send_notifications();
 }
 
-const std::string& messagebuffer::get_message(size_t msgnum) throw(std::bad_alloc, std::logic_error)
+const std::string& messagebuffer::get_message(size_t msgnum)
 {
 	if(!messages_buf.count(msgnum))
 		throw std::logic_error("Invalid message number");
@@ -113,7 +113,7 @@ bool messagebuffer::unfreeze_updates() throw()
 	return false;
 }
 
-void messagebuffer::scroll_beginning() throw(std::bad_alloc, std::runtime_error)
+void messagebuffer::scroll_beginning()
 {
 	if(window_start == first_present_message)
 		return;
@@ -121,7 +121,7 @@ void messagebuffer::scroll_beginning() throw(std::bad_alloc, std::runtime_error)
 	send_notifications();
 }
 
-void messagebuffer::scroll_up_page() throw(std::bad_alloc, std::runtime_error)
+void messagebuffer::scroll_up_page()
 {
 	if(window_start == first_present_message)
 		return;
@@ -132,7 +132,7 @@ void messagebuffer::scroll_up_page() throw(std::bad_alloc, std::runtime_error)
 	send_notifications();
 }
 
-void messagebuffer::scroll_up_line() throw(std::bad_alloc, std::runtime_error)
+void messagebuffer::scroll_up_line()
 {
 	if(window_start == first_present_message)
 		return;
@@ -140,7 +140,7 @@ void messagebuffer::scroll_up_line() throw(std::bad_alloc, std::runtime_error)
 	send_notifications();
 }
 
-void messagebuffer::scroll_down_line() throw(std::bad_alloc, std::runtime_error)
+void messagebuffer::scroll_down_line()
 {
 	if(window_start + window_size >= next_message_number)
 		return;
@@ -148,7 +148,7 @@ void messagebuffer::scroll_down_line() throw(std::bad_alloc, std::runtime_error)
 	send_notifications();
 }
 
-void messagebuffer::scroll_down_page() throw(std::bad_alloc, std::runtime_error)
+void messagebuffer::scroll_down_page()
 {
 	if(window_start + window_size >= next_message_number)
 		return;
@@ -158,7 +158,7 @@ void messagebuffer::scroll_down_page() throw(std::bad_alloc, std::runtime_error)
 	send_notifications();
 }
 
-void messagebuffer::scroll_end() throw(std::bad_alloc, std::runtime_error)
+void messagebuffer::scroll_end()
 {
 	if(first_present_message + window_size > next_message_number)
 		return;
@@ -166,7 +166,7 @@ void messagebuffer::scroll_end() throw(std::bad_alloc, std::runtime_error)
 	send_notifications();
 }
 
-void messagebuffer::register_handler(messagebuffer::update_handler& handler) throw(std::bad_alloc)
+void messagebuffer::register_handler(messagebuffer::update_handler& handler)
 {
 	handlers.insert(&handler);
 }
@@ -176,7 +176,7 @@ void messagebuffer::unregister_handler(messagebuffer::update_handler& handler) t
 	handlers.erase(&handler);
 }
 
-void messagebuffer::set_max_window_size(size_t windowsize) throw(std::bad_alloc, std::logic_error)
+void messagebuffer::set_max_window_size(size_t windowsize)
 {
 	if(windowsize > max_messages)
 		throw std::logic_error("Invalid window size");

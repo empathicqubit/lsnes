@@ -138,7 +138,7 @@ struct moviefile
  *
  * throws std::bad_alloc: Not enough memory.
  */
-	moviefile() throw(std::bad_alloc);
+	moviefile();
 
 /**
  * This constructor loads a movie/savestate file and fills structure accordingly.
@@ -148,7 +148,7 @@ struct moviefile
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Can't load the movie file
  */
-	moviefile(const std::string& filename, core_type& romtype) throw(std::bad_alloc, std::runtime_error);
+	moviefile(const std::string& filename, core_type& romtype);
 
 /**
  * Fill a stub movie with specified loaded ROM.
@@ -171,12 +171,11 @@ struct moviefile
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Can't save the movie file.
  */
-	void save(const std::string& filename, unsigned compression, bool binary, rrdata_set& rrd, bool as_state)
-		throw(std::bad_alloc, std::runtime_error);
+	void save(const std::string& filename, unsigned compression, bool binary, rrdata_set& rrd, bool as_state);
 /**
  * Reads this movie structure and saves it to stream (uncompressed ZIP).
  */
-	void save(std::ostream& outstream, rrdata_set& rrd, bool as_state) throw(std::bad_alloc, std::runtime_error);
+	void save(std::ostream& outstream, rrdata_set& rrd, bool as_state);
 /**
  * Force loading as corrupt.
  */
@@ -322,10 +321,10 @@ struct moviefile
 private:
 	moviefile(const moviefile&);
 	moviefile& operator=(const moviefile&);
-	void binary_io(int stream, rrdata_set& rrd, bool as_state) throw(std::bad_alloc, std::runtime_error);
-	void binary_io(int stream, struct core_type& romtype) throw(std::bad_alloc, std::runtime_error);
-	void save(zip::writer& w, rrdata_set& rrd, bool as_state) throw(std::bad_alloc, std::runtime_error);
-	void load(zip::reader& r, core_type& romtype) throw(std::bad_alloc, std::runtime_error);
+	void binary_io(int stream, rrdata_set& rrd, bool as_state);
+	void binary_io(int stream, struct core_type& romtype);
+	void save(zip::writer& w, rrdata_set& rrd, bool as_state);
+	void load(zip::reader& r, core_type& romtype);
 	memtracker::autorelease tracker;
 	std::string filename;
 };

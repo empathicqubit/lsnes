@@ -77,7 +77,7 @@ namespace
 			ctor_notify();
 		}
 		~adv_null_dumper() throw();
-		std::set<std::string> list_submodes() throw(std::bad_alloc)
+		std::set<std::string> list_submodes()
 		{
 			std::set<std::string> x;
 			return x;
@@ -90,16 +90,15 @@ namespace
 		{
 			return "";	//Nothing interesting.
 		}
-		std::string name() throw(std::bad_alloc)
+		std::string name()
 		{
 			return "NULL";
 		}
-		std::string modename(const std::string& mode) throw(std::bad_alloc)
+		std::string modename(const std::string& mode)
 		{
 			return "";
 		}
 		null_dump_obj* start(master_dumper& _mdumper, const std::string& mode, const std::string& prefix)
-			throw(std::bad_alloc, std::runtime_error)
 		{
 			return new null_dump_obj(_mdumper, *this, mode, prefix);
 		}

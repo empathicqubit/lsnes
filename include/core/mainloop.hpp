@@ -9,8 +9,7 @@
 /**
  * \brief Emulator main loop.
  */
-void main_loop(struct loaded_rom& rom, struct moviefile& settings, bool load_has_to_succeed = false)
-	throw(std::bad_alloc, std::runtime_error);
+void main_loop(struct loaded_rom& rom, struct moviefile& settings, bool load_has_to_succeed = false);
 std::vector<std::string> get_jukebox_names();
 void set_jukebox_names(const std::vector<std::string>& newj);
 void init_main_callbacks();

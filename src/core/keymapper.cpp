@@ -108,14 +108,14 @@ void cleanup_keymapper()
 namespace
 {
 	command::fnptr<> CMD_show_joysticks(lsnes_cmds, CKEYMAPPER::show,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			messages << "--------------------------------------------" << std::endl;
 			messages << lsnes_gamepads.get_summary() << std::endl;
 			messages << "--------------------------------------------" << std::endl;
 		});
 
 	command::fnptr<> reset_joysticks(lsnes_cmds, CKEYMAPPER::reset,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			joystick_driver_quit(true);
 			lsnes_gamepads.offline_all(); //Not supposed to have online gamepads when entering reset.
 			joystick_driver_init(true);

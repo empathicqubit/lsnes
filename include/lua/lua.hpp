@@ -87,8 +87,8 @@ struct lua_state
 	uint64_t timed_hook(int timer) throw();
 	const std::map<std::string, std::u32string>& get_watch_vars();
 
-	void do_eval_lua(const std::string& c) throw(std::bad_alloc);
-	void do_run_lua(const std::string& c) throw(std::bad_alloc);
+	void do_eval_lua(const std::string& c);
+	void do_run_lua(const std::string& c);
 	void run_sysrc_lua(bool rerun);
 
 	bool requests_repaint;
@@ -113,7 +113,7 @@ struct lua_state
 private:
 	void do_reset();
 	void do_evaluate(const std::string& a);
-	bool run_lua_fragment() throw(std::bad_alloc);
+	bool run_lua_fragment();
 	template<typename... T> bool run_callback(lua::state::callback_list& list, T... args);
 	void run_synchronous_paint(struct lua::render_context* ctx);
 	lua::state& L;

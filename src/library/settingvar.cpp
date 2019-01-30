@@ -38,7 +38,7 @@ set::listener::~listener()
 {
 }
 
-group::group() throw(std::bad_alloc)
+group::group()
 	: _listener(*this)
 {
 }
@@ -55,7 +55,7 @@ group::~group() throw()
 	group_internal_t::clear(this);
 }
 
-std::set<std::string> group::get_settings_set() throw(std::bad_alloc)
+std::set<std::string> group::get_settings_set()
 {
 	threads::arlock h(get_setting_lock());
 	auto state = group_internal_t::get_soft(this);
@@ -92,14 +92,14 @@ void group::fire_listener(base& var) throw()
 		}
 }
 
-void group::add_listener(struct listener& listener) throw(std::bad_alloc)
+void group::add_listener(struct listener& listener)
 {
 	threads::arlock h(get_setting_lock());
 	auto& state = group_internal_t::get(this);
 	state.listeners.insert(&listener);
 }
 
-void group::remove_listener(struct listener& listener) throw(std::bad_alloc)
+void group::remove_listener(struct listener& listener)
 {
 	threads::arlock h(get_setting_lock());
 	auto state = group_internal_t::get_soft(this);
@@ -107,7 +107,7 @@ void group::remove_listener(struct listener& listener) throw(std::bad_alloc)
 		state->listeners.erase(&listener);
 }
 
-void group::do_register(const std::string& name, base& _setting) throw(std::bad_alloc)
+void group::do_register(const std::string& name, base& _setting)
 {
 	threads::arlock h(get_setting_lock());
 	auto& state = group_internal_t::get(this);
@@ -115,7 +115,7 @@ void group::do_register(const std::string& name, base& _setting) throw(std::bad_
 	state.settings[name] = &_setting;
 }
 
-void group::do_unregister(const std::string& name, base& _setting) throw(std::bad_alloc)
+void group::do_unregister(const std::string& name, base& _setting)
 {
 	threads::arlock h(get_setting_lock());
 	auto state = group_internal_t::get_soft(this);
@@ -123,7 +123,7 @@ void group::do_unregister(const std::string& name, base& _setting) throw(std::ba
 	state->settings.erase(name);
 }
 
-void group::add_set(set& s) throw(std::bad_alloc)
+void group::add_set(set& s)
 {
 	threads::arlock u(get_setting_lock());
 	auto& state = group_internal_t::get(this);
@@ -226,7 +226,7 @@ void set::do_unregister(const std::string& name, superbase& info)
 		i->destroy(*this, name);
 }
 
-void set::add_callback(set::listener& listener) throw(std::bad_alloc)
+void set::add_callback(set::listener& listener)
 {
 	threads::arlock u(get_setting_lock());
 	auto& state = set_internal_t::get(this);
@@ -250,7 +250,6 @@ void set::drop_callback(set::listener& listener)
 }
 
 base::base(group& _group, const std::string& _iname, const std::string& _hname, bool dynamic)
-	throw(std::bad_alloc)
 	: sgroup(&_group), iname(_iname), hname(_hname), is_dynamic(dynamic)
 {
 	sgroup->do_register(iname, *this);
@@ -270,7 +269,7 @@ void base::group_died()
 	if(is_dynamic) delete this;
 }
 
-void superbase::_superbase(set& _s, const std::string& _iname) throw(std::bad_alloc)
+void superbase::_superbase(set& _s, const std::string& _iname)
 {
 	s = &_s;
 	iname = _iname;
@@ -311,7 +310,6 @@ std::set<std::string> cache::get_keys()
 }
 
 void cache::set(const std::string& name, const std::string& value, bool allow_invalid)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	try {
 		grp[name].str(value);
@@ -328,18 +326,17 @@ void cache::set(const std::string& name, const std::string& value, bool allow_in
 	}
 }
 
-std::string cache::get(const std::string& name) throw(std::bad_alloc, std::runtime_error)
+std::string cache::get(const std::string& name)
 {
 	return grp[name].str();
 }
 
-const description& cache::get_description(const std::string& name) throw(std::bad_alloc,
-	std::runtime_error)
+const description& cache::get_description(const std::string& name)
 {
 	return grp[name].get_description();
 }
 
-std::string cache::get_hname(const std::string& name) throw(std::bad_alloc, std::runtime_error)
+std::string cache::get_hname(const std::string& name)
 {
 	return grp[name].get_hname();
 }

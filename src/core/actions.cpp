@@ -8,7 +8,7 @@
 namespace
 {
 	command::fnptr<const std::string&> CMD_action(lsnes_cmds, CACTION::e,
-		[](const std::string& _args) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& _args) {
 			auto& core = CORE();
 			if(_args == "") {
 				messages << "Action name required." << std::endl;

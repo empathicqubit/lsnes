@@ -19,7 +19,7 @@ public:
  * Parameter obj: The object to get the state for.
  * Returns: The object state.
  */
-	static U& get(T* obj) throw(std::bad_alloc)
+	static U& get(T* obj)
 	{
 		return *reinterpret_cast<U*>(_get(obj, []() -> void* { return new U; }));
 	}

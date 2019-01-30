@@ -261,7 +261,7 @@ bool reader::has_member(const std::string& name) throw()
 	return (offsets.count(name) > 0);
 }
 
-std::string reader::find_first() throw(std::bad_alloc)
+std::string reader::find_first()
 {
 	if(offsets.empty())
 		return "";
@@ -269,7 +269,7 @@ std::string reader::find_first() throw(std::bad_alloc)
 		return offsets.begin()->first;
 }
 
-std::string reader::find_next(const std::string& name) throw(std::bad_alloc)
+std::string reader::find_next(const std::string& name)
 {
 	auto i = offsets.upper_bound(name);
 	if(i == offsets.end())
@@ -278,7 +278,7 @@ std::string reader::find_next(const std::string& name) throw(std::bad_alloc)
 		return i->first;
 }
 
-std::istream& reader::operator[](const std::string& name) throw(std::bad_alloc, std::runtime_error)
+std::istream& reader::operator[](const std::string& name)
 {
 	if(!offsets.count(name))
 		throw std::runtime_error("No such file '" + name + "' in zip archive");
@@ -306,22 +306,22 @@ std::istream& reader::operator[](const std::string& name) throw(std::bad_alloc, 
 		throw std::runtime_error("Unsupported ZIP feature: Unsupported compression method");
 }
 
-reader::iterator reader::begin() throw(std::bad_alloc)
+reader::iterator reader::begin()
 {
 	return iterator(offsets.begin());
 }
 
-reader::iterator reader::end() throw(std::bad_alloc)
+reader::iterator reader::end()
 {
 	return iterator(offsets.end());
 }
 
-reader::riterator reader::rbegin() throw(std::bad_alloc)
+reader::riterator reader::rbegin()
 {
 	return riterator(offsets.rbegin());
 }
 
-reader::riterator reader::rend() throw(std::bad_alloc)
+reader::riterator reader::rend()
 {
 	return riterator(offsets.rend());
 }
@@ -334,7 +334,7 @@ reader::~reader() throw()
 	}
 }
 
-reader::reader(const std::string& zipfile) throw(std::bad_alloc, std::runtime_error)
+reader::reader(const std::string& zipfile)
 {
 	if(!directory::is_regular(zipfile))
 		throw std::runtime_error("Zipfile '" + zipfile + "' is not regular file");
@@ -367,7 +367,6 @@ reader::reader(const std::string& zipfile) throw(std::bad_alloc, std::runtime_er
 }
 
 bool reader::read_linefile(const std::string& member, std::string& out, bool conditional)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	if(conditional && !has_member(member))
 		return false;
@@ -383,8 +382,7 @@ bool reader::read_linefile(const std::string& member, std::string& out, bool con
 	return true;
 }
 
-void reader::read_raw_file(const std::string& member, std::vector<char>& out) throw(std::bad_alloc,
-	std::runtime_error)
+void reader::read_raw_file(const std::string& member, std::vector<char>& out)
 {
 	std::vector<char> _out;
 	std::istream& m = (*this)[member];
@@ -399,7 +397,7 @@ void reader::read_raw_file(const std::string& member, std::vector<char>& out) th
 	out = _out;
 }
 
-writer::writer(const std::string& zipfile, unsigned _compression) throw(std::bad_alloc, std::runtime_error)
+writer::writer(const std::string& zipfile, unsigned _compression)
 {
 	compression = _compression;
 	zipfile_path = zipfile;
@@ -411,7 +409,7 @@ writer::writer(const std::string& zipfile, unsigned _compression) throw(std::bad
 	system_stream = true;
 }
 
-writer::writer(std::ostream& stream, unsigned _compression) throw(std::bad_alloc, std::runtime_error)
+writer::writer(std::ostream& stream, unsigned _compression)
 {
 	compression = _compression;
 	zipstream = &stream;
@@ -427,7 +425,7 @@ writer::~writer() throw()
 		delete zipstream;
 }
 
-void writer::commit() throw(std::bad_alloc, std::logic_error, std::runtime_error)
+void writer::commit()
 {
 	if(committed)
 		throw std::logic_error("Can't commit twice");
@@ -485,8 +483,7 @@ void writer::commit() throw(std::bad_alloc, std::logic_error, std::runtime_error
 	committed = true;
 }
 
-std::ostream& writer::create_file(const std::string& name) throw(std::bad_alloc, std::logic_error,
-	std::runtime_error)
+std::ostream& writer::create_file(const std::string& name)
 {
 	if(open_file != "")
 		throw std::logic_error("Can't open file with file open");
@@ -505,7 +502,7 @@ std::ostream& writer::create_file(const std::string& name) throw(std::bad_alloc,
 	return *s;
 }
 
-void writer::close_file() throw(std::bad_alloc, std::logic_error, std::runtime_error)
+void writer::close_file()
 {
 	if(open_file == "")
 		throw std::logic_error("Can't close file with no file open");
@@ -548,7 +545,6 @@ void writer::close_file() throw(std::bad_alloc, std::logic_error, std::runtime_e
 }
 
 void writer::write_linefile(const std::string& member, const std::string& value, bool conditional)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	if(conditional && value == "")
 		return;
@@ -562,8 +558,7 @@ void writer::write_linefile(const std::string& member, const std::string& value,
 	}
 }
 
-void writer::write_raw_file(const std::string& member, const std::vector<char>& content) throw(std::bad_alloc,
-	std::runtime_error)
+void writer::write_raw_file(const std::string& member, const std::vector<char>& content)
 {
 	std::ostream& m = create_file(member);
 	try {
@@ -677,14 +672,12 @@ namespace
 	}
 }
 
-std::string resolverel(const std::string& name, const std::string& referencing_path) throw(std::bad_alloc,
-	std::runtime_error)
+std::string resolverel(const std::string& name, const std::string& referencing_path)
 {
 	return combine_path(name, referencing_path);
 }
 
-std::istream& openrel(const std::string& name, const std::string& referencing_path) throw(std::bad_alloc,
-	std::runtime_error)
+std::istream& openrel(const std::string& name, const std::string& referencing_path)
 {
 	std::string path_to_open = combine_path(name, referencing_path);
 	std::string final_path = path_to_open;
@@ -719,8 +712,7 @@ std::istream& openrel(const std::string& name, const std::string& referencing_pa
 	}
 }
 
-std::vector<char> readrel(const std::string& name, const std::string& referencing_path) throw(std::bad_alloc,
-	std::runtime_error)
+std::vector<char> readrel(const std::string& name, const std::string& referencing_path)
 {
 	std::vector<char> out;
 	std::istream& s = openrel(name, referencing_path);
@@ -730,7 +722,7 @@ std::vector<char> readrel(const std::string& name, const std::string& referencin
 	return out;
 }
 
-bool file_exists(const std::string& name) throw(std::bad_alloc)
+bool file_exists(const std::string& name)
 {
 	std::string path_to_open = name;
 	std::string final_path = path_to_open;

@@ -226,7 +226,7 @@ namespace
 			ctor_notify();
 		}
 		~adv_pipedec_dumper() throw();
-		std::set<std::string> list_submodes() throw(std::bad_alloc)
+		std::set<std::string> list_submodes()
 		{
 			std::set<std::string> x;
 			x.insert("RGB24");
@@ -247,16 +247,15 @@ namespace
 		{
 			return "sox";
 		}
-		std::string name() throw(std::bad_alloc)
+		std::string name()
 		{
 			return "PIPEDEC";
 		}
-		std::string modename(const std::string& mode) throw(std::bad_alloc)
+		std::string modename(const std::string& mode)
 		{
 			return "!" + mode;
 		}
 		pipedec_dump_obj* start(master_dumper& _mdumper, const std::string& mode, const std::string& prefix)
-			throw(std::bad_alloc, std::runtime_error)
 		{
 			return new pipedec_dump_obj(_mdumper, *this, mode, prefix);
 		}

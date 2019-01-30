@@ -22,12 +22,12 @@ public:
  *
  * Parameter space: The memory space.
  */
-	memory_search(memory_space& space) throw(std::bad_alloc);
+	memory_search(memory_space& space);
 
 /**
  * Reset the context so all addresses are candidates again.
  */
-	void reset() throw(std::bad_alloc);
+	void reset();
 
 /**
  * This searches the memory space, leaving those addresses for which condition object returns true.
@@ -54,7 +54,7 @@ public:
 /**
  * Returns list of all candidates. This function isn't lazy, so be careful when calling with many candidates.
  */
-	std::list<uint64_t> get_candidates() throw(std::bad_alloc);
+	std::list<uint64_t> get_candidates();
 /**
  * Is specified address a candidate?
  */

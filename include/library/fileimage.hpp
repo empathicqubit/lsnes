@@ -161,7 +161,7 @@ struct image
  *
  * throws std::bad_alloc: Not enough memory.
  */
-	image() throw(std::bad_alloc);
+	image();
 
 /**
  * This constructor construct slot by reading data from file. If filename is "", constructs an empty slot.
@@ -174,7 +174,7 @@ struct image
  * throws std::runtime_error: Can't load the data.
  */
 	image(hash& hasher, const std::string& filename, const std::string& base,
-		const struct info& imginfo) throw(std::bad_alloc, std::runtime_error);
+		const struct info& imginfo);
 
 /**
  * This method patches this slot using specified IPS patch.
@@ -186,7 +186,7 @@ struct image
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Bad IPS patch, or trying to patch file image.
  */
-	void patch(const std::vector<char>& patch, int32_t offset) throw(std::bad_alloc, std::runtime_error);
+	void patch(const std::vector<char>& patch, int32_t offset);
 /**
  * Type.
  */

@@ -82,7 +82,6 @@ namespace
 	}
 
 	void read_authors_file(zip::reader& r, std::vector<std::pair<std::string, std::string>>& authors)
-		throw(std::bad_alloc, std::runtime_error)
 	{
 		std::istream& m = r["authors"];
 		try {
@@ -99,7 +98,7 @@ namespace
 		}
 	}
 
-	std::string read_rrdata(zip::reader& r, std::vector<char>& out) throw(std::bad_alloc, std::runtime_error)
+	std::string read_rrdata(zip::reader& r, std::vector<char>& out)
 	{
 		r.read_raw_file("rrdata", out);
 		uint64_t count = rrdata_set::count(out);
@@ -133,7 +132,6 @@ namespace
 	}
 
 	void read_input(zip::reader& r, const std::string& mname, portctrl::frame_vector& input)
-		throw(std::bad_alloc, std::runtime_error)
 	{
 		portctrl::frame tmp = input.blank_frame(false);
 		std::istream& m = r[mname];
@@ -221,7 +219,7 @@ void moviefile::brief_info::load(zip::reader& r)
 	}
 }
 
-void moviefile::load(zip::reader& r, core_type& romtype) throw(std::bad_alloc, std::runtime_error)
+void moviefile::load(zip::reader& r, core_type& romtype)
 {
 	std::string tmp;
 	r.read_linefile("systemid", tmp);

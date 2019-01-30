@@ -16,7 +16,7 @@ public:
 /**
  * Creates new SHA-256 context, initially containing empty data.
  */
-	sha256() throw(std::bad_alloc)
+	sha256()
 	{
 		real_init();
 		finished = false;
@@ -65,7 +65,7 @@ public:
  * Returns: Hexadecimal hash
  * Throws std::bad_alloc: Not enough memory.
  */
-	static std::string tostring(const uint8_t* hashout) throw(std::bad_alloc)
+	static std::string tostring(const uint8_t* hashout)
 	{
 		return hex::b_to(hashout, 32);
 	}
@@ -87,7 +87,7 @@ public:
  * Returns: The hash in hex form.
  * Throws std::bad_alloc: Not enough memory.
  */
-	std::string read() throw(std::bad_alloc)
+	std::string read()
 	{
 		uint8_t x[32];
 		read(x);
@@ -138,7 +138,7 @@ public:
  * Returns: Hexadecimal hash of the data.
  * Throws std::bad_alloc: Not enough memory.
  */
-	static std::string hash(const uint8_t* data, size_t datalen) throw(std::bad_alloc)
+	static std::string hash(const uint8_t* data, size_t datalen)
 	{
 		uint8_t hashout[32];
 		hash(hashout, data, datalen);
@@ -152,7 +152,7 @@ public:
  * Returns: Hexadecimal hash of the data.
  * Throws std::bad_alloc: Not enough memory.
  */
-	static std::string hash(const std::vector<uint8_t>& data) throw(std::bad_alloc)
+	static std::string hash(const std::vector<uint8_t>& data)
 	{
 		uint8_t hashout[32];
 		hash(hashout, &data[0], data.size());
@@ -166,7 +166,7 @@ public:
  * Returns: Hexadecimal hash of the data.
  * Throws std::bad_alloc: Not enough memory.
  */
-	static std::string hash(const std::vector<char>& data) throw(std::bad_alloc)
+	static std::string hash(const std::vector<char>& data)
 	{
 		uint8_t hashout[32];
 		hash(hashout, reinterpret_cast<const uint8_t*>(&data[0]), data.size());

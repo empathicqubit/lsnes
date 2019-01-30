@@ -18,7 +18,7 @@ public:
  *
  * throws std::bad_alloc: Not enough memory.
  */
-	movie() throw(std::bad_alloc);
+	movie();
 
 /**
  * Dtor.
@@ -38,7 +38,7 @@ public:
  * parameter enable: If true, switch to read-only mode, else to read-write mode.
  * throws std::bad_alloc: Not enough memory.
  */
-	void readonly_mode(bool enable) throw(std::bad_alloc);
+	void readonly_mode(bool enable);
 
 /**
  * Returns the movie rerecord count (this is not the same thing as global rerecord count).
@@ -46,7 +46,7 @@ public:
  * returns: The movie rerecord count
  * throws std::bad_alloc: Not enough memory.
  */
-	std::string rerecord_count() throw(std::bad_alloc);
+	std::string rerecord_count();
 
 /**
  * Sets the movie rerecord count (this is not the same thing as global rerecord count).
@@ -54,7 +54,7 @@ public:
  * parameter count: The new rerecord count
  * throws std::bad_alloc: Not enough memory.
  */
-	void rerecord_count(const std::string& count) throw(std::bad_alloc);
+	void rerecord_count(const std::string& count);
 
 /**
  * Read project ID
@@ -62,7 +62,7 @@ public:
  * returns: The project ID
  * throws std::bad_alloc: Not enough memory.
  */
-	std::string project_id() throw(std::bad_alloc);
+	std::string project_id();
 
 /**
  * brief Set project ID
@@ -70,7 +70,7 @@ public:
  * parameter id: New project ID.
  * throws std::bad_alloc: Not enough memory.
  */
-	void project_id(const std::string& id) throw(std::bad_alloc);
+	void project_id(const std::string& id);
 
 /**
  * Get number of frames in movie
@@ -101,7 +101,7 @@ public:
  *
  * throws std::bad_alloc: Not enough memory.
  */
-	void next_frame() throw(std::bad_alloc);
+	void next_frame();
 
 /**
  * Reads the data ready flag. On new frame, all data ready flags are unset. On reading control, its data ready
@@ -112,7 +112,7 @@ public:
  * returns: The read value.
  * throws std::logic_error: Invalid control index.
  */
-	bool get_DRDY(unsigned port, unsigned controller, unsigned index) throw(std::logic_error);
+	bool get_DRDY(unsigned port, unsigned controller, unsigned index);
 
 /**
  * Set all data ready flags
@@ -128,7 +128,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::logic_error: Invalid port, controller or index or before movie start.
  */
-	short next_input(unsigned port, unsigned controller, unsigned index) throw(std::bad_alloc, std::logic_error);
+	short next_input(unsigned port, unsigned controller, unsigned index);
 
 /**
  * Set current control values. These are read in readwrite mode.
@@ -154,8 +154,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Bad movie data.
  */
-	void load(const std::string& rerecs, const std::string& project_id, portctrl::frame_vector& input)
-		throw(std::bad_alloc, std::runtime_error);
+	void load(const std::string& rerecs, const std::string& project_id, portctrl::frame_vector& input);
 
 /**
  * This method serializes the state of movie code.
@@ -167,7 +166,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  */
 	void save_state(std::string& proj_id, uint64_t& curframe, uint64_t& lagframes,
-		std::vector<uint32_t>& pcounters) throw(std::bad_alloc);
+		std::vector<uint32_t>& pcounters);
 
 /**
  * Given previous serialized state from this movie, restore the state.
@@ -183,8 +182,7 @@ public:
  * Throws std::runtime_error: Movie check failure.
  */
 	size_t restore_state(uint64_t curframe, uint64_t lagframe, const std::vector<uint32_t>& pcounters, bool ro,
-		portctrl::frame_vector* old_movie, const std::string& old_projectid) throw(std::bad_alloc,
-		std::runtime_error);
+		portctrl::frame_vector* old_movie, const std::string& old_projectid);
 /**
  * Reset the state of movie to initial state.
  */

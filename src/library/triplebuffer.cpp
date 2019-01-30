@@ -28,7 +28,7 @@ unsigned logic::get_read() throw()
 	}
 }
 
-void logic::put_read() throw(std::logic_error)
+void logic::put_read()
 {
 	threads::alock h(lock);
 	if(!count_read) throw std::logic_error("Internal error: put_read() with 0 counter");
@@ -52,7 +52,7 @@ unsigned logic::get_write() throw()
 	}
 }
 
-void logic::put_write() throw(std::logic_error)
+void logic::put_write()
 {
 	threads::alock h(lock);
 	if(!count_write) throw std::logic_error("Internal error: put_write() with 0 counter");

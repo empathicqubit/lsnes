@@ -27,7 +27,7 @@ public:
 /**
  * Create a new instance.
  */
-	keyboard() throw(std::bad_alloc);
+	keyboard();
 /**
  * Destroy an instance.
  *
@@ -41,7 +41,7 @@ public:
  * Returns: The modifier.
  * Throws std::runtime_error: No such modifier.
  */
-	modifier& lookup_modifier(const std::string& name) throw(std::runtime_error);
+	modifier& lookup_modifier(const std::string& name);
 /**
  * Try lookup modifier by name.
  *
@@ -54,14 +54,14 @@ public:
  *
  * Returns: The set of modifiers.
  */
-	std::list<modifier*> all_modifiers() throw(std::bad_alloc);
+	std::list<modifier*> all_modifiers();
 /**
  * Register a modifier.
  *
  * Parameter name: The name of the modifier.
  * Parameter mod: The modifier.
  */
-	void do_register(const std::string& name, modifier& mod) throw(std::bad_alloc);
+	void do_register(const std::string& name, modifier& mod);
 /**
  * Unregister a modifier.
  *
@@ -75,7 +75,7 @@ public:
  * Returns: The key.
  * Throws std::runtime_error: No such key.
  */
-	key& lookup_key(const std::string& name) throw(std::runtime_error);
+	key& lookup_key(const std::string& name);
 /**
  * Try lookup key by name.
  *
@@ -88,14 +88,14 @@ public:
  *
  * Returns: The set of keys.
  */
-	std::list<key*> all_keys() throw(std::bad_alloc);
+	std::list<key*> all_keys();
 /**
  * Register a key.
  *
  * Parameter name: The name of the key.
  * Parameter mod: The key.
  */
-	void do_register(const std::string& name, key& mod) throw(std::bad_alloc);
+	void do_register(const std::string& name, key& mod);
 /**
  * Unregister a key.
  *
@@ -132,7 +132,7 @@ public:
  * Parameter keyb: The keyboard these will be on.
  * Parameter _name: The name of the modifier.
  */
-	modifier(keyboard& keyb, const std::string& _name) throw(std::bad_alloc)
+	modifier(keyboard& keyb, const std::string& _name)
 		: kbd(keyb), name(_name)
 	{
 		keyb.do_register(name, *this);
@@ -144,7 +144,7 @@ public:
  * Parameter _name: The name of the modifier.
  * Parameter _link: The name of the modifier group this is in.
  */
-	modifier(keyboard& keyb, const std::string& _name, const std::string& _link) throw(std::bad_alloc)
+	modifier(keyboard& keyb, const std::string& _name, const std::string& _link)
 		: kbd(keyb), name(_name), link(_link)
 	{
 		keyb.do_register(name, *this);
@@ -195,7 +195,7 @@ public:
  * parameter really: If true, actually add the key. If false, do nothing.
  * throws std::bad_alloc: Not enough memory.
  */
-	void add(modifier& mod, bool really = true) throw(std::bad_alloc);
+	void add(modifier& mod, bool really = true);
 /**
  * Remove a modifier from the set.
  *
@@ -203,7 +203,7 @@ public:
  * parameter really: If true, actually remove the key. If false, do nothing.
  * throws std::bad_alloc: Not enough memory.
  */
-	void remove(modifier& mod, bool really = true) throw(std::bad_alloc);
+	void remove(modifier& mod, bool really = true);
 /**
  * Construct modifier set from comma-separated string.
  *
@@ -213,8 +213,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Illegal modifier or wrong syntax.
  */
-	static modifier_set construct(keyboard& kbd, const std::string& modifiers) throw(std::bad_alloc,
-		std::runtime_error);
+	static modifier_set construct(keyboard& kbd, const std::string& modifiers);
 /**
  * Check modifier against its mask for validity.
  *
@@ -226,7 +225,7 @@ public:
  * returns: True if set is valid, false if not.
  * throws std::bad_alloc: Not enough memory.
  */
-	bool valid(modifier_set& mask) throw(std::bad_alloc);
+	bool valid(modifier_set& mask);
 /**
  * Check if this modifier set triggers the action.
  *
@@ -236,11 +235,11 @@ public:
  * - Modifiers with this linkage group do not appear in either set nor trigger.
  *
  */
-	bool triggers(const modifier_set& trigger, const modifier_set& mask) throw(std::bad_alloc);
+	bool triggers(const modifier_set& trigger, const modifier_set& mask);
 /**
  * Stringify.
  */
-	operator std::string() const throw(std::bad_alloc);
+	operator std::string() const;
 /**
  * Equality check.
  *
@@ -500,8 +499,7 @@ public:
  * Parameter clazz: The class of the key.
  * Parameter type: The type of key.
  */
-	key(keyboard& keyb, const std::string& name, const std::string& clazz, keytype type)
-		throw(std::bad_alloc);
+	key(keyboard& keyb, const std::string& name, const std::string& clazz, keytype type);
 /**
  * Destructor.
  */
@@ -528,7 +526,7 @@ public:
  * Parameter listener: The listener.
  * Parameter analog: If true, also pass analog events.
  */
-	void add_listener(event_listener& listener, bool analog) throw(std::bad_alloc);
+	void add_listener(event_listener& listener, bool analog);
 /**
  * Remove listener.
  *
@@ -559,7 +557,7 @@ public:
 /**
  * Get the subkey suffixes.
  */
-	virtual std::vector<std::string> get_subkeys() throw(std::bad_alloc) = 0;
+	virtual std::vector<std::string> get_subkeys() = 0;
 /**
  * Dynamic cast to axis type.
  */
@@ -601,7 +599,7 @@ public:
  * Parameter name: The base name of the key.
  * Parameter clazz: The class of the key.
  */
-	key_key(keyboard& keyb, const std::string& name, const std::string& clazz) throw(std::bad_alloc);
+	key_key(keyboard& keyb, const std::string& name, const std::string& clazz);
 /**
  * Destructor.
  */
@@ -624,7 +622,7 @@ public:
 /**
  * Get the subkey suffixes.
  */
-	std::vector<std::string> get_subkeys() throw(std::bad_alloc);
+	std::vector<std::string> get_subkeys();
 private:
 	key_key(key_key&);
 	key_key& operator=(key_key&);
@@ -644,7 +642,7 @@ public:
  * Parameter name: The base name of the key.
  * Parameter clazz: The class of the key.
  */
-	key_hat(keyboard& keyb, const std::string& name, const std::string& clazz) throw(std::bad_alloc);
+	key_hat(keyboard& keyb, const std::string& name, const std::string& clazz);
 /**
  * Destructor.
  */
@@ -667,7 +665,7 @@ public:
 /**
  * Get the subkey suffixes.
  */
-	std::vector<std::string> get_subkeys() throw(std::bad_alloc);
+	std::vector<std::string> get_subkeys();
 private:
 	key_hat(key_hat&);
 	key_hat& operator=(key_hat&);
@@ -688,8 +686,7 @@ public:
  * Parameter clazz: The class of the key.
  * Parameter mode: Initial mode: -1 => disabled, 0 => axis, 1 => pressure
  */
-	key_axis(keyboard& keyb, const std::string& name, const std::string& clazz, int mode)
-		throw(std::bad_alloc);
+	key_axis(keyboard& keyb, const std::string& name, const std::string& clazz, int mode);
 /**
  * Destructor.
  */
@@ -712,7 +709,7 @@ public:
 /**
  * Get the subkey suffixes.
  */
-	std::vector<std::string> get_subkeys() throw(std::bad_alloc);
+	std::vector<std::string> get_subkeys();
 /**
  * Get mode.
  */
@@ -745,7 +742,7 @@ public:
  * Parameter cal: Initial calibration.
  */
 	key_mouse(keyboard& keyb, const std::string& name, const std::string& clazz,
-		mouse_calibration cal) throw(std::bad_alloc);
+		mouse_calibration cal);
 /**
  * Destructor.
  */
@@ -768,7 +765,7 @@ public:
 /**
  * Get the subkey suffixes. Returns empty list.
  */
-	std::vector<std::string> get_subkeys() throw(std::bad_alloc);
+	std::vector<std::string> get_subkeys();
 /**
  * Get calibration.
  */

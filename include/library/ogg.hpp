@@ -90,7 +90,7 @@ public:
  * Parameter advance: The number of bytes in packet is stored here.
  * Throws std::runtime_error: Bad packet.
  */
-	page(const char* buffer, size_t& advance) throw(std::runtime_error);
+	page(const char* buffer, size_t& advance);
 /**
  * Scan a buffer for pages.
  *
@@ -200,11 +200,11 @@ public:
 /**
  * Get debugging info for stream this page is from.
  */
-	std::string stream_debug_id() const throw(std::bad_alloc);
+	std::string stream_debug_id() const;
 /**
  * Get debugging info for this page.
  */
-	std::string page_debug_id() const throw(std::bad_alloc);
+	std::string page_debug_id() const;
 /**
  * The special granule pos for nothing.
  */
@@ -343,14 +343,14 @@ public:
  * Parameter size: The maximum size to read.
  * Returns: The number of bytes actually read.
  */
-	virtual size_t read(char* buffer, size_t size) throw(std::exception) = 0;
+	virtual size_t read(char* buffer, size_t size) = 0;
 /**
  * Read a page from stream.
  *
  * Parameter page: The page is assigned here if successful.
  * Returns: True if page was obtained, false if not.
  */
-	bool get_page(page& page) throw(std::exception);
+	bool get_page(page& page);
 /**
  * Set stream to report errors to.
  *
@@ -391,7 +391,7 @@ public:
  */
 	~stream_reader_iostreams() throw();
 
-	size_t read(char* buffer, size_t size) throw(std::exception);
+	size_t read(char* buffer, size_t size);
 private:
 	std::istream& is;
 };
@@ -416,13 +416,13 @@ public:
  * Parameter data: The data to write.
  * Parameter size: The size to write.
  */
-	virtual void write(const char* buffer, size_t size) throw(std::exception) = 0;
+	virtual void write(const char* buffer, size_t size) = 0;
 /**
  * Write a page to stream.
  *
  * Parameter page: The page to write.
  */
-	void put_page(const page& page) throw(std::exception);
+	void put_page(const page& page);
 private:
 	stream_writer(const stream_writer&);
 	stream_writer& operator=(const stream_writer&);
@@ -445,7 +445,7 @@ public:
  */
 	~stream_writer_iostreams() throw();
 
-	void write(const char* buffer, size_t size) throw(std::exception);
+	void write(const char* buffer, size_t size);
 private:
 	std::ostream& os;
 };

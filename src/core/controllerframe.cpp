@@ -17,7 +17,7 @@ namespace
 	portctrl::type_set dummytypes;
 
 	command::fnptr<const std::string&> macro_test(lsnes_cmds, CMACRO::test,
-		[](const std::string& args) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& args) {
 			auto& core = CORE();
 			regex_results r = regex("([0-9]+)[ \t](.*)", args);
 			if(!r) {
@@ -211,7 +211,7 @@ void controller_state::reread_tasinput_mode(const portctrl::type_set& ptype)
 	}
 }
 
-void controller_state::set_ports(const portctrl::type_set& ptype) throw(std::runtime_error)
+void controller_state::set_ports(const portctrl::type_set& ptype)
 {
 	const portctrl::type_set* oldtype = types;
 	types = &ptype;

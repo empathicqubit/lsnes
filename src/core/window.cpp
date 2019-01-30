@@ -41,14 +41,14 @@ volatile bool platform::do_exit_dummy_event_loop = false;
 namespace
 {
 	command::fnptr<> identify_key(lsnes_cmds, CSOUND::showdrv,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			messages << "Graphics:\t" << graphics_driver_name() << std::endl;
 			messages << "Sound:\t" << audioapi_driver_name() << std::endl;
 			messages << "Joystick:\t" << joystick_driver_name() << std::endl;
 		});
 
 	command::fnptr<const std::string&> enable_sound(lsnes_cmds, CSOUND::enable,
-		[](const std::string& args) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& args) {
 			if(args == "toggle") {
 				if(!audioapi_driver_initialized())
 					throw std::runtime_error("Sound failed to initialize and is disabled");
@@ -90,7 +90,7 @@ namespace
 	}
 
 	command::fnptr<const std::string&> change_playback_dev(lsnes_cmds, CSOUND::chpdev,
-		[](const std::string& args) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& args) {
 			auto old_rec = audioapi_driver_get_device(true);
 			auto args2 = args;
 			if(!fuzzy_search_list(audioapi_driver_get_devices(false), args2)) {
@@ -101,7 +101,7 @@ namespace
 		});
 
 	command::fnptr<const std::string&> change_record_dev(lsnes_cmds, CSOUND::chrdev,
-		[](const std::string& args) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& args) {
 			auto old_play = audioapi_driver_get_device(false);
 			auto args2 = args;
 			if(!fuzzy_search_list(audioapi_driver_get_devices(true), args2)) {
@@ -112,7 +112,7 @@ namespace
 		});
 
 	command::fnptr<> show_devices(lsnes_cmds, CSOUND::showdev,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			messages << "Known playback devices:" << std::endl;
 			auto pdevs = audioapi_driver_get_devices(false);
 			auto cpdev = audioapi_driver_get_device(false);
@@ -130,7 +130,7 @@ namespace
 		});
 
 	command::fnptr<> reset_audio(lsnes_cmds, CSOUND::reset,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			//Save the old devices. We save descriptions if possible, since handles change.
 			auto cpdev = platform::get_sound_device_description(false);
 			auto crdev = platform::get_sound_device_description(true);
@@ -187,7 +187,7 @@ namespace
 	{
 	public:
 		~msgcallback() throw() {};
-		void messagebuffer_update() throw(std::bad_alloc, std::runtime_error)
+		void messagebuffer_update()
 		{
 			platform::notify_message();
 		}
@@ -242,7 +242,7 @@ void platform::set_sound_device_by_description(const std::string& pdev, const st
 	set_sound_device(old_play, old_rec);
 }
 
-std::string platform::get_sound_device_description(bool rec) throw(std::bad_alloc)
+std::string platform::get_sound_device_description(bool rec)
 {
 	auto dev = audioapi_driver_get_device(rec);
 	auto devs = audioapi_driver_get_devices(rec);
@@ -297,7 +297,7 @@ void platform::quit()
 	system_log.close();
 }
 
-std::ostream& platform::out() throw(std::bad_alloc)
+std::ostream& platform::out()
 {
 	static std::ostream* cached = NULL;
 	int dummy;
@@ -309,7 +309,7 @@ std::ostream& platform::out() throw(std::bad_alloc)
 messagebuffer platform::msgbuf(MAXMESSAGES, INIT_WIN_SIZE);
 
 
-void platform::message(const std::string& msg) throw(std::bad_alloc)
+void platform::message(const std::string& msg)
 {
 	threads::alock h(msgbuf_lock());
 	for(auto& forlog : token_iterator<char>::foreach(msg, {"\n"})) {

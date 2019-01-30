@@ -57,7 +57,7 @@ void moviefile::brief_info::binary_io(int _stream)
 	}, binarystream::null_default);
 }
 
-void moviefile::binary_io(int _stream, rrdata_set& rrd, bool as_state) throw(std::bad_alloc, std::runtime_error)
+void moviefile::binary_io(int _stream, rrdata_set& rrd, bool as_state)
 {
 	binarystream::output out(_stream);
 	out.string(gametype->get_name());
@@ -192,7 +192,7 @@ void moviefile::binary_io(int _stream, rrdata_set& rrd, bool as_state) throw(std
 	}
 }
 
-void moviefile::binary_io(int _stream, core_type& romtype) throw(std::bad_alloc, std::runtime_error)
+void moviefile::binary_io(int _stream, core_type& romtype)
 {
 	binarystream::input in(_stream);
 	std::string tmp = in.string();

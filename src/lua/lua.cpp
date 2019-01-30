@@ -515,7 +515,7 @@ const std::map<std::string, std::u32string>& lua_state::get_watch_vars()
 	return watch_vars;
 }
 
-bool lua_state::run_lua_fragment() throw(std::bad_alloc)
+bool lua_state::run_lua_fragment()
 {
 	bool result = true;
 	if(recursive_flag)
@@ -565,7 +565,7 @@ bool lua_state::run_lua_fragment() throw(std::bad_alloc)
 	return result;
 }
 
-void lua_state::do_eval_lua(const std::string& c) throw(std::bad_alloc)
+void lua_state::do_eval_lua(const std::string& c)
 {
 	L.pushlstring(c.c_str(), c.length());
 	L.setglobal(TEMPORARY);
@@ -573,7 +573,7 @@ void lua_state::do_eval_lua(const std::string& c) throw(std::bad_alloc)
 	run_lua_fragment();
 }
 
-void lua_state::do_run_lua(const std::string& c) throw(std::bad_alloc)
+void lua_state::do_run_lua(const std::string& c)
 {
 	L.pushlstring(c.c_str(), c.length());
 	L.setglobal(TEMPORARY);

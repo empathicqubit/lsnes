@@ -29,7 +29,7 @@ public:
  *
  * returns: The movie instance.
  */
-	movie& get_movie() throw(std::runtime_error);
+	movie& get_movie();
 
 /**
  * Set the movie instance associated.
@@ -39,7 +39,7 @@ public:
 /**
  * Get the current movie file.
  */
-	moviefile& get_mfile() throw(std::runtime_error);
+	moviefile& get_mfile();
 
 /**
  * Set the current movie file.
@@ -48,7 +48,7 @@ public:
 /**
  * Get current rrdata.
  */
-	rrdata_set& get_rrdata() throw(std::runtime_error);
+	rrdata_set& get_rrdata();
 
 /**
  * Set current rrdata.
@@ -58,7 +58,7 @@ public:
 /**
  * Notify about new frame starting.
  */
-	void new_frame_starting(bool dont_poll) throw(std::bad_alloc, std::runtime_error);
+	void new_frame_starting(bool dont_poll);
 
 /**
  * Poll for input.
@@ -70,21 +70,21 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Error polling for input.
  */
-	short input_poll(unsigned port, unsigned dev, unsigned id) throw(std::bad_alloc, std::runtime_error);
+	short input_poll(unsigned port, unsigned dev, unsigned id);
 
 /**
  * Called when movie code needs new controls snapshot.
  *
  * parameter subframe: True if this is for subframe update, false if for frame update.
  */
-	portctrl::frame update_controls(bool subframe, bool forced = false) throw(std::bad_alloc, std::runtime_error);
+	portctrl::frame update_controls(bool subframe, bool forced = false);
 
 /**
  * Notify user poll (exit poll advance).
  *
  * returns: If true, update_controls is forced.
  */
-	bool notify_user_poll() throw(std::bad_alloc, std::runtime_error);
+	bool notify_user_poll();
 /**
  * Release memory for mov, mf and rrd.
  */

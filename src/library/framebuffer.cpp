@@ -134,7 +134,7 @@ color_mod::color_mod(const std::string& name, std::function<void(int64_t&)> fn)
 	colornames()[name] = std::make_pair(fn, true);
 }
 
-pixfmt::pixfmt() throw(std::bad_alloc)
+pixfmt::pixfmt()
 {
 	pixfmts().push_back(this);
 }
@@ -148,7 +148,7 @@ pixfmt::~pixfmt() throw()
 		}
 }
 
-raw::raw(const info& info) throw(std::bad_alloc)
+raw::raw(const info& info)
 {
 	size_t unit = info.type->get_bpp();
 	size_t pixel_offset = info.offset_y * info.physstride + unit * info.offset_x;
@@ -161,7 +161,7 @@ raw::raw(const info& info) throw(std::bad_alloc)
 	allocated = 0;
 }
 
-raw::raw() throw(std::bad_alloc)
+raw::raw()
 {
 	user_memory = true;
 	fmt = NULL;
@@ -172,7 +172,7 @@ raw::raw() throw(std::bad_alloc)
 	allocated = 0;
 }
 
-raw::raw(const raw& f) throw(std::bad_alloc)
+raw::raw(const raw& f)
 {
 	user_memory = true;
 	fmt = f.fmt;
@@ -186,7 +186,7 @@ raw::raw(const raw& f) throw(std::bad_alloc)
 		memcpy(addr + stride * i, f.addr + f.stride * i, unit * width);
 }
 
-raw& raw::operator=(const raw& f) throw(std::bad_alloc, std::runtime_error)
+raw& raw::operator=(const raw& f)
 {
 	if(!user_memory)
 		throw std::runtime_error("Target framebuffer is not writable");
@@ -215,7 +215,7 @@ raw::~raw()
 		delete[] addr;
 }
 
-void raw::load(const std::vector<char>& data) throw(std::bad_alloc, std::runtime_error)
+void raw::load(const std::vector<char>& data)
 {
 	if(data.size() < 2)
 		throw std::runtime_error("Bad screenshot data");
@@ -281,7 +281,7 @@ void raw::load(const std::vector<char>& data) throw(std::bad_alloc, std::runtime
 		decode_words<4>(reinterpret_cast<uint8_t*>(addr), data2 + dataoffset, data.size() - dataoffset);
 }
 
-void raw::save(std::vector<char>& data) throw(std::bad_alloc)
+void raw::save(std::vector<char>& data)
 {
 	uint8_t* memory = reinterpret_cast<uint8_t*>(addr);
 	unsigned m;
@@ -325,7 +325,7 @@ void raw::save(std::vector<char>& data) throw(std::bad_alloc)
 	}
 }
 
-void raw::save_png(const std::string& file) throw(std::bad_alloc, std::runtime_error)
+void raw::save_png(const std::string& file)
 {
 	uint8_t* memory = reinterpret_cast<uint8_t*>(addr);
 	png::encoder img;
@@ -436,7 +436,7 @@ void fb<X>::copy_from(raw& scr, size_t hscale, size_t vscale) throw()
 }
 
 template<bool X>
-void fb<X>::set_palette(uint32_t r, uint32_t g, uint32_t b) throw(std::bad_alloc)
+void fb<X>::set_palette(uint32_t r, uint32_t g, uint32_t b)
 {
 	typename fb<X>::element_t R, G, B;
 	if(r == active_rshift && g == active_gshift && b == active_bshift)
@@ -467,7 +467,7 @@ void fb<X>::set(element_t* _memory, size_t _width, size_t _height, size_t _pitch
 }
 
 template<bool X>
-void fb<X>::reallocate(size_t _width, size_t _height, bool _upside_down) throw(std::bad_alloc)
+void fb<X>::reallocate(size_t _width, size_t _height, bool _upside_down)
 {
 	size_t ustride = (_width + 11) / 12 * 12;
 	if(width != _width || height != _height) {
@@ -519,7 +519,7 @@ size_t raw::get_height() const throw() { return height; }
 template<bool X> size_t fb<X>::get_origin_x() const throw() { return offset_x; }
 template<bool X> size_t fb<X>::get_origin_y() const throw() { return offset_y; }
 
-void queue::add(struct object& obj) throw(std::bad_alloc)
+void queue::add(struct object& obj)
 {
 	struct node* n = reinterpret_cast<struct node*>(alloc(sizeof(node)));
 	n->obj = &obj;
@@ -531,7 +531,7 @@ void queue::add(struct object& obj) throw(std::bad_alloc)
 		queue_head = queue_tail = n;
 }
 
-void queue::copy_from(queue& q) throw(std::bad_alloc)
+void queue::copy_from(queue& q)
 {
 	struct node* tmp = q.queue_head;
 	while(tmp) {
@@ -571,7 +571,7 @@ void queue::clear() throw()
 	queue_tail = NULL;
 }
 
-void* queue::alloc(size_t block) throw(std::bad_alloc)
+void* queue::alloc(size_t block)
 {
 	block = (block + 15) / 16 * 16;
 	if(block > RENDER_PAGE_SIZE)
@@ -639,7 +639,7 @@ bool object::kill_request(void* obj) throw()
 	return false;
 }
 
-font::font() throw(std::bad_alloc)
+font::font()
 {
 	bad_glyph_data[0] = 0x018001AAU;
 	bad_glyph_data[1] = 0x01800180U;
@@ -649,7 +649,7 @@ font::font() throw(std::bad_alloc)
 	bad_glyph.data = bad_glyph_data;
 }
 
-void font::load_hex_glyph(const char* data, size_t size) throw(std::bad_alloc, std::runtime_error)
+void font::load_hex_glyph(const char* data, size_t size)
 {
 	char buf2[8];
 	std::string line(data, data + size);
@@ -686,7 +686,7 @@ void font::load_hex_glyph(const char* data, size_t size) throw(std::bad_alloc, s
 	glyphs[cp].offset = p;
 }
 
-void font::load_hex(const char* data, size_t size) throw(std::bad_alloc, std::runtime_error)
+void font::load_hex(const char* data, size_t size)
 {
 	const char* enddata = data + size;
 	while(data != enddata) {
@@ -744,7 +744,7 @@ std::pair<size_t, size_t> font::get_metrics(const std::string& string, uint32_t 
 	return std::make_pair(commit_width, commit_height);
 }
 
-std::vector<font::layout> font::dolayout(const std::string& string) throw(std::bad_alloc)
+std::vector<font::layout> font::dolayout(const std::string& string)
 {
 	//First, calculate the number of glyphs to draw.
 	size_t chars = 0;
@@ -909,7 +909,7 @@ void font::for_each_glyph(const std::string& str, uint32_t alignx, bool xdbl, bo
 }
 
 
-color::color(const std::string& clr) throw(std::bad_alloc, std::runtime_error)
+color::color(const std::string& clr)
 {
 	int64_t col = -1;
 	bool first = true;

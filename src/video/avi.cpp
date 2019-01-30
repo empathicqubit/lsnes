@@ -489,7 +489,7 @@ again:
 			ctor_notify();
 		}
 		~adv_avi_dumper() throw();
-		std::set<std::string> list_submodes() throw(std::bad_alloc)
+		std::set<std::string> list_submodes()
 		{
 			std::set<std::string> x;
 			for(auto v = avi_video_codec_type::find_next(NULL); v; v = avi_video_codec_type::find_next(v))
@@ -506,11 +506,11 @@ again:
 		{
 			return "";	//Not interesting
 		}
-		std::string name() throw(std::bad_alloc)
+		std::string name()
 		{
 			return "AVI (internal)";
 		}
-		std::string modename(const std::string& mode) throw(std::bad_alloc)
+		std::string modename(const std::string& mode)
 		{
 			avi_video_codec_type* vcodec;
 			avi_audio_codec_type* acodec;
@@ -518,7 +518,6 @@ again:
 			return vcodec->get_hname() + std::string(" / ") + acodec->get_hname();
 		}
 		avi_dumper_obj* start(master_dumper& _mdumper, const std::string& mode, const std::string& prefix)
-			throw(std::bad_alloc, std::runtime_error)
 		{
 			return new avi_dumper_obj(_mdumper, *this, mode, prefix);
 		}

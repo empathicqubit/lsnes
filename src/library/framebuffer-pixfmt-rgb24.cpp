@@ -50,7 +50,7 @@ void _pixfmt_rgb24<uvswap>::decode(uint64_t* target, const uint8_t* src, size_t 
 
 template<bool uvswap>
 void _pixfmt_rgb24<uvswap>::set_palette(auxpalette<false>& auxp, uint8_t rshift, uint8_t gshift,
-	uint8_t bshift) throw(std::bad_alloc)
+	uint8_t bshift)
 {
 	auxp.rshift = rshift;
 	auxp.gshift = gshift;
@@ -60,7 +60,7 @@ void _pixfmt_rgb24<uvswap>::set_palette(auxpalette<false>& auxp, uint8_t rshift,
 
 template<bool uvswap>
 void _pixfmt_rgb24<uvswap>::set_palette(auxpalette<true>& auxp, uint8_t rshift, uint8_t gshift,
-	uint8_t bshift) throw(std::bad_alloc)
+	uint8_t bshift)
 {
 	auxp.rshift = rshift;
 	auxp.gshift = gshift;

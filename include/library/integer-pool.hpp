@@ -21,7 +21,7 @@ public:
  * Returns: The number drawn.
  * Throws std::bad_alloc: Not enough memory.
  */
-	uint64_t operator()() throw(std::bad_alloc);
+	uint64_t operator()();
 /**
  * Return a number into the pool.
  *

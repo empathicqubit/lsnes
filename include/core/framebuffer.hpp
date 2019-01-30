@@ -50,7 +50,7 @@ public:
  *
  * throws std::bad_alloc: Not enough memory.
  */
-	static void init_special_screens() throw(std::bad_alloc);
+	static void init_special_screens();
 /**
  * Copy framebuffer to backing store, running Lua hooks if any.
  */
@@ -62,7 +62,7 @@ public:
 /**
  * Return last complete framebuffer.
  */
-	framebuffer::raw get_framebuffer() throw(std::bad_alloc);
+	framebuffer::raw get_framebuffer();
 /**
  * Render framebuffer to main screen.
  */
@@ -74,7 +74,7 @@ public:
 /**
  * Take a screenshot to specified file.
  */
-	void take_screenshot(const std::string& file) throw(std::bad_alloc, std::runtime_error);
+	void take_screenshot(const std::string& file);
 /**
  * Kill pending requests associated with object.
  */

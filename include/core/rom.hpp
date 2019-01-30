@@ -27,7 +27,7 @@ struct loaded_rom
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Loading ROM file failed.
  */
-	loaded_rom(rom_image_handle _image) throw(std::bad_alloc, std::runtime_error);
+	loaded_rom(rom_image_handle _image);
 /**
  * Switches the active cartridge to this cartridge. The compatiblity between selected region and original region
  * is checked. Region is updated after cartridge has been loaded.
@@ -35,8 +35,7 @@ struct loaded_rom
  * throws std::bad_alloc: Not enough memory
  * throws std::runtime_error: Switching cartridges failed.
  */
-	void load(std::map<std::string, std::string>& settings, uint64_t rtc_sec, uint64_t rtc_subsec)
-		throw(std::bad_alloc, std::runtime_error);
+	void load(std::map<std::string, std::string>& settings, uint64_t rtc_sec, uint64_t rtc_subsec);
 /**
  * Reset the emulation state to state just before last load.
  */
@@ -47,7 +46,7 @@ struct loaded_rom
  * returns: The saved state.
  * throws std::bad_alloc: Not enough memory.
  */
-	std::vector<char> save_core_state(bool nochecksum = false) throw(std::bad_alloc, std::runtime_error);
+	std::vector<char> save_core_state(bool nochecksum = false);
 
 /**
  * Loads core state from buffer.
@@ -55,7 +54,7 @@ struct loaded_rom
  * parameter buf: The buffer containing the state.
  * throws std::runtime_error: Loading state failed.
  */
-	void load_core_state(const std::vector<char>& buf, bool nochecksum = false) throw(std::runtime_error);
+	void load_core_state(const std::vector<char>& buf, bool nochecksum = false);
 
 /**
  * Get internal type representation.
@@ -130,8 +129,8 @@ struct loaded_rom
 	std::pair<uint64_t, uint64_t> get_bus_map() { return rtype().get_bus_map(); }
 	std::list<core_region*> get_regions() { return image->get_regions(); }
 	const std::string& get_iname() { return rtype().get_iname(); }
-	std::map<std::string, std::vector<char>> save_sram() throw(std::bad_alloc) { return rtype().save_sram(); }
-	void load_sram(std::map<std::string, std::vector<char>>& sram) throw(std::bad_alloc)
+	std::map<std::string, std::vector<char>> save_sram() { return rtype().save_sram(); }
+	void load_sram(std::map<std::string, std::vector<char>>& sram)
 	{
 		rtype().load_sram(sram);
 	}
@@ -188,8 +187,7 @@ std::pair<core_type*, core_region*> get_current_rom_info() throw();
  * throws std::bad_alloc: Out of memory.
  * throws std::runtime_error: Failed to load.
  */
-std::map<std::string, std::vector<char>> load_sram_commandline(const std::vector<std::string>& cmdline)
-	throw(std::bad_alloc, std::runtime_error);
+std::map<std::string, std::vector<char>> load_sram_commandline(const std::vector<std::string>& cmdline);
 
 struct romload_request
 {

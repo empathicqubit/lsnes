@@ -15,7 +15,7 @@
  * \return The random hexadecimal string.
  * \throws std::bad_alloc Not enough memory.
  */
-std::string get_random_hexstring(size_t length) throw(std::bad_alloc);
+std::string get_random_hexstring(size_t length);
 
 /**
  * \brief Set random seed
@@ -25,7 +25,7 @@ std::string get_random_hexstring(size_t length) throw(std::bad_alloc);
  * \param seed The value to use as seed.
  * \throw std::bad_alloc Not enough memory.
  */
-void set_random_seed(const std::string& seed) throw(std::bad_alloc);
+void set_random_seed(const std::string& seed);
 
 /**
  * \brief Set random seed to (hopefully) unique value
@@ -35,7 +35,7 @@ void set_random_seed(const std::string& seed) throw(std::bad_alloc);
  *
  * \throw std::bad_alloc Not enough memory.
  */
-void set_random_seed() throw(std::bad_alloc);
+void set_random_seed();
 
 /**
  * Mix some entropy.

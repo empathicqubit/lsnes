@@ -32,7 +32,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Error loading shared library.
  */
-	library(const std::string& filename) throw(std::bad_alloc, std::runtime_error)
+	library(const std::string& filename)
 	{
 		try {
 			set_loading(this);
@@ -60,7 +60,7 @@ public:
  * Throws std::bad_alloc: Not enough memory.
  * Throws std::runtime_error: Error looking up the symbol.
  */
-	void* operator[](const std::string& symbol) const throw(std::bad_alloc, std::runtime_error)
+	void* operator[](const std::string& symbol) const
 	{
 		threads::alock h(global_mutex());
 		if(!lib) throw std::runtime_error("Symbol '" + symbol + "' not found");
@@ -106,12 +106,12 @@ public:
  */
 	static library* loading() throw();
 private:
-	void set_loading(library* lib) throw(std::bad_alloc);
+	void set_loading(library* lib);
 	struct internal
 	{
-		internal(const std::string& filename) throw(std::bad_alloc, std::runtime_error);
+		internal(const std::string& filename);
 		~internal() throw();
-		void* operator[](const std::string& symbol) const throw(std::bad_alloc, std::runtime_error);
+		void* operator[](const std::string& symbol) const;
 		internal(const internal&);
 		internal& operator=(const internal&);
 		void* handle;
@@ -158,11 +158,11 @@ public:
 /**
  * Symbol lookup.
  */
-	void* operator[](const std::string& symbol) const throw(std::bad_alloc, std::runtime_error);
+	void* operator[](const std::string& symbol) const;
 /**
  * Variable symbol lookup.
  */
-	template<typename T> T* var(const std::string& symbol) const throw(std::bad_alloc, std::runtime_error)
+	template<typename T> T* var(const std::string& symbol) const
 	{
 		return (T*)(*this)[symbol];
 	}
@@ -170,7 +170,6 @@ public:
  * Function symbol lookup.
  */
 	template<typename T, typename... U> typename fntype<T, U...>::t fn(const std::string& symbol) const
-		throw(std::bad_alloc, std::runtime_error)
 	{
 		return (typename fntype<T, U...>::t)(*this)[symbol];
 	}

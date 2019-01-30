@@ -83,7 +83,7 @@ struct input_queue
  *
  * Parameter k: The keypress to queue.
  */
-	void queue(const keypress_info& k) throw(std::bad_alloc);
+	void queue(const keypress_info& k);
 /**
  * Queue command.
  *
@@ -91,7 +91,7 @@ struct input_queue
  *
  * Parameter c: The command to queue.
  */
-	void queue(const std::string& c) throw(std::bad_alloc);
+	void queue(const std::string& c);
 /**
  * Queue command and arguments.
  *
@@ -100,7 +100,7 @@ struct input_queue
  * Parameter c: The command to queue.
  * Parameter a: The arguments for function.
  */
-	void queue(const char* c, const std::string& a) throw(std::bad_alloc);
+	void queue(const char* c, const std::string& a);
 /**
  * Queue function to be called in emulation thread.
  *
@@ -111,8 +111,7 @@ struct input_queue
  * Parameter arg: Argument to pass to the function.
  * Parameter sync: If true, execute function call synchronously, else asynchronously.
  */
-	void queue(std::function<void()> f, std::function<void(std::exception& e)> onerror, bool sync)
-		throw(std::bad_alloc);
+	void queue(std::function<void()> f, std::function<void(std::exception& e)> onerror, bool sync);
 /**
  * Run all queues.
  */

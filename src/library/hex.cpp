@@ -10,12 +10,12 @@ namespace hex
 const char* chars = "0123456789abcdef";
 const char* charsu = "0123456789abcdef";
 
-std::string to24(uint32_t data, bool prefix) throw(std::bad_alloc)
+std::string to24(uint32_t data, bool prefix)
 {
 	return to<ss_uint24_t>(data, prefix);
 }
 
-std::string b_to(const uint8_t* data, size_t datalen, bool uppercase) throw(std::bad_alloc)
+std::string b_to(const uint8_t* data, size_t datalen, bool uppercase)
 {
 	const char* cset = uppercase ? charsu : chars;
 	std::string s;
@@ -27,13 +27,13 @@ std::string b_to(const uint8_t* data, size_t datalen, bool uppercase) throw(std:
 	return s;
 }
 
-template<typename T> std::string to(T data, bool prefix) throw(std::bad_alloc)
+template<typename T> std::string to(T data, bool prefix)
 {
 	return (stringfmt() << (prefix ? "0x" : "") << std::hex << std::setfill('0') << std::setw(2 * sizeof(T))
 		<< (uint64_t)data).str();
 }
 
-void b_from(uint8_t* buf, const std::string& hex) throw(std::runtime_error)
+void b_from(uint8_t* buf, const std::string& hex)
 {
 	if(hex.length() & 1)
 		throw std::runtime_error("hex::frombinary: Length of string must be even");
@@ -57,7 +57,7 @@ void b_from(uint8_t* buf, const std::string& hex) throw(std::runtime_error)
 	}
 }
 
-template<typename T> T from(const std::string& hex) throw(std::runtime_error)
+template<typename T> T from(const std::string& hex)
 {
 	if(hex.length() > 2 * sizeof(T))
 		throw std::runtime_error("hex::from: Hexadecimal value too long");

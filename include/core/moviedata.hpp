@@ -31,13 +31,12 @@
 #define SAVE_MOVIE 1
 
 std::string resolve_relative_path(const std::string& path);
-std::pair<std::string, std::string> split_author(const std::string& author) throw(std::bad_alloc,
-	std::runtime_error);
+std::pair<std::string, std::string> split_author(const std::string& author);
 
-void do_save_state(const std::string& filename, int binary) throw(std::bad_alloc, std::runtime_error);
-void do_save_movie(const std::string& filename, int binary) throw(std::bad_alloc, std::runtime_error);
-void do_load_rom() throw(std::bad_alloc, std::runtime_error);
-void do_load_rewind() throw(std::bad_alloc, std::runtime_error);
+void do_save_state(const std::string& filename, int binary);
+void do_save_movie(const std::string& filename, int binary);
+void do_load_rom();
+void do_load_rewind();
 void do_load_state(struct moviefile& _movie, int lmode, bool& used);
 bool do_load_state(const std::string& filename, int lmode);
 std::string translate_name_mprefix(std::string original, int& binary, int save);

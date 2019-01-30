@@ -27,7 +27,7 @@ namespace
 		~fb_object() throw();
 		void operator()(struct framebuffer::fb<false>& scr) throw();
 		void operator()(struct framebuffer::fb<true>& scr) throw();
-		void clone(framebuffer::queue& q) const throw(std::bad_alloc);
+		void clone(framebuffer::queue& q) const;
 	private:
 		template<bool ext> void draw(struct framebuffer::fb<ext>& scr) throw();
 		params p;
@@ -44,7 +44,7 @@ namespace
 	void fb_object::operator()(struct framebuffer::fb<false>& scr) throw() { draw(scr); }
 	void fb_object::operator()(struct framebuffer::fb<true>& scr) throw() { draw(scr); }
 
-	void fb_object::clone(framebuffer::queue& q) const throw(std::bad_alloc) { q.clone_helper(this); }
+	void fb_object::clone(framebuffer::queue& q) const { q.clone_helper(this); }
 
 	template<bool ext> void fb_object::draw(struct framebuffer::fb<ext>& scr) throw()
 	{

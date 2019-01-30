@@ -34,22 +34,22 @@ void movie::set_all_DRDY() throw()
 	pollcounters.set_all_DRDY();
 }
 
-std::string movie::rerecord_count() throw(std::bad_alloc)
+std::string movie::rerecord_count()
 {
 	return rerecords;
 }
 
-void movie::rerecord_count(const std::string& count) throw(std::bad_alloc)
+void movie::rerecord_count(const std::string& count)
 {
 	rerecords = count;
 }
 
-std::string movie::project_id() throw(std::bad_alloc)
+std::string movie::project_id()
 {
 	return _project_id;
 }
 
-void movie::project_id(const std::string& id) throw(std::bad_alloc)
+void movie::project_id(const std::string& id)
 {
 	_project_id = id;
 }
@@ -99,7 +99,7 @@ uint64_t movie::get_lag_frames() throw()
 	return lag_frames;
 }
 
-void movie::next_frame() throw(std::bad_alloc)
+void movie::next_frame()
 {
 	//Adjust lag count. Frame 0 MUST NOT be considered lag.
 	bool pflag = pflag_handler ? pflag_handler->get_pflag() : false;
@@ -133,12 +133,12 @@ void movie::next_frame() throw(std::bad_alloc)
 	current_frame++;
 }
 
-bool movie::get_DRDY(unsigned port, unsigned controller, unsigned ctrl) throw(std::logic_error)
+bool movie::get_DRDY(unsigned port, unsigned controller, unsigned ctrl)
 {
 	return pollcounters.get_DRDY(port, controller, ctrl);
 }
 
-short movie::next_input(unsigned port, unsigned controller, unsigned ctrl) throw(std::bad_alloc, std::logic_error)
+short movie::next_input(unsigned port, unsigned controller, unsigned ctrl)
 {
 	pollcounters.clear_DRDY(port, controller, ctrl);
 
@@ -193,7 +193,7 @@ short movie::next_input(unsigned port, unsigned controller, unsigned ctrl) throw
 	}
 }
 
-movie::movie() throw(std::bad_alloc)
+movie::movie()
 	: _listener(*this), tracker(memtracker::singleton(), movie_id, sizeof(*this))
 {
 	movie_data = NULL;
@@ -209,7 +209,6 @@ movie::movie() throw(std::bad_alloc)
 }
 
 void movie::load(const std::string& rerecs, const std::string& project_id, portctrl::frame_vector& input)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	if(input.size() > 0 && !input[0].sync())
 		throw std::runtime_error("First subframe MUST have frame sync flag set");
@@ -231,7 +230,7 @@ unsigned movie::next_poll_number()
 	return pollcounters.max_polls() + 1;
 }
 
-void movie::readonly_mode(bool enable) throw(std::bad_alloc)
+void movie::readonly_mode(bool enable)
 {
 	bool was_in_readonly = readonly;
 	readonly = enable;
@@ -275,7 +274,6 @@ void movie::readonly_mode(bool enable) throw(std::bad_alloc)
 
 //Save state of movie code.
 void movie::save_state(std::string& proj_id, uint64_t& curframe, uint64_t& lagframes, std::vector<uint32_t>& pcounters)
-	throw(std::bad_alloc)
 {
 	pollcounters.save_state(pcounters);
 	proj_id = _project_id;
@@ -285,8 +283,7 @@ void movie::save_state(std::string& proj_id, uint64_t& curframe, uint64_t& lagfr
 
 //Restore state of movie code. Throws if state is invalid. Flag gives new state of readonly flag.
 size_t movie::restore_state(uint64_t curframe, uint64_t lagframe, const std::vector<uint32_t>& pcounters, bool ro,
-	portctrl::frame_vector* old_movie, const std::string& old_projectid) throw(std::bad_alloc,
-	std::runtime_error)
+	portctrl::frame_vector* old_movie, const std::string& old_projectid)
 {
 	if(!pollcounters.check(pcounters))
 		throw std::runtime_error("Wrong number of poll counters");

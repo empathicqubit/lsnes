@@ -79,7 +79,7 @@ integer_pool::integer_pool() throw()
 	bits = &_bits2;
 }
 
-uint64_t integer_pool::operator()() throw(std::bad_alloc)
+uint64_t integer_pool::operator()()
 {
 	if(invalid) throw std::bad_alloc();
 	//If the first byte is 0xFF, we got to expand the array.

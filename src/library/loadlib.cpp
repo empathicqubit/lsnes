@@ -41,7 +41,7 @@ namespace
 #endif
 }
 
-library::internal::internal(const std::string& filename) throw(std::bad_alloc, std::runtime_error)
+library::internal::internal(const std::string& filename)
 {
 	libname = filename;
 	refs = 1;
@@ -87,7 +87,7 @@ library::internal::~internal() throw()
 #endif
 }
 
-void* library::internal::operator[](const std::string& symbol) const throw(std::bad_alloc, std::runtime_error)
+void* library::internal::operator[](const std::string& symbol) const
 {
 #if !defined(NO_DLFCN) && !defined(_WIN32) && !defined(_WIN64)
 	dlerror();
@@ -128,7 +128,7 @@ const std::string& library::extension() throw()
 }
 
 library* library::loading() throw() { return currently_loading; }
-void library::set_loading(library* lib) throw(std::bad_alloc) { currently_loading = lib; }
+void library::set_loading(library* lib) { currently_loading = lib; }
 
 namespace
 {
@@ -183,7 +183,7 @@ module::module(const module& mod)
 	}
 }
 
-void* module::operator[](const std::string& symbol) const throw(std::bad_alloc, std::runtime_error)
+void* module::operator[](const std::string& symbol) const
 {
 	if(dynamic)
 		return lib[symbol];

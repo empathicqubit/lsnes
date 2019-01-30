@@ -18,7 +18,7 @@ class invbind;
 class ctrlrkey;
 
 std::pair<key*, unsigned> keymapper_lookup_subkey(keyboard& kbd, const std::string& name,
-	bool axis) throw(std::bad_alloc, std::runtime_error);
+	bool axis);
 
 /**
  * Key specifier
@@ -28,17 +28,17 @@ struct keyspec
 /**
  * Create a new key specifier (invalid).
  */
-	keyspec() throw(std::bad_alloc);
+	keyspec();
 /**
  * Create a new key specifier from keyspec.
  *
  * Parameter keyspec: The key specifier.
  */
-	keyspec(const std::string& keyspec) throw(std::bad_alloc, std::runtime_error);
+	keyspec(const std::string& keyspec);
 /**
  * Get the key specifier as a keyspec.
  */
-	operator std::string() throw(std::bad_alloc);
+	operator std::string();
 /**
  * Is valid?
  */
@@ -126,7 +126,7 @@ public:
 /**
  * Add a callback on new invese bind.
  */
-	void add_callback(listener& listener) throw(std::bad_alloc);
+	void add_callback(listener& listener);
 /**
  * Drop a callback on new inverse bind.
  */
@@ -142,7 +142,7 @@ public:
 /**
  * Create new keyboard mapper.
  */
-	mapper(keyboard& kbd, command::group& domain) throw(std::bad_alloc);
+	mapper(keyboard& kbd, command::group& domain);
 /**
  * Destroy a keyboard mapper.
  */
@@ -157,8 +157,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: The binding would conflict with existing one or invalid modifier/key.
  */
-	void bind(std::string mod, std::string modmask, std::string keyname, std::string command)
-		throw(std::bad_alloc, std::runtime_error);
+	void bind(std::string mod, std::string modmask, std::string keyname, std::string command);
 /**
  * Unbinds a key, erroring out if binding does not exist.
  *
@@ -168,68 +167,67 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: The binding does not exist.
  */
-	void unbind(std::string mod, std::string modmask, std::string keyname) throw(std::bad_alloc,
-		std::runtime_error);
+	void unbind(std::string mod, std::string modmask, std::string keyname);
 /**
  * Get keys bound.
  *
  * Returns: The set of keyspecs that are bound.
  */
-	std::list<keyspec> get_bindings() throw(std::bad_alloc);
+	std::list<keyspec> get_bindings();
 /**
  * Get command for key.
  */
-	std::string get(const keyspec& keyspec) throw(std::bad_alloc);
+	std::string get(const keyspec& keyspec);
 /**
  * Bind command for key.
  *
  * Parameter keyspec: The key specifier to bind to.
  * Parameter cmd: The command to bind. If "", the key is unbound.
  */
-	void set(const keyspec& keyspec, const std::string& cmd) throw(std::bad_alloc, std::runtime_error);
+	void set(const keyspec& keyspec, const std::string& cmd);
 /**
  * Get set of inverse binds.
  *
  * Returns: The set of all inverses.
  */
-	std::set<invbind*> get_inverses() throw(std::bad_alloc);
+	std::set<invbind*> get_inverses();
 /**
  * Find inverse bind by command.
  *
  * Parameter command: The command.
  * Returns: The inverse bind, or NULL if none.
  */
-	invbind* get_inverse(const std::string& command) throw(std::bad_alloc);
+	invbind* get_inverse(const std::string& command);
 /**
  * Get set of controller keys.
  *
  * Returns: The set of all controller keys.
  */
-	std::set<ctrlrkey*> get_controller_keys() throw(std::bad_alloc);
+	std::set<ctrlrkey*> get_controller_keys();
 /**
  * Get specific controller key.
  */
-	ctrlrkey* get_controllerkey(const std::string& command) throw(std::bad_alloc);
+	ctrlrkey* get_controllerkey(const std::string& command);
 /**
  * Get list of controller keys for specific keyboard key.
  */
-	std::list<ctrlrkey*> get_controllerkeys_kbdkey(key* kbdkey) throw(std::bad_alloc);
+	std::list<ctrlrkey*> get_controllerkeys_kbdkey(key* kbdkey);
 /**
  * Register inverse bind.
  */
-	void do_register(const std::string& name, invbind& bind) throw(std::bad_alloc);
+	void do_register(const std::string& name, invbind& bind);
 /**
  * Unregister inverse bind.
  */
-	void do_unregister(const std::string& name, invbind& bind) throw(std::bad_alloc);
+	void do_unregister(const std::string& name, invbind& bind);
 /**
  * Register controller key.
  */
-	void do_register(const std::string& name, ctrlrkey& ckey) throw(std::bad_alloc);
+	void do_register(const std::string& name, ctrlrkey& ckey);
 /**
  * Unregister inverse bind.
  */
-	void do_unregister(const std::string& name, ctrlrkey& ckey) throw(std::bad_alloc);
+	void do_unregister(const std::string& name, ctrlrkey& ckey);
 /**
  * Get keyboard.
  */
@@ -245,7 +243,7 @@ public:
  * Parameter polarity: Polarity (true is rising edge, false is falling edge).
  * Returns: The fixed command, or "" if nothing should be run.
  */
-	static std::string fixup_command_polarity(std::string cmd, bool polarity) throw(std::bad_alloc);
+	static std::string fixup_command_polarity(std::string cmd, bool polarity);
 /**
  * Add a set of inverse binds.
  */
@@ -268,7 +266,7 @@ public:
 		bool operator!=(const struct triplet& a) const { return !(a == *this); }
 		bool operator>=(const struct triplet& a) const { return !(a < *this); }
 		bool operator>(const struct triplet& a) const { return (a < *this); }
-		keyspec as_keyspec() const throw(std::bad_alloc);
+		keyspec as_keyspec() const;
 		bool index;
 		modifier_set mod;
 		modifier_set mask;
@@ -311,8 +309,7 @@ public:
  * Parameter _command: Command this is for.
  * Parameter _name: Name of inverse key.
  */
-	invbind_info(invbind_set& set, const std::string& _command, const std::string& _name)
-		throw(std::bad_alloc);
+	invbind_info(invbind_set& set, const std::string& _command, const std::string& _name);
 /**
  * Destructor.
  */
@@ -344,8 +341,7 @@ public:
  * Parameter command: Command this is for.
  * Parameter name: Name of inverse key.
  */
-	invbind(mapper& kmapper, const std::string& command, const std::string& name, bool dynamic = false)
-		throw(std::bad_alloc);
+	invbind(mapper& kmapper, const std::string& command, const std::string& name, bool dynamic = false);
 /**
  * Destructor.
  */
@@ -356,25 +352,25 @@ public:
  * Parameter index: Index of the keyspec to get.
  * Returns: The keyspec.
  */
-	keyspec get(unsigned index) throw(std::bad_alloc);
+	keyspec get(unsigned index);
 /**
  * Clear key (subsequent keys fill the gap).
  *
  * Parameter index: Index of key to clear.
  */
-	void clear(unsigned index) throw(std::bad_alloc);
+	void clear(unsigned index);
 /**
  * Add key to set.
  *
  * Parameter keyspec: The new keyspec.
  */
-	void append(const keyspec& keyspec) throw(std::bad_alloc);
+	void append(const keyspec& keyspec);
 /**
  * Get name for command.
  *
  * Returns: The name.
  */
-	std::string getname() throw(std::bad_alloc);
+	std::string getname();
 /**
  * Notify mapper dying.
  */
@@ -408,7 +404,7 @@ public:
  * Parameter axis: If true, create a axis-type key.
  */
 	ctrlrkey(mapper& kmapper, const std::string& command, const std::string& name,
-		bool axis = false) throw(std::bad_alloc);
+		bool axis = false);
 /**
  * Destructor.
  */
@@ -420,7 +416,7 @@ public:
 /**
  * Get the trigger key.
  */
-	std::string get_string(unsigned index) throw(std::bad_alloc);
+	std::string get_string(unsigned index);
 /**
  * Set the trigger key (appends).
  */
@@ -428,7 +424,7 @@ public:
 /**
  * Set the trigger key (appends).
  */
-	void append(const std::string& key) throw(std::bad_alloc, std::runtime_error);
+	void append(const std::string& key);
 /**
  * Remove the trigger key.
  */

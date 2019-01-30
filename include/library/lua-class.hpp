@@ -377,7 +377,6 @@ public:
  * Throws std::runtime_error: Wrong type.
  */
 	static T* get(state& _state, int arg, const std::string& fname, bool optional = false)
-		throw(std::bad_alloc, std::runtime_error)
 	{
 		return objclass<T>()._get(_state, arg, fname, optional);
 	}
@@ -433,8 +432,7 @@ public:
  * Parameter fname: Name of function for error message purposes.
  * Throws std::runtime_error: Wrong type.
  */
-	static objpin<T> pin(state& _state, int arg, const std::string& fname) throw(std::bad_alloc,
-		std::runtime_error)
+	static objpin<T> pin(state& _state, int arg, const std::string& fname)
 	{
 		return objclass<T>()._pin(_state, arg, fname);
 	}

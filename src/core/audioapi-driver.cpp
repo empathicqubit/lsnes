@@ -42,8 +42,7 @@ namespace
 		return true;
 	}
 
-	void dummy_set_device(const std::string& pdev, const std::string& rdev) throw(std::bad_alloc,
-		std::runtime_error)
+	void dummy_set_device(const std::string& pdev, const std::string& rdev)
 	{
 		if(pdev != "null")
 			throw std::runtime_error("Bad sound device '" + pdev + "'");
@@ -51,12 +50,12 @@ namespace
 			throw std::runtime_error("Bad sound device '" + rdev + "'");
 	}
 
-	std::string dummy_get_device(bool rec) throw(std::bad_alloc)
+	std::string dummy_get_device(bool rec)
 	{
 		return "null";
 	}
 
-	std::map<std::string, std::string> dummy_get_devices(bool rec) throw(std::bad_alloc)
+	std::map<std::string, std::string> dummy_get_devices(bool rec)
 	{
 		std::map<std::string, std::string> ret;
 		ret["null"] = "NULL sound output";
@@ -102,18 +101,17 @@ bool audioapi_driver_initialized()
 	return driver.initialized();
 }
 
-void audioapi_driver_set_device(const std::string& pdev, const std::string& rdev) throw(std::bad_alloc,
-	std::runtime_error)
+void audioapi_driver_set_device(const std::string& pdev, const std::string& rdev)
 {
 	driver.set_device(pdev, rdev);
 }
 
-std::string audioapi_driver_get_device(bool rec) throw(std::bad_alloc)
+std::string audioapi_driver_get_device(bool rec)
 {
 	return driver.get_device(rec);
 }
 
-std::map<std::string, std::string> audioapi_driver_get_devices(bool rec) throw(std::bad_alloc)
+std::map<std::string, std::string> audioapi_driver_get_devices(bool rec)
 {
 	return driver.get_devices(rec);
 }

@@ -21,7 +21,7 @@ namespace {
 	typedef stateobject::type<keyboard, keyboard_internal> keyboard_internal_t;
 }
 
-void keyboard::do_register(const std::string& name, modifier& mod) throw(std::bad_alloc)
+void keyboard::do_register(const std::string& name, modifier& mod)
 {
 	threads::arlock u(get_keyboard_lock());
 	auto& state = keyboard_internal_t::get(this);
@@ -37,7 +37,7 @@ void keyboard::do_unregister(const std::string& name, modifier& mod) throw()
 	state->modifiers.erase(name);
 }
 
-modifier& keyboard::lookup_modifier(const std::string& name) throw(std::runtime_error)
+modifier& keyboard::lookup_modifier(const std::string& name)
 {
 	modifier* m = try_lookup_modifier(name);
 	if(!m)
@@ -54,7 +54,7 @@ modifier* keyboard::try_lookup_modifier(const std::string& name) throw()
 	return state->modifiers[name];
 }
 
-std::list<modifier*> keyboard::all_modifiers() throw(std::bad_alloc)
+std::list<modifier*> keyboard::all_modifiers()
 {
 	threads::arlock u(get_keyboard_lock());
 	auto state = keyboard_internal_t::get_soft(this);
@@ -65,7 +65,7 @@ std::list<modifier*> keyboard::all_modifiers() throw(std::bad_alloc)
 	return r;
 }
 
-void keyboard::do_register(const std::string& name, key& key) throw(std::bad_alloc)
+void keyboard::do_register(const std::string& name, key& key)
 {
 	threads::arlock u(get_keyboard_lock());
 	auto& state = keyboard_internal_t::get(this);
@@ -81,7 +81,7 @@ void keyboard::do_unregister(const std::string& name, key& key) throw()
 	state->keys.erase(name);
 }
 
-key& keyboard::lookup_key(const std::string& name) throw(std::runtime_error)
+key& keyboard::lookup_key(const std::string& name)
 {
 	key* m = try_lookup_key(name);
 	if(!m)
@@ -98,7 +98,7 @@ key* keyboard::try_lookup_key(const std::string& name) throw()
 	return state->keys[name];
 }
 
-std::list<key*> keyboard::all_keys() throw(std::bad_alloc)
+std::list<key*> keyboard::all_keys()
 {
 	threads::arlock u(get_keyboard_lock());
 	auto state = keyboard_internal_t::get_soft(this);
@@ -130,7 +130,7 @@ key* keyboard::get_current_key() throw()
 	return current_key;
 }
 
-keyboard::keyboard() throw(std::bad_alloc)
+keyboard::keyboard()
 {
 }
 
@@ -142,20 +142,19 @@ keyboard::~keyboard() throw()
 	keyboard_internal_t::clear(this);
 }
 
-void modifier_set::add(modifier& mod, bool really) throw(std::bad_alloc)
+void modifier_set::add(modifier& mod, bool really)
 {
 	if(really)
 		set.insert(&mod);
 }
 
-void modifier_set::remove(modifier& mod, bool really) throw(std::bad_alloc)
+void modifier_set::remove(modifier& mod, bool really)
 {
 	if(really)
 		set.erase(&mod);
 }
 
 modifier_set modifier_set::construct(keyboard& kbd, const std::string& _modifiers)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	modifier_set set;
 	std::string modifiers = _modifiers;
@@ -173,7 +172,7 @@ modifier_set modifier_set::construct(keyboard& kbd, const std::string& _modifier
 	return set;
 }
 
-bool modifier_set::valid(modifier_set& mask) throw(std::bad_alloc)
+bool modifier_set::valid(modifier_set& mask)
 {
 	//No element can be together with its linkage group.
 	for(auto i : set) {
@@ -219,7 +218,7 @@ bool modifier_set::operator<(const modifier_set& m) const throw()
 	return (i2 != m.set.end());
 }
 
-modifier_set::operator std::string() const throw(std::bad_alloc)
+modifier_set::operator std::string() const
 {
 	std::string r;
 	for(auto i : set)
@@ -237,7 +236,6 @@ std::ostream& operator<<(std::ostream& os, const modifier_set& m)
 }
 
 bool modifier_set::triggers(const modifier_set& trigger, const modifier_set& mask)
-	throw(std::bad_alloc)
 {
 	for(auto i : mask.set) {
 		bool trigger_exact = trigger.set.count(i);
@@ -332,14 +330,14 @@ int32_t event_hat::get_state() const throw()
 }
 
 key::key(keyboard& keyb, const std::string& _name, const std::string& _clazz,
-	keytype _type) throw(std::bad_alloc)
+	keytype _type)
 	:  kbd(keyb), clazz(_clazz), name(_name), type(_type)
 {
 	exclusive_listener = NULL;
 	kbd.do_register(name, *this);
 }
 
-void key::add_listener(event_listener& listener, bool analog) throw(std::bad_alloc)
+void key::add_listener(event_listener& listener, bool analog)
 {
 	if(analog) {
 		analog_listeners.insert(&listener);
@@ -411,7 +409,6 @@ key_mouse* key::cast_mouse() throw()
 }
 
 key_key::key_key(keyboard& keyb, const std::string& name, const std::string& clazz)
-	throw(std::bad_alloc)
 	: key(keyb, name, clazz, keytype::KBD_KEYTYPE_KEY)
 {
 	state = 0;
@@ -439,7 +436,7 @@ void key_key::set_state(modifier_set mods, int32_t _state) throw()
 int32_t key_key::get_state() const throw() { return state; }
 int32_t key_key::get_state_digital() const throw() { return state; }
 
-std::vector<std::string> key_key::get_subkeys() throw(std::bad_alloc)
+std::vector<std::string> key_key::get_subkeys()
 {
 	std::vector<std::string> r;
 	r.push_back("");
@@ -447,7 +444,6 @@ std::vector<std::string> key_key::get_subkeys() throw(std::bad_alloc)
 }
 
 key_hat::key_hat(keyboard& keyb, const std::string& name, const std::string& clazz)
-	throw(std::bad_alloc)
 	: key(keyb, name, clazz, keytype::KBD_KEYTYPE_HAT)
 {
 	state = 0;
@@ -483,7 +479,7 @@ void key_hat::set_state(modifier_set mods, int32_t _state) throw()
 int32_t key_hat::get_state() const throw() { return state; }
 int32_t key_hat::get_state_digital() const throw() { return state; }
 
-std::vector<std::string> key_hat::get_subkeys() throw(std::bad_alloc)
+std::vector<std::string> key_hat::get_subkeys()
 {
 	std::vector<std::string> r;
 	r.push_back("n");
@@ -494,7 +490,7 @@ std::vector<std::string> key_hat::get_subkeys() throw(std::bad_alloc)
 }
 
 key_axis::key_axis(keyboard& keyb, const std::string& name, const std::string& clazz,
-	int mode) throw(std::bad_alloc)
+	int mode)
 	: key(keyb, name, clazz, keytype::KBD_KEYTYPE_AXIS)
 {
 	rawstate = 0;
@@ -526,7 +522,7 @@ int key_axis::get_mode() const throw()
 	return _mode;
 }
 
-std::vector<std::string> key_axis::get_subkeys() throw(std::bad_alloc)
+std::vector<std::string> key_axis::get_subkeys()
 {
 	threads::arlock u(get_keyboard_lock());
 	std::vector<std::string> r;
@@ -580,7 +576,7 @@ void key_axis::set_mode(int mode, double tolerance) throw()
 }
 
 key_mouse::key_mouse(keyboard& keyb, const std::string& name, const std::string& clazz,
-	mouse_calibration _cal) throw(std::bad_alloc)
+	mouse_calibration _cal)
 	: key(keyb, name, clazz, keytype::KBD_KEYTYPE_MOUSE)
 {
 	rawstate = 0;
@@ -596,7 +592,7 @@ int32_t key_mouse::get_state() const throw()
 	return cal.get_calibrated_value(rawstate);
 }
 
-std::vector<std::string> key_mouse::get_subkeys() throw(std::bad_alloc)
+std::vector<std::string> key_mouse::get_subkeys()
 {
 	return std::vector<std::string>();
 }

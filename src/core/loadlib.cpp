@@ -171,13 +171,13 @@ namespace
 	}
 
 	command::fnptr<command::arg_filename> CMD_load_library(lsnes_cmds, CLOADLIB::load,
-		[](command::arg_filename args) throw(std::bad_alloc, std::runtime_error) {
+		[](command::arg_filename args) {
 			with_loaded_library(*new loadlib::module(loadlib::library(args)));
 			handle_post_loadlibrary();
 		});
 
 	command::fnptr<const std::string&> CMD_unload_library(lsnes_cmds, CLOADLIB::unload,
-		[](const std::string& args) throw(std::bad_alloc, std::runtime_error) {
+		[](const std::string& args) {
 			unsigned libid = parse_value<unsigned>(args);
 			if(!modules.count(libid))
 				throw std::runtime_error("No such library loaded");
@@ -186,7 +186,7 @@ namespace
 		});
 
 	command::fnptr<> CMD_list_library(lsnes_cmds, CLOADLIB::list,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			for(auto i : modules)
 				messages << "#" << i.first << " [" << i.second->get_libname() << "]" << std::endl;
 		});

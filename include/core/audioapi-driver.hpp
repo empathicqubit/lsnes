@@ -59,22 +59,21 @@ bool audioapi_driver_initialized();
  * Parameter pdev: The new sound device (playback).
  * Parameter rdev: The new sound device (recording)
  */
-void audioapi_driver_set_device(const std::string& pdev, const std::string& rdev) throw(std::bad_alloc,
-	 std::runtime_error);
+void audioapi_driver_set_device(const std::string& pdev, const std::string& rdev);
 
 /**
  * Get current sound device (playback).
  *
  * Returns: The current sound device.
  */
-std::string audioapi_driver_get_device(bool rec) throw(std::bad_alloc);
+std::string audioapi_driver_get_device(bool rec);
 
 /**
  * Get available sound devices (playback).
  *
  * Returns: The map of devices. Keyed by name of the device, values are human-readable names for devices.
  */
-std::map<std::string, std::string> audioapi_driver_get_devices(bool rec) throw(std::bad_alloc);
+std::map<std::string, std::string> audioapi_driver_get_devices(bool rec);
 
 /**
  * Identification for sound plugin.

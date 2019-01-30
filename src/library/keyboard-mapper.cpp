@@ -38,7 +38,7 @@ invbind_set::listener::~listener()
 {
 }
 
-std::string mapper::fixup_command_polarity(std::string cmd, bool polarity) throw(std::bad_alloc)
+std::string mapper::fixup_command_polarity(std::string cmd, bool polarity)
 {
 	if(cmd == "" || cmd == "*")
 		return "";
@@ -56,11 +56,11 @@ std::string mapper::fixup_command_polarity(std::string cmd, bool polarity) throw
 	return cmd;
 }
 
-keyspec::keyspec() throw(std::bad_alloc)
+keyspec::keyspec()
 {
 }
 
-keyspec::keyspec(const std::string& keyspec) throw(std::bad_alloc, std::runtime_error)
+keyspec::keyspec(const std::string& keyspec)
 {
 	regex_results r = regex("([^/]*)/([^|]*)\\|(.*)", keyspec, "Invalid keyspec");
 	mod = r[1];
@@ -68,7 +68,7 @@ keyspec::keyspec(const std::string& keyspec) throw(std::bad_alloc, std::runtime_
 	key = r[3];
 }
 
-keyspec::operator std::string() throw(std::bad_alloc)
+keyspec::operator std::string()
 {
 	return mod + "/" + mask + "|" + key;
 }
@@ -100,7 +100,7 @@ bool keyspec::operator!=(const keyspec& keyspec)
 	return (mod != keyspec.mod || mask != keyspec.mask || key != keyspec.key);
 }
 
-std::set<invbind*> mapper::get_inverses() throw(std::bad_alloc)
+std::set<invbind*> mapper::get_inverses()
 {
 	threads::arlock u(get_keymap_lock());
 	auto state = mapper_internal_t::get_soft(this);
@@ -111,7 +111,7 @@ std::set<invbind*> mapper::get_inverses() throw(std::bad_alloc)
 	return r;
 }
 
-invbind* mapper::get_inverse(const std::string& command) throw(std::bad_alloc)
+invbind* mapper::get_inverse(const std::string& command)
 {
 	threads::arlock u(get_keymap_lock());
 	auto state = mapper_internal_t::get_soft(this);
@@ -121,7 +121,7 @@ invbind* mapper::get_inverse(const std::string& command) throw(std::bad_alloc)
 		return NULL;
 }
 
-std::set<ctrlrkey*> mapper::get_controller_keys() throw(std::bad_alloc)
+std::set<ctrlrkey*> mapper::get_controller_keys()
 {
 	threads::arlock u(get_keymap_lock());
 	auto state = mapper_internal_t::get_soft(this);
@@ -132,7 +132,7 @@ std::set<ctrlrkey*> mapper::get_controller_keys() throw(std::bad_alloc)
 	return r;
 }
 
-ctrlrkey* mapper::get_controllerkey(const std::string& command) throw(std::bad_alloc)
+ctrlrkey* mapper::get_controllerkey(const std::string& command)
 {
 	threads::arlock u(get_keymap_lock());
 	auto state = mapper_internal_t::get_soft(this);
@@ -142,7 +142,7 @@ ctrlrkey* mapper::get_controllerkey(const std::string& command) throw(std::bad_a
 		return NULL;
 }
 
-void mapper::do_register(const std::string& name, invbind& ibind) throw(std::bad_alloc)
+void mapper::do_register(const std::string& name, invbind& ibind)
 {
 	threads::arlock u(get_keymap_lock());
 	auto& state = mapper_internal_t::get(this);
@@ -155,7 +155,7 @@ void mapper::do_register(const std::string& name, invbind& ibind) throw(std::bad
 		}
 }
 
-void mapper::do_unregister(const std::string& name, invbind& ibind) throw(std::bad_alloc)
+void mapper::do_unregister(const std::string& name, invbind& ibind)
 {
 	threads::arlock u(get_keymap_lock());
 	auto state = mapper_internal_t::get_soft(this);
@@ -163,7 +163,7 @@ void mapper::do_unregister(const std::string& name, invbind& ibind) throw(std::b
 		state->ibinds.erase(name);
 }
 
-void mapper::do_register(const std::string& name, ctrlrkey& ckey) throw(std::bad_alloc)
+void mapper::do_register(const std::string& name, ctrlrkey& ckey)
 {
 	threads::arlock u(get_keymap_lock());
 	auto& state = mapper_internal_t::get(this);
@@ -171,7 +171,7 @@ void mapper::do_register(const std::string& name, ctrlrkey& ckey) throw(std::bad
 	state.ckeys[name] = &ckey;
 }
 
-void mapper::do_unregister(const std::string& name, ctrlrkey& ckey) throw(std::bad_alloc)
+void mapper::do_unregister(const std::string& name, ctrlrkey& ckey)
 {
 	threads::arlock u(get_keymap_lock());
 	auto state = mapper_internal_t::get_soft(this);
@@ -184,7 +184,7 @@ keyboard& mapper::get_keyboard() throw()
 	return kbd;
 }
 
-mapper::mapper(keyboard& _kbd, command::group& _domain) throw(std::bad_alloc)
+mapper::mapper(keyboard& _kbd, command::group& _domain)
 	: _listener(*this), kbd(_kbd), domain(_domain)
 {
 }
@@ -258,7 +258,7 @@ bool mapper::triplet::operator==(const struct triplet& a) const
 	return true;
 }
 
-keyspec mapper::triplet::as_keyspec() const throw(std::bad_alloc)
+keyspec mapper::triplet::as_keyspec() const
 {
 	keyspec k;
 	k.mod = mod;
@@ -271,7 +271,7 @@ keyspec mapper::triplet::as_keyspec() const throw(std::bad_alloc)
 	return k;
 }
 
-std::list<keyspec> mapper::get_bindings() throw(std::bad_alloc)
+std::list<keyspec> mapper::get_bindings()
 {
 	threads::arlock u(get_keymap_lock());
 	auto state = mapper_internal_t::get_soft(this);
@@ -288,7 +288,6 @@ command::group& mapper::get_command_group() throw()
 }
 
 void mapper::bind(std::string mod, std::string modmask, std::string keyname, std::string command)
-	throw(std::bad_alloc, std::runtime_error)
 {
 	keyspec spec;
 	spec.mod = mod;
@@ -312,8 +311,7 @@ void mapper::bind(std::string mod, std::string modmask, std::string keyname, std
 	change_command(spec, old_command, command);
 }
 
-void mapper::unbind(std::string mod, std::string modmask, std::string keyname) throw(std::bad_alloc,
-	std::runtime_error)
+void mapper::unbind(std::string mod, std::string modmask, std::string keyname)
 {
 	keyspec spec;
 	spec.mod = mod;
@@ -332,7 +330,7 @@ void mapper::unbind(std::string mod, std::string modmask, std::string keyname) t
 	change_command(spec, old_command, "");
 }
 
-std::string mapper::get(const keyspec& keyspec) throw(std::bad_alloc)
+std::string mapper::get(const keyspec& keyspec)
 {
 	triplet t(kbd, keyspec);
 	threads::arlock u(get_keymap_lock());
@@ -363,8 +361,7 @@ void mapper::change_command(const keyspec& spec, const std::string& old, const s
 	}
 }
 
-void mapper::set(const keyspec& keyspec, const std::string& cmd) throw(std::bad_alloc,
-	std::runtime_error)
+void mapper::set(const keyspec& keyspec, const std::string& cmd)
 {
 	triplet t(kbd, keyspec);
 	threads::arlock u(get_keymap_lock());
@@ -430,7 +427,6 @@ mapper::triplet::triplet(keyboard& k, const keyspec& spec)
 }
 
 std::list<ctrlrkey*> mapper::get_controllerkeys_kbdkey(key* kbdkey)
-	throw(std::bad_alloc)
 {
 	threads::arlock u(get_keymap_lock());
 	auto state = mapper_internal_t::get_soft(this);
@@ -503,7 +499,6 @@ void mapper::listener::kill(invbind_set& s)
 }
 
 invbind::invbind(mapper& kmapper, const std::string& _command, const std::string& _name, bool dynamic)
-	throw(std::bad_alloc)
 	: _mapper(&kmapper), cmd(_command), oname(_name)
 {
 	is_dynamic = dynamic;
@@ -517,7 +512,7 @@ invbind::~invbind() throw()
 		_mapper->do_unregister(cmd, *this);
 }
 
-keyspec invbind::get(unsigned index) throw(std::bad_alloc)
+keyspec invbind::get(unsigned index)
 {
 	threads::arlock u(get_keymap_lock());
 	if(index >= specs.size())
@@ -525,7 +520,7 @@ keyspec invbind::get(unsigned index) throw(std::bad_alloc)
 	return specs[index];
 }
 
-void invbind::clear(unsigned index) throw(std::bad_alloc)
+void invbind::clear(unsigned index)
 {
 	threads::arlock u(get_keymap_lock());
 	keyspec unbind;
@@ -538,13 +533,13 @@ void invbind::clear(unsigned index) throw(std::bad_alloc)
 		_mapper->set(unbind, "");
 }
 
-void invbind::append(const keyspec& keyspec) throw(std::bad_alloc)
+void invbind::append(const keyspec& keyspec)
 {
 	threads::arlock u(get_keymap_lock());
 	_mapper->set(keyspec, cmd);
 }
 
-std::string invbind::getname() throw(std::bad_alloc)
+std::string invbind::getname()
 {
 	return oname;
 }
@@ -557,7 +552,6 @@ void invbind::mapper_died()
 }
 
 invbind_info::invbind_info(invbind_set& set, const std::string& _command, const std::string& _name)
-	throw(std::bad_alloc)
 	: in_set(&set)
 {
 	command = _command;
@@ -632,7 +626,7 @@ void invbind_set::do_unregister(const std::string& name, invbind_info& info)
 		i->destroy(*this, name);
 }
 
-void invbind_set::add_callback(invbind_set::listener& listener) throw(std::bad_alloc)
+void invbind_set::add_callback(invbind_set::listener& listener)
 {
 	threads::arlock u(get_keymap_lock());
 	auto& state = set_internal_t::get(this);
@@ -656,7 +650,7 @@ void invbind_set::drop_callback(invbind_set::listener& listener)
 }
 
 ctrlrkey::ctrlrkey(mapper& kmapper, const std::string& _command, const std::string& _name,
-	bool _axis) throw(std::bad_alloc)
+	bool _axis)
 	: _mapper(kmapper), cmd(_command), oname(_name)
 {
 	axis = _axis;
@@ -676,7 +670,7 @@ std::pair<key*, unsigned> ctrlrkey::get(unsigned index) throw()
 	return keys[index];
 }
 
-std::string ctrlrkey::get_string(unsigned index) throw(std::bad_alloc)
+std::string ctrlrkey::get_string(unsigned index)
 {
 	auto k = get(index);
 	if(!k.first)
@@ -713,14 +707,14 @@ void ctrlrkey::remove(key* _key, unsigned _subkey) throw()
 	}
 }
 
-void ctrlrkey::append(const std::string& _key) throw(std::bad_alloc, std::runtime_error)
+void ctrlrkey::append(const std::string& _key)
 {
 	auto g = keymapper_lookup_subkey(_mapper.get_keyboard(), _key, axis);
 	append(g.first, g.second);
 }
 
 std::pair<key*, unsigned> keymapper_lookup_subkey(keyboard& kbd, const std::string& name,
-	bool axis) throw(std::bad_alloc, std::runtime_error)
+	bool axis)
 {
 	threads::arlock u(get_keymap_lock());
 	if(name == "")

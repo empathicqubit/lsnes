@@ -93,7 +93,7 @@ struct platform
  * returns: The output stream.
  * throws std::bad_alloc: Not enough memory.
  */
-	static std::ostream& out() throw(std::bad_alloc);
+	static std::ostream& out();
 /**
  * Message buffer.
  */
@@ -110,7 +110,7 @@ struct platform
  * parameter msg: The messages to add (split by '\n').
  * throws std::bad_alloc: Not enough memory.
  */
-	static void message(const std::string& msg) throw(std::bad_alloc);
+	static void message(const std::string& msg);
 /**
  * Displays fatal error message, quitting after the user acks it (called by fatal_error()).
  *
@@ -140,7 +140,7 @@ struct platform
 /**
  * Get sound device description.
  */
-	static std::string get_sound_device_description(bool rec) throw(std::bad_alloc);
+	static std::string get_sound_device_description(bool rec);
 /**
  * Show error message dialog after UI thread becomes free.
  *

@@ -30,7 +30,7 @@ public:
  *
  * Throws std::logic_error: If read count is 0.
  */
-	void put_read() throw(std::logic_error);
+	void put_read();
 /**
  * Get write pointer and increment write count by 1.
  *
@@ -45,7 +45,7 @@ public:
  *
  * Throws std::logic_error: If write count is 0.
  */
-	void put_write() throw(std::logic_error);
+	void put_write();
 /**
  * Call specified function synchronously for last written buffer.
  *
@@ -94,7 +94,7 @@ public:
  *
  * Throws std::logic_error: If read count is 0.
  */
-	void put_read() throw(std::logic_error) { l.put_read(); }
+	void put_read() { l.put_read(); }
 /**
  * Get write pointer and increment write count by 1.
  *
@@ -109,7 +109,7 @@ public:
  *
  * Throws std::logic_error: If write count is 0.
  */
-	void put_write() throw(std::logic_error) { l.put_write(); }
+	void put_write() { l.put_write(); }
 /**
  * Call specified function synchronously for last written buffer.
  *

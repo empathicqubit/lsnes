@@ -105,7 +105,7 @@ void emu_framebuffer::do_screenshot(command::arg_filename file)
 	messages << "Saved PNG screenshot to '" << fn << "'" << std::endl;
 }
 
-void emu_framebuffer::take_screenshot(const std::string& file) throw(std::bad_alloc, std::runtime_error)
+void emu_framebuffer::take_screenshot(const std::string& file)
 {
 	render_info& ri = buffering.get_read();
 	ri.fbuf.save_png(file);
@@ -113,7 +113,7 @@ void emu_framebuffer::take_screenshot(const std::string& file) throw(std::bad_al
 }
 
 
-void emu_framebuffer::init_special_screens() throw(std::bad_alloc)
+void emu_framebuffer::init_special_screens()
 {
 	std::vector<uint32_t> buf;
 	buf.resize(512*448);
@@ -211,7 +211,7 @@ std::pair<uint32_t, uint32_t> emu_framebuffer::get_framebuffer_size()
 	return std::make_pair(h, v);
 }
 
-framebuffer::raw emu_framebuffer::get_framebuffer() throw(std::bad_alloc)
+framebuffer::raw emu_framebuffer::get_framebuffer()
 {
 	render_info& ri = buffering.get_read();
 	framebuffer::raw copy = ri.fbuf;

@@ -96,7 +96,7 @@ void fatal_error() throw()
 	exit(1);
 }
 
-std::string get_config_path() throw(std::bad_alloc)
+std::string get_config_path()
 {
 	const char* tmp;
 	std::string basedir;

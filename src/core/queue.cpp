@@ -39,21 +39,21 @@ keypress_info::keypress_info(keyboard::modifier_set mod, keyboard::key& _key, ke
 }
 
 
-void input_queue::queue(const keypress_info& k) throw(std::bad_alloc)
+void input_queue::queue(const keypress_info& k)
 {
 	threads::alock h(queue_lock);
 	keypresses.push_back(k);
 	queue_condition.notify_all();
 }
 
-void input_queue::queue(const std::string& c) throw(std::bad_alloc)
+void input_queue::queue(const std::string& c)
 {
 	threads::alock h(queue_lock);
 	commands.push_back(std::make_pair(nullptr, c));
 	queue_condition.notify_all();
 }
 
-void input_queue::queue(const char* c, const std::string& a) throw(std::bad_alloc)
+void input_queue::queue(const char* c, const std::string& a)
 {
 	threads::alock h(queue_lock);
 	commands.push_back(std::make_pair(c, a));
@@ -61,7 +61,6 @@ void input_queue::queue(const char* c, const std::string& a) throw(std::bad_allo
 }
 
 void input_queue::queue(std::function<void()> f, std::function<void(std::exception& e)> onerror, bool sync)
-	throw(std::bad_alloc)
 {
 	if(!system_thread_available) {
 		try {

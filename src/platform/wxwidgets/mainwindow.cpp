@@ -1896,7 +1896,7 @@ namespace
 	struct command::stub _exit_fullscreen = {"exit-fullscreen", "Exit fullscreen",
 		"Syntax: exit_fullscreen\nExit fullscreen"};
 	command::fnptr<> exit_fullscreen(lsnes_cmds, _exit_fullscreen,
-		[]() throw(std::bad_alloc, std::runtime_error) {
+		[]() {
 			runuifun([]() {
 				if(is_fs)
 					main_window->enter_or_leave_fullscreen(false);

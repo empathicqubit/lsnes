@@ -16,13 +16,13 @@ namespace
 	globalwrap<std::set<dumper_factory_base::notifier*>> S_notifiers;
 }
 
-master_dumper::gameinfo::gameinfo() throw(std::bad_alloc)
+master_dumper::gameinfo::gameinfo()
 {
 	length = 0;
 	rerecords = "0";
 }
 
-std::string master_dumper::gameinfo::get_readable_time(unsigned digits) const throw(std::bad_alloc)
+std::string master_dumper::gameinfo::get_readable_time(unsigned digits) const
 {
 	double bias = 0.5 * pow(10, -static_cast<int>(digits));
 	double len = length + bias;
@@ -53,7 +53,7 @@ size_t master_dumper::gameinfo::get_author_count() const throw()
 	return authors.size();
 }
 
-std::string master_dumper::gameinfo::get_author_short(size_t idx) const throw(std::bad_alloc)
+std::string master_dumper::gameinfo::get_author_short(size_t idx) const
 {
 	if(idx >= authors.size())
 		return "";
@@ -64,7 +64,7 @@ std::string master_dumper::gameinfo::get_author_short(size_t idx) const throw(st
 		return x.first;
 }
 
-std::string master_dumper::gameinfo::get_author_long(size_t idx) const throw(std::bad_alloc)
+std::string master_dumper::gameinfo::get_author_long(size_t idx) const
 {
 	if(idx >= authors.size())
 		return "";
@@ -118,7 +118,7 @@ dumper_factory_base::~dumper_factory_base()
 	run_notify();
 }
 
-std::set<dumper_factory_base*> dumper_factory_base::get_dumper_set() throw(std::bad_alloc)
+std::set<dumper_factory_base*> dumper_factory_base::get_dumper_set()
 {
 	std::set<dumper_factory_base*> d;
 	for(auto i : S_dumpers())
@@ -126,7 +126,7 @@ std::set<dumper_factory_base*> dumper_factory_base::get_dumper_set() throw(std::
 	return d;
 }
 
-dumper_factory_base::dumper_factory_base(const std::string& id) throw(std::bad_alloc)
+dumper_factory_base::dumper_factory_base(const std::string& id)
 {
 	d_id = id;
 	S_dumpers()[d_id] = this;
@@ -200,7 +200,7 @@ dumper_base* master_dumper::get_instance(dumper_factory_base* f) throw()
 }
 
 dumper_base* master_dumper::start(dumper_factory_base& factory, const std::string& mode,
-	const std::string& targetname) throw(std::bad_alloc, std::runtime_error)
+	const std::string& targetname)
 {
 	threads::arlock h(lock);
 	auto f = factory.start(*this, mode, targetname);

@@ -312,7 +312,7 @@ namespace
 	}
 }
 
-state::state() throw(std::bad_alloc)
+state::state()
 {
 	master = NULL;
 	lua_handle = NULL;
@@ -464,7 +464,7 @@ bool state::charge_memory(size_t amount, bool release)
 	}
 }
 
-function::function(function_group& _group, const std::string& func) throw(std::bad_alloc)
+function::function(function_group& _group, const std::string& func)
 	: group(_group)
 {
 	group.do_register(fname = func, *this);
@@ -487,7 +487,7 @@ class_base::~class_base() throw()
 		group.do_unregister(name, *this);
 }
 
-void state::reset() throw(std::bad_alloc, std::runtime_error)
+void state::reset()
 {
 	if(master)
 		return master->reset();

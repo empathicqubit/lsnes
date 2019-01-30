@@ -58,7 +58,7 @@ namespace
 		~bps_patcher() throw();
 		bool identify(const std::vector<char>& patch) throw();
 		void dopatch(std::vector<char>& out, const std::vector<char>& original,
-			const std::vector<char>& patch, int32_t offset) throw(std::bad_alloc, std::runtime_error);
+			const std::vector<char>& patch, int32_t offset);
 	} bpspatch;
 
 	bps_patcher::~bps_patcher() throw()
@@ -71,7 +71,7 @@ namespace
 	}
 
 	void bps_patcher::dopatch(std::vector<char>& out, const std::vector<char>& original,
-		const std::vector<char>& patch, int32_t offset) throw(std::bad_alloc, std::runtime_error)
+		const std::vector<char>& patch, int32_t offset)
 	{
 		if(offset)
 			(stringfmt() << "Nonzero offsets (" << offset << ") not allowed in BPS mode.").throwex();

@@ -43,8 +43,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Loading ROM file failed.
  */
-	rom_image(const std::string& file, const std::string& tmpprefer = "") throw(std::bad_alloc,
-		std::runtime_error);
+	rom_image(const std::string& file, const std::string& tmpprefer = "");
 /**
  * Take a ROM and load it.
  */
@@ -63,7 +62,7 @@ public:
  * throws std::bad_alloc: Not enough memory.
  * throws std::runtime_error: Loading ROM file failed.
  */
-	rom_image(const std::string& file, core_type& ctype) throw(std::bad_alloc, std::runtime_error);
+	rom_image(const std::string& file, core_type& ctype);
 /**
  * Destroy ROM image.
  */
@@ -112,7 +111,7 @@ public:
  * retruns: True if gamepak, false if not.
  * throws std::runtime_error: No such file.
  */
-	static bool is_gamepak(const std::string& filename) throw(std::bad_alloc, std::runtime_error);
+	static bool is_gamepak(const std::string& filename);
 	//ROM functions.
 	std::list<core_region*> get_regions() { return rtype->get_regions(); }
 	const std::string& get_hname() { return rtype->get_hname(); }
@@ -144,8 +143,7 @@ private:
 	bool put() { threads::alock l(usage_lock); return !--usage_count; }
 	friend class rom_image_handle;
 	//Handle bundle load case.
-	void load_bundle(const std::string& file, std::istream& spec, const std::string& tmpprefer)
-		throw(std::bad_alloc, std::runtime_error);
+	void load_bundle(const std::string& file, std::istream& spec, const std::string& tmpprefer);
 	//Tracker.
 	memtracker::autorelease tracker;
 };

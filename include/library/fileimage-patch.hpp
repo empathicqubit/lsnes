@@ -10,7 +10,7 @@
 namespace fileimage
 {
 std::vector<char> patch(const std::vector<char>& original, const std::vector<char>& patch,
-	int32_t offset) throw(std::bad_alloc, std::runtime_error);
+	int32_t offset);
 
 /**
  * ROM patcher.
@@ -20,7 +20,7 @@ struct patcher
 /**
  * Constructor.
  */
-	patcher() throw(std::bad_alloc);
+	patcher();
 /**
  * Destructor.
  */
@@ -36,7 +36,7 @@ struct patcher
  * Do the patch.
  */
 	virtual void dopatch(std::vector<char>& out, const std::vector<char>& original,
-		const std::vector<char>& patch, int32_t offset) throw(std::bad_alloc, std::runtime_error) = 0;
+		const std::vector<char>& patch, int32_t offset) = 0;
 };
 }
 

@@ -22,8 +22,7 @@ public:
  * throws std::bad_alloc: Not enough memory
  * throws std::runtime_error: Error opening .sox file
  */
-	sox_dumper(const std::string& filename, double samplerate, uint32_t channels) throw(std::bad_alloc,
-		std::runtime_error);
+	sox_dumper(const std::string& filename, double samplerate, uint32_t channels);
 
 /**
  * Destructor.
@@ -36,7 +35,7 @@ public:
  * throws std::bad_alloc: Not enough memory
  * throws std::runtime_error: Error fixing and closing .sox file
  */
-	void close() throw(std::bad_alloc, std::runtime_error);
+	void close();
 
 /**
  * Dump a sample

@@ -65,7 +65,7 @@ public:
  * Parameter ptype: The new types for ports.
  * Throws std::runtime_error: Illegal port type.
  */
-	void set_ports(const portctrl::type_set& ptype) throw(std::runtime_error);
+	void set_ports(const portctrl::type_set& ptype);
 /**
  * Get status of current controls (with autohold/autofire factored in).
  *

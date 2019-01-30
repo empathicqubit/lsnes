@@ -19,7 +19,7 @@ public:
 /**
  * Register the pixel format.
  */
-	pixfmt() throw(std::bad_alloc);
+	pixfmt();
 /**
  * Decode pixel format data into RGB data (0, R, G, B).
  */
@@ -39,12 +39,12 @@ public:
  * Create aux palette.
  */
 	virtual void set_palette(auxpalette<false>& auxp, uint8_t rshift, uint8_t gshift,
-		uint8_t bshift) throw(std::bad_alloc) = 0;
+		uint8_t bshift) = 0;
 /**
  * Create aux palette.
  */
 	virtual void set_palette(auxpalette<true>& auxp, uint8_t rshift, uint8_t gshift,
-		uint8_t bshift) throw(std::bad_alloc) = 0;
+		uint8_t bshift) = 0;
 /**
  * Bytes per pixel in data.
  */
