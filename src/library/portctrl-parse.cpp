@@ -449,9 +449,9 @@ std::string pcs_write_class(const struct controller_set& pset, unsigned& tmp_idx
 		s << "\t\t\t\t}\n";
 		s << "\t\t\treturn 0;\n";
 	}
-	s << "\t\t\treturn 0;\n";
+	s << "\t\t\tdefault:\n";
+	s << "\t\t\t\treturn 0;\n";
 	s << "\t\t\t}\n";
-	s << "\t\t\treturn 0;\n";
 	s << "\t\t};\n";
 	s << "\t\tserialize = [](const portctrl::type* _this, const unsigned char* buffer, char* textbuf) -> "
 		<< "size_t {\n";

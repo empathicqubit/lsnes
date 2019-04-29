@@ -678,9 +678,11 @@ namespace
 		expr_val()
 		{
 			type = T_NUMERIC;
+			v_boolean = false;
 		}
 		expr_val(const std::string& str, bool string)
 		{
+			v_boolean = false;
 			if(string) {
 				v_string = str;
 				type = T_STRING;
@@ -702,15 +704,15 @@ namespace
 			}
 		}
 		expr_val(typeinfo_wrapper<expr_val>::unsigned_tag t, uint64_t v)
-			: type(T_NUMERIC), v_numeric(expr_val_numeric::unsigned_tag(), v)
+			: type(T_NUMERIC), v_boolean(false), v_numeric(expr_val_numeric::unsigned_tag(), v)
 		{
 		}
 		expr_val(typeinfo_wrapper<expr_val>::signed_tag t, int64_t v)
-			: type(T_NUMERIC), v_numeric(expr_val_numeric::signed_tag(), v)
+			: type(T_NUMERIC), v_boolean(false), v_numeric(expr_val_numeric::signed_tag(), v)
 		{
 		}
 		expr_val(typeinfo_wrapper<expr_val>::float_tag t, double v)
-			: type(T_NUMERIC), v_numeric(expr_val_numeric::float_tag(), v)
+			: type(T_NUMERIC), v_boolean(false), v_numeric(expr_val_numeric::float_tag(), v)
 		{
 		}
 		expr_val(typeinfo_wrapper<expr_val>::boolean_tag, bool b)
@@ -718,11 +720,11 @@ namespace
 		{
 		}
 		expr_val(expr_val_numeric v)
-			: type(T_NUMERIC), v_numeric(v)
+			: type(T_NUMERIC), v_boolean(false), v_numeric(v)
 		{
 		}
 		expr_val(string_tag, std::string s)
-			: type(T_STRING), v_string(s)
+			: type(T_STRING), v_boolean(false), v_string(s)
 		{
 		}
 		expr_val(boolean_tag, bool b)

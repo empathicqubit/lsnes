@@ -140,8 +140,8 @@ http_request::http_request(const std::string& verb, const std::string& url)
 		has_body = true;
 	} else
 		throw std::runtime_error("Unknown HTTP verb");
-		auto err = curl_easy_setopt((CURL*)handle, CURLOPT_URL, url.c_str());
-		if(err) throw std::runtime_error(curl_easy_strerror(err));
+	auto err = curl_easy_setopt((CURL*)handle, CURLOPT_URL, url.c_str());
+	if(err) throw std::runtime_error(curl_easy_strerror(err));
 }
 
 void http_request::do_transfer(input_handler* inhandler, output_handler* outhandler)

@@ -41,11 +41,11 @@ namespace
 		std::pair<unsigned, unsigned> c_video_rate() { return std::make_pair(60, 1); }
 		double c_get_PAR() { return 1.0; }
 		std::pair<unsigned, unsigned> c_audio_rate() { return std::make_pair(48000, 1); }
-		std::map<std::string, std::vector<char>> c_save_sram() throw (std::bad_alloc) {
+		std::map<std::string, std::vector<char>> c_save_sram() {
 			std::map<std::string, std::vector<char>> x;
 			return x;
 		}
-		void c_load_sram(std::map<std::string, std::vector<char>>& sram) throw (std::bad_alloc) {}
+		void c_load_sram(std::map<std::string, std::vector<char>>& sram) {}
 		void c_serialize(std::vector<char>& out) { out.clear(); }
 		void c_unserialize(const char* in, size_t insize) {}
 		core_region& c_get_region() { return *this; }
