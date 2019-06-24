@@ -146,7 +146,14 @@ namespace
 
 		if(singletab) {
 			//If this throws, let it throw through.
-			settings_tab* t = singletab->create(this, inst);
+			settings_tab* t;
+			try {
+				t = singletab->create(this, inst);
+			} catch(...) {
+				//Release the key grab, so we do not crash.
+				inst.keyboard->set_exclusive(NULL);
+				throw;
+			}
 			top_s->Add(t, 1, wxGROW);
 			t->set_notify([this]() { this->on_notify(); });
 			tabs.push_back(t);
@@ -166,8 +173,11 @@ namespace
 				created++;
 			}
 			top_s->Add(tabset, 1, wxGROW);
-			if(!created)
+			if(!created) {
+				//Release the key grab, so we do not crash.
+				inst.keyboard->set_exclusive(NULL);
 				throw std::runtime_error("Nothing to configure here, move along");
+			}
 		}
 
 		wxBoxSizer* pbutton_s = new wxBoxSizer(wxHORIZONTAL);
