@@ -514,10 +514,6 @@ void wxeditor_tasinput::update_controls()
 			d.panel->SetSizer(d.rtop);
 			d.box = new wxStaticBox(d.panel, wxID_ANY, towxstring(_controller_labels[i.logical]));
 			current = d.top = new wxStaticBoxSizer(d.box, wxVERTICAL);
-#ifdef __WXMAC__
-			d.label = new wxStaticText(d.panel, wxID_ANY, towxstring(_controller_labels[i.logical]));
-			d.top->Add(d.label);
-#endif
 			d.rtop->Add(d.top);
 			hsizer->Add(d.panel);
 			panels.push_back(d);

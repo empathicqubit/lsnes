@@ -49,6 +49,10 @@
 #include <wx/cmdline.h>
 #include <iostream>
 
+#ifdef __WXMAC__
+#error "Mac OS is not supported"
+#endif
+
 #define UISERV_REFRESH_TITLE 9990
 #define UISERV_RESIZED 9991
 #define UISERV_UIFUN 9992
@@ -554,7 +558,6 @@ bool lsnes_app::OnInit()
 
 	reached_main();
 	set_random_seed();
-	bring_app_foreground();
 
 	if(pluginmanager_mode)
 		if(!wxeditor_plugin_manager_display(NULL))

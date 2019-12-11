@@ -65,7 +65,6 @@ wxString towxstring(const std::string& str);
 std::string tostdstring(const wxString& str);
 wxString towxstring(const std::u32string& str);
 std::u32string tou32string(const wxString& str);
-void bring_app_foreground();
 std::string pick_archive_member(wxWindow* parent, const std::string& filename);
 void boot_emulator(emulator_instance& inst, loaded_rom& rom, moviefile& movie, bool fscreen);
 void handle_wx_keyboard(emulator_instance& inst, wxKeyEvent& e, bool polarity);

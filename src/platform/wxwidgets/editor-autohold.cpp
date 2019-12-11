@@ -248,10 +248,6 @@ void wxeditor_autohold::update_controls()
 			d.panel->SetSizer(d.rtop);
 			d.box = new wxStaticBox(d.panel, wxID_ANY, towxstring(_controller_labels[i.logical]));
 			d.top = new wxStaticBoxSizer(d.box, wxVERTICAL);
-#ifdef __WXMAC__
-			d.label = new wxStaticText(d.panel, wxID_ANY, towxstring(_controller_labels[i.logical]));
-			d.top->Add(d.label);
-#endif
 			current = d.grid = new wxFlexGridSizer(0, 3, 0, 0);
 			d.top->Add(d.grid);
 			d.rtop->Add(d.top);

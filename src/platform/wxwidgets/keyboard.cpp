@@ -30,9 +30,6 @@ namespace
 		{ wxMOD_CONTROL, "ctrl", NULL },
 		{ wxMOD_SHIFT, "shift", NULL },
 		{ wxMOD_META, "meta", NULL },
-#ifdef __WXMAC__
-		{ wxMOD_CMD, "cmd", NULL },
-#endif
 		{ 0, NULL, NULL }
 	};
 

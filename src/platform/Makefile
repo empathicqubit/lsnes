@@ -1,4 +1,4 @@
-PLATFORMS=evdev portaudio wxwidgets win32mm libao macosx
+PLATFORMS=evdev portaudio wxwidgets win32mm libao
 ALLFILES=__all__.files
 ALLFLAGS=__all__.ldflags
 PLATFORMS_FILES=$(patsubst %,%/$(ALLFILES),$(PLATFORMS))
@@ -23,9 +23,6 @@ libao/$(ALLFILES): forcelook
 wxwidgets/$(ALLFILES): forcelook
 	$(MAKE) -C wxwidgets
 
-macosx/$(ALLFILES): forcelook
-	$(MAKE) -C macosx
-
 .PRECIOUS: %.$(OBJECT_SUFFIX) *.files
 
 precheck:
@@ -34,7 +31,6 @@ precheck:
 	$(MAKE) -C portaudio precheck
 	$(MAKE) -C libao precheck
 	$(MAKE) -C wxwidgets precheck
-	$(MAKE) -C macosx precheck
 
 clean:
 	rm -f *.$(OBJECT_SUFFIX) __all__.ldflags __all__.files
@@ -43,7 +39,6 @@ clean:
 	$(MAKE) -C portaudio clean
 	$(MAKE) -C libao clean
 	$(MAKE) -C wxwidgets clean
-	$(MAKE) -C macosx clean
 
 forcelook:
 	@true
