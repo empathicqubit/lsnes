@@ -13,13 +13,13 @@ void _pixfmt_lrgb::decode(uint32_t* target, const uint8_t* src, size_t width)
 	const uint32_t* _src = reinterpret_cast<const uint32_t*>(src);
 	for(size_t i = 0; i < width; i++) {
 		uint32_t word = _src[i];
-		uint32_t l = 1 + ((word >> 15) & 0xF);
+		uint32_t l = ((word >> 15) & 0xF);
 		uint32_t r = l * ((word >> 0) & 0x1F);
 		uint32_t g = l * ((word >> 5) & 0x1F);
 		uint32_t b = l * ((word >> 10) & 0x1F);
-		uint32_t x = (((r << 8) - r + 248) / 496) << 16;
-		x |= (((g << 8) - g + 248) / 496) << 8;
-		x |= ((b << 8) - b + 248) / 496;
+		uint32_t x = (((r << 8) - r + 232) / 465) << 16;
+		x |= (((g << 8) - g + 232) / 465) << 8;
+		x |= ((b << 8) - b + 232) / 465;
 		target[i] = x;
 	}
 }
