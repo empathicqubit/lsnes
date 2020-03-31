@@ -411,6 +411,18 @@ namespace
 		return 0;
 	}
 
+	int frob_with_value(lua::state& L, lua::parameters& P)
+	{
+		auto& core = CORE();
+		short value;
+
+		if(P.is_boolean()) value = P.arg<bool>() ? 1 : 0;
+		else if(P.is_number()) value = P.arg<short>();
+		else P.expected("number or boolean");
+		if(core.lua2->frob_output) *core.lua2->frob_output = value;
+		return 0;
+	}
+
 	int controller_info(lua::state& L, lua::parameters& P)
 	{
 		auto& core = CORE();
@@ -520,5 +532,6 @@ namespace
 		{"port_type", _port_type},
 		{"veto_button", veto_button},
 		{"controller_info", controller_info},
+		{"frob_with_value", frob_with_value},
 	});
 }

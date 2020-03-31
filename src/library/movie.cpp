@@ -138,6 +138,11 @@ bool movie::get_DRDY(unsigned port, unsigned controller, unsigned ctrl)
 	return pollcounters.get_DRDY(port, controller, ctrl);
 }
 
+void movie::set_frob_with_value(std::function<void(unsigned, unsigned, unsigned, short&)> func)
+{
+	frob_with_value = func;
+}
+
 short movie::next_input(unsigned port, unsigned controller, unsigned ctrl)
 {
 	pollcounters.clear_DRDY(port, controller, ctrl);
@@ -173,6 +178,7 @@ short movie::next_input(unsigned port, unsigned controller, unsigned ctrl)
 			return (*movie_data)[current_frame_first_subframe].axis3(port, controller, ctrl);
 		}
 		short new_value = current_controls.axis3(port, controller, ctrl);
+		frob_with_value(port, controller, ctrl, new_value);
 		//Fortunately, we know this frame is the last one in movie_data.
 		uint32_t pollcounter = pollcounters.get_polls(port, controller, ctrl);
 		if(current_frame_first_subframe + pollcounter < movie_data->size()) {
@@ -196,6 +202,7 @@ short movie::next_input(unsigned port, unsigned controller, unsigned ctrl)
 movie::movie()
 	: _listener(*this), tracker(memtracker::singleton(), movie_id, sizeof(*this))
 {
+	frob_with_value = [](unsigned a, unsigned b, unsigned c, short& d){};
 	movie_data = NULL;
 	seqno = 0;
 	readonly = false;

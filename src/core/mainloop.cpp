@@ -837,10 +837,19 @@ void init_main_callbacks()
 	ecore_callbacks = &lsnes_callbacks_obj;
 }
 
+void frob_with_value(unsigned a, unsigned b, unsigned c, short& d)
+{
+	auto& core = CORE();
+	core.lua2->callback_frob_with_value(a, b, c, d);
+}
+
+
 void main_loop(struct loaded_rom& rom, struct moviefile& initial, bool load_has_to_succeed)
 {
 	lsnes_instance.emu_thread = threads::id();
 	auto& core = CORE();
+	//Set up the frob with inputs routine.
+	core.mlogic->set_frob_with_value(frob_with_value);
 	mywindowcallbacks mywcb(*core.dispatch, *core.runmode, *core.supdater);
 	core.iqueue->system_thread_available = true;
 	//Basic initialization.

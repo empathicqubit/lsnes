@@ -53,6 +53,20 @@ namespace
 			setbutton(port, controller, button, value);
 			return 0;
 		}
+		int fast_input(lua::state& L, lua::parameters& P)
+		{
+			unsigned short a[4],m;
+			P(P.skipped(), a[0], a[1], a[2], a[3], m);
+			for(unsigned i = 0; i < 4; i++) a[i] ^= m;
+			for(unsigned i = 0; i < 16; i++) {
+				auto w = a[i / 4];
+				setbutton(1, 0, i, (w >> (6-i%4*2))&1);
+				setbutton(1, 1, i, (w >> (7-i%4*2))&1);
+				setbutton(2, 0, i, (w >> (14-i%4*2))&1);
+				setbutton(2, 1, i, (w >> (15-i%4*2))&1);
+			}
+			return 0;
+		}
 		int serialize(lua::state& L, lua::parameters& P)
 		{
 			char buf[MAX_SERIALIZED_SIZE];
@@ -660,13 +674,14 @@ namespace
 	}, &lua_inputmovie::print);
 
 	lua::_class<lua_inputframe> LUA_class_inputframe(lua_class_movie, "INPUTFRAME", {}, {
-			{"get_button", &lua_inputframe::get_button},
-			{"get_axis", &lua_inputframe::get_axis},
-			{"set_axis", &lua_inputframe::set_axis},
-			{"set_button", &lua_inputframe::set_axis},
-			{"serialize", &lua_inputframe::serialize},
-			{"unserialize", &lua_inputframe::unserialize},
-			{"get_stride", &lua_inputframe::get_stride},
+		{"get_button", &lua_inputframe::get_button},
+		{"get_axis", &lua_inputframe::get_axis},
+		{"set_axis", &lua_inputframe::set_axis},
+		{"set_button", &lua_inputframe::set_axis},
+		{"serialize", &lua_inputframe::serialize},
+		{"unserialize", &lua_inputframe::unserialize},
+		{"get_stride", &lua_inputframe::get_stride},
+		{"snes_fast_input", &lua_inputframe::fast_input},
 	}, &lua_inputframe::print);
 
 	lua::functions LUA_inputmovie_fns(lua_func_misc, "movie", {

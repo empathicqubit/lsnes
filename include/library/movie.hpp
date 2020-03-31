@@ -278,6 +278,12 @@ public:
  * Parameter data: New movie data.
  */
 	void set_movie_data(portctrl::frame_vector* data);
+/**
+ * Set callback to frob with data.
+ *
+ * Parameter func: New callback.
+ */
+	void set_frob_with_value(std::function<void(unsigned,unsigned,unsigned,short&)> func);
 private:
 	class fchange_listener : public portctrl::frame_vector::fchange_listener
 	{
@@ -290,6 +296,8 @@ private:
 	} _listener;
 	movie(const movie& mov);
 	movie& operator=(const movie& m);
+	//Frob with value.
+	std::function<void(unsigned,unsigned,unsigned,short&)> frob_with_value;
 	//Sequence number.
 	uint64_t seqno;
 	//The poll flag handling.

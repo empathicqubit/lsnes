@@ -56,6 +56,7 @@ struct lua_state
 	lua::state::callback_list* on_post_rewind;
 	lua::state::callback_list* on_set_rewind;
 	lua::state::callback_list* on_latch;
+	lua::state::callback_list* on_frob_with_value;
 
 	void callback_do_paint(struct lua::render_context* ctx, bool non_synthethic) throw();
 	void callback_do_video(struct lua::render_context* ctx, bool& kill_frame, uint32_t& hscl, uint32_t& vscl)
@@ -81,6 +82,7 @@ struct lua_state
 	bool callback_do_button(uint32_t port, uint32_t controller, uint32_t index, const char* type);
 	void callback_movie_lost(const char* what);
 	void callback_do_latch(std::list<std::string>& args);
+	void callback_frob_with_value(unsigned a, unsigned b, unsigned c, short& d);
 	void run_startup_scripts();
 	void add_startup_script(const std::string& file);
 
@@ -100,6 +102,7 @@ struct lua_state
 	uint32_t* hscl;
 	uint32_t* vscl;
 	bool* veto_flag;
+	short* frob_output;
 	std::set<std::string> hooked_keys;
 	uint64_t idle_hook_time;
 	uint64_t timer_hook_time;

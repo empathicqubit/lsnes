@@ -9,6 +9,7 @@
 
 movie_logic::movie_logic() throw()
 {
+	frob_with_value = [](unsigned a, unsigned b, unsigned c, unsigned d) {};
 	mf = NULL;
 	mov = NULL;
 	rrd = NULL;
@@ -18,6 +19,7 @@ void movie_logic::set_movie(movie& _mov, bool free_old) throw()
 {
 	auto tmp = mov;
 	mov = &_mov;
+	mov->set_frob_with_value(frob_with_value);
 	if(free_old) delete tmp;
 }
 
@@ -90,4 +92,10 @@ void movie_logic::release_memory()
 	mov = NULL;
 	delete mf;
 	mf = NULL;
+}
+
+void movie_logic::set_frob_with_value(std::function<void(unsigned,unsigned,unsigned,short&)> func)
+{
+	frob_with_value = func;
+	if(mov) mov->set_frob_with_value(func);
 }

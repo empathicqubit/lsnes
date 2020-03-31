@@ -196,6 +196,7 @@ lua_state::lua_state(lua::state& _L, command::group& _command, settingvar::group
 
 	idle_hook_time = 0x7EFFFFFFFFFFFFFFULL;
 	timer_hook_time = 0x7EFFFFFFFFFFFFFFULL;
+	frob_output = NULL;
 	veto_flag = NULL;
 	kill_frame = NULL;
 	hscl = NULL;
@@ -235,6 +236,7 @@ lua_state::lua_state(lua::state& _L, command::group& _command, settingvar::group
 	on_post_rewind = new lua::state::callback_list(L, "post_rewind", "on_post_rewind");
 	on_set_rewind = new lua::state::callback_list(L, "set_rewind", "on_set_rewind");
 	on_latch = new lua::state::callback_list(L, "latch", "on_latch");
+	on_frob_with_value = new lua::state::callback_list(L, "frob_with_value", "on_frob_with_value");
 }
 
 lua_state::~lua_state()
@@ -266,6 +268,7 @@ lua_state::~lua_state()
 	delete on_post_rewind;
 	delete on_set_rewind;
 	delete on_latch;
+	delete on_frob_with_value;
 }
 
 void lua_state::callback_do_paint(struct lua::render_context* ctx, bool non_synthetic) throw()
@@ -369,6 +372,14 @@ bool lua_state::callback_do_button(uint32_t port, uint32_t controller, uint32_t 
 	run_callback(*on_button, lua::state::store_tag(veto_flag, &flag), lua::state::numeric_tag(port),
 		lua::state::numeric_tag(controller), lua::state::numeric_tag(index), lua::state::string_tag(type));
 	return flag;
+}
+
+void lua_state::callback_frob_with_value(unsigned a, unsigned b, unsigned c, short& d)
+{
+	short value = d;
+	run_callback(*on_frob_with_value, lua::state::store_tag(frob_output, &value), lua::state::numeric_tag(a),
+		lua::state::numeric_tag(b), lua::state::numeric_tag(c), lua::state::numeric_tag(d));
+	d = value;
 }
 
 namespace

@@ -89,7 +89,12 @@ public:
  * Release memory for mov, mf and rrd.
  */
 	void release_memory();
+/**
+ * Set frob with data routine.
+ */
+	 void set_frob_with_value(std::function<void(unsigned,unsigned,unsigned,short&)> func);
 private:
+	std::function<void(unsigned,unsigned,unsigned,short&)> frob_with_value;
 	movie_logic(const movie_logic&);
 	movie_logic& operator=(const movie_logic&);
 	movie* mov;

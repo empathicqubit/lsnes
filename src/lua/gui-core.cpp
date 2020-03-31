@@ -120,6 +120,21 @@ namespace
 		return 0;
 	}
 
+	int snes_bitplane_split(lua::state& L, lua::parameters& P)
+	{
+		unsigned short a[8];
+		unsigned short b[4] = {0,0,0,0};
+		P(a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7]);
+		for(unsigned i = 0; i < 8; i++) {
+			for(unsigned j = 0; j < 4; j++) {
+				b[j] |= ((a[i] >> 2*j+0) & 1) << 7-i;
+				b[j] |= ((a[i] >> 2*j+1) & 1) << 15-i;
+			}
+		}
+		for(unsigned i = 0; i < 4; i++) L.pushnumber(b[i]);
+		return 4;
+	}
+
 	lua::functions LUA_guicore_fns(lua_func_misc, "gui", {
 		{"left_gap", lua_gui_set_gap<&lua::render_context::left_gap, false>},
 		{"right_gap", lua_gui_set_gap<&lua::render_context::right_gap, false>},
@@ -137,5 +152,6 @@ namespace
 		{"rainbow", rainbow},
 		{"kill_frame", kill_frame},
 		{"set_video_scale", set_video_scale},
+		{"snes_bitplane_split", snes_bitplane_split},
 	});
 }
