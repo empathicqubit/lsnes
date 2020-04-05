@@ -319,6 +319,20 @@ public:
 		return std::string(f, f + len);
 	}
 /**
+ * Read slot as string.
+ *
+ * Parameter argindex: The stack index.
+ * Returns: The string.
+ */
+	std::string as_string(int argindex)
+	{
+		if(isnone(argindex)) return "(none)";
+		size_t len;
+		const char* f = lua_tolstring(lua_handle, argindex, &len);
+		if(!f) return "(null)";
+		return std::string(f, f + len);
+	}
+/**
  * Get a boolean argument.
  *
  * Parameter argindex: The stack index.

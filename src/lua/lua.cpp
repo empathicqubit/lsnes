@@ -533,8 +533,7 @@ bool lua_state::run_lua_fragment()
 		return false;
 	int t = L.load(read_lua_fragment, &luareader_fragment, "run_lua_fragment", "t");
 	if(t == LUA_ERRSYNTAX) {
-		messages << "Can't run Lua: Internal syntax error: " << L.tostring(-1)
-			<< std::endl;
+		messages << "Can't run Lua: Internal syntax error: " << L.as_string(-1) << std::endl;
 		L.pop(1);
 		return false;
 	}
@@ -547,7 +546,9 @@ bool lua_state::run_lua_fragment()
 	int r = L.pcall(0, 0, 0);
 	recursive_flag = false;
 	if(r == LUA_ERRRUN) {
-		messages << "Error running Lua hunk: " << L.tostring(-1)  << std::endl;
+		auto msgptr = L.tostring(-1);
+		if(!msgptr) msgptr = "(null)";
+		messages << "Error running Lua hunk: " << L.as_string(-1) << std::endl;
 		L.pop(1);
 		result = false;
 	}

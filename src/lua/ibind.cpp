@@ -37,7 +37,7 @@ public:
 		int r = L.pcall(1, 0, 0);
 		std::string err;
 		if(r == LUA_ERRRUN)
-			err = L.get_string(-1, "Lua command callback");
+			err = L.as_string(-1);
 		else if(r == LUA_ERRMEM)
 			err = "Out of memory";
 		else if(r == LUA_ERRERR)

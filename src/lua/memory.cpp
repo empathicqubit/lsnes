@@ -178,7 +178,7 @@ namespace
 		if(!ret) return;
 		switch(ret) {
 		case LUA_ERRRUN:
-			messages << "Error in Lua memory callback: " << L.get_string(-1, "errhnd") << std::endl;
+			messages << "Error in Lua memory callback: " << L.as_string(-1) << std::endl;
 			L.pop(1);
 			return;
 		case LUA_ERRMEM:
