@@ -2,6 +2,7 @@
 #define _instance__hpp__included__
 
 #include "library/threads.hpp"
+#include <cstring>
 
 class movie_logic;
 class memory_space;
@@ -55,7 +56,7 @@ public:
 	{
 		entry e;
 		e.ptr = ptr = reinterpret_cast<T*>(new char[sizeof(T) + 32]);
-		memset(ptr, 0, sizeof(T) + 32);
+		memset((char*)ptr, 0, sizeof(T) + 32);
 		e.free1 = null;
 		e.free2 = free2;
 		e.prev = list;

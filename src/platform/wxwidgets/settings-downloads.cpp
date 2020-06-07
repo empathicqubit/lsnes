@@ -30,7 +30,7 @@ namespace
 	};
 
 	wxeditor_esettings_download::wxeditor_esettings_download(wxWindow* parent, emulator_instance& _inst)
-		: settings_tab(parent, inst)
+		: settings_tab(parent, _inst)
 	{
 		CHECK_UI_THREAD;
 		wxSizer* top_s = new wxBoxSizer(wxVERTICAL);

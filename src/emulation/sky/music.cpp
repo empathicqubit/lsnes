@@ -504,7 +504,7 @@ namespace sky
 				downmix_l[i] = gain_factor * c.downmix_l[i];
 				downmix_r[i] = gain_factor * c.downmix_r[i];
 			}
-		} catch(opus::not_loaded l) {
+		} catch(opus::not_loaded& l) {
 			d = NULL;
 			channels = c.channels;
 		}
@@ -556,7 +556,7 @@ namespace sky
 		try {
 			if(d)
 				d->ctl(opus::reset);
-		} catch(opus::not_loaded e) {
+		} catch(opus::not_loaded& e) {
 		}
 	}
 
@@ -623,7 +623,7 @@ namespace sky
 	void music_player::decode(std::pair<int16_t, int16_t>* output, size_t samples)
 	{
 		if(!song) {
-			memset(output, 0, samples * sizeof(std::pair<int16_t, int16_t>));
+			memset((char*)output, 0, samples * sizeof(std::pair<int16_t, int16_t>));
 			return;
 		}
 		const subsong_transition* strans1 = &song->transitions(mem.subsong1);
