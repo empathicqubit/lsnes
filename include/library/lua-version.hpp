@@ -24,7 +24,16 @@ extern "C"
 #define LUA_SUPPORTS_LOAD_STRING
 
 #else
+#if LUA_VERSION_NUM == 504
+
+#define LUA_SUPPORTS_LOAD_MODE
+#define LUA_SUPPORTS_RIDX_GLOBALS
+#define LUA_SUPPORTS_INTEGERS
+#define LUA_SUPPORTS_LOAD_STRING
+
+#else
 #error "Unsupported Lua version"
+#endif
 #endif
 #endif
 #endif
