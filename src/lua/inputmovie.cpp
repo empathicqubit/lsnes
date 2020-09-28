@@ -1,6 +1,7 @@
 #include "lua/internal.hpp"
 #include "library/string.hpp"
 #include "library/minmax.hpp"
+#include "library/zip.hpp"
 #include "core/dispatch.hpp"
 #include "core/instance.hpp"
 #include "core/moviedata.hpp"
@@ -589,7 +590,7 @@ namespace
 
 		P(f, filename, binary);
 
-		std::ifstream file(filename, binary ? std::ios_base::binary : std::ios_base::in);
+		std::istream& file = zip::openrel(filename, "");
 		if(!file)
 			throw std::runtime_error("Can't open file to read input from");
 		lua_inputmovie* m = lua::_class<lua_inputmovie>::create(L, f->get_frame());
