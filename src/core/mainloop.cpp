@@ -389,6 +389,25 @@ namespace
 			}
 		});
 
+	command::fnptr<const std::string&> CMD_start_r16m(lsnes_cmds, "start-r16m", "Start dumping R16M",
+		"Syntax: start-r16m <filename>\nDump r16m to <filename>.\n",
+		[](const std::string& args) {
+			auto& core = CORE();
+			auto fp = fopen(args.c_str(), "wb");
+			if(fp) {
+				core.lua2->set_r16m_dump(fp);
+			} else {
+				messages << "Failed to open '" << args << "'" << std::endl;
+			}
+		});
+
+	command::fnptr<> CMD_end_r16m(lsnes_cmds, "end-r16m", "End dumping R16M",
+		"Syntax: end-r16m\nEnd dumping r16m.\n",
+		[]() {
+			auto& core = CORE();
+			core.lua2->set_r16m_dump(nullptr);
+		});
+
 	command::fnptr<> CMD_load_jukebox(lsnes_cmds, CLOADSAVE::ldj,
 		[]() {
 			auto& core = CORE();

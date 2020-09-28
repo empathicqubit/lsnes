@@ -149,6 +149,8 @@ enum
 	wxID_PROJECT_FIRST,
 	wxID_PROJECT_LAST = wxID_PROJECT_FIRST + 17,
 	wxID_DISASSEMBLER,
+	wxID_START_R16M,
+	wxID_END_R16M,
 };
 
 
@@ -1205,6 +1207,11 @@ wxwin_mainwindow::wxwin_mainwindow(emulator_instance& _inst, bool fscreen)
 	menu_separator();
 	menu_special_sub(wxT("Video Capture"), reinterpret_cast<dumper_menu*>(dmenu = new dumper_menu(this,
 		inst, wxID_DUMP_FIRST, wxID_DUMP_LAST)));
+	menu_separator();
+	menu_start_sub(wxT("Movie dump"));
+	menu_entry(wxID_START_R16M, wxT("Start r16m dump..."));
+	menu_entry(wxID_END_R16M, wxT("End r16m dump"));
+	menu_end_sub();
 
 	menu_start(wxT("Configure"));
 	menu_entry_check(wxID_SHOW_STATUS, wxT("Show status panel"));
@@ -1852,6 +1859,20 @@ void wxwin_mainwindow::handle_menu_click_cancelable(wxCommandEvent& e)
 		download_in_progress->target_slot = "wxwidgets_download_tmp";
 		download_in_progress->do_async(*inst.rom);
 		new download_timer(this, inst);
+		return;
+	}
+	case wxID_START_R16M: {
+		std::string filename = choose_file_save(this, "Save r16m dump to file",
+			UI_get_project_otherpath(inst), filetype_r16m);
+		inst.iqueue->run([filename]() {
+			CORE().command->invoke("start-r16m "+filename);
+		});
+		return;
+	}
+	case wxID_END_R16M: {
+		inst.iqueue->run([]() {
+			CORE().command->invoke("end-r16m");
+		});
 		return;
 	}
 	};

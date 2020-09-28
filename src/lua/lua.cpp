@@ -177,13 +177,14 @@ void lua_state::set_memory_limit(size_t limit_mb)
 }
 
 lua_state::lua_state(lua::state& _L, command::group& _command, settingvar::group& settings)
-	: L(_L), command(_command),
+	: r16m_empty_frame_count(0), r16m_capture(nullptr), L(_L), command(_command),
 	resetcmd(command, CLUA::reset, [this]() { this->do_reset(); }),
 	evalcmd(command, CLUA::eval, [this](const std::string& a) { this->do_eval_lua(a); }),
 	evalcmd2(command, CLUA::eval2, [this](const std::string& a) { this->do_eval_lua(a); }),
 	runcmd(command, CLUA::run, [this](command::arg_filename a) { this->do_run_lua(a); }),
 	listener(settings, *this)
 {
+	memset(r16m_fbuf, 0, 16);
 	requests_repaint = false;
 	requests_subframe_paint = false;
 	render_ctx = NULL;
@@ -359,6 +360,10 @@ void lua_state::callback_do_input(portctrl::frame& data, bool subframe) throw()
 
 void lua_state::callback_snoop_input(uint32_t port, uint32_t controller, uint32_t index, short value) throw()
 {
+	if(port >= 1 && port <= 2 && controller <= 3 && index <= 15 && r16m_capture) {
+		auto b = port * 8 + controller * 2 + index / 8 - 8;
+		r16m_fbuf[b] |= (value != 0) << (7 - index % 8);
+	}
 	if(run_callback(*on_snoop2, lua::state::numeric_tag(port), lua::state::numeric_tag(controller),
 		lua::state::numeric_tag(index), lua::state::numeric_tag(value)))
 		return;
@@ -499,8 +504,47 @@ void lua_state::callback_movie_lost(const char* what)
 	run_callback(*on_movie_lost, std::string(what));
 }
 
+void flush_r16m_blank_frames(FILE* r16m_capture, uint64_t& r16m_empty_frame_count)
+{
+	uint8_t dummy[16] = {0};
+	while(r16m_empty_frame_count > 0) {
+		if(fwrite(dummy, 16, 1, r16m_capture) < 1) {
+			messages << "Error writing to R16M dump." << std::endl;
+		}
+		r16m_empty_frame_count--;
+	}
+}
+
+void lua_state::set_r16m_dump(FILE* fp)
+{
+	if(r16m_capture) {
+		//Do not flush here, as these are empty frames.
+		fclose(r16m_capture);
+		messages << "Closed R16M dump." << std::endl;
+	}
+	r16m_capture = fp;
+	memset(r16m_fbuf, 0, 16);
+	r16m_empty_frame_count = 0;
+	if(fp) {
+		messages << "Ready for R16M dump." << std::endl;
+	}
+}
+
 void lua_state::callback_do_latch(std::list<std::string>& args)
 {
+	if(r16m_capture) {
+		uint8_t syndrome = 0;
+		for(int i = 0; i < 16; i++) { syndrome |= r16m_fbuf[i]; }
+		if(syndrome != 0) {
+			flush_r16m_blank_frames(r16m_capture, r16m_empty_frame_count);
+			if(fwrite(r16m_fbuf, 16, 1, r16m_capture) < 1) {
+				messages << "Error writing to R16M dump." << std::endl;
+			}
+		} else {
+			r16m_empty_frame_count++;
+		}
+		memset(r16m_fbuf, 0, 16);
+	}
 	run_callback(*on_latch, lua::state::vararg_tag(args));
 }
 

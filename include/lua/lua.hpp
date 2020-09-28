@@ -29,35 +29,6 @@ struct lua_state
 	lua_state(lua::state& _L, command::group& _command, settingvar::group& settings);
 	~lua_state();
 
-	lua::state::callback_list* on_paint;
-	lua::state::callback_list* on_video;
-	lua::state::callback_list* on_reset;
-	lua::state::callback_list* on_frame;
-	lua::state::callback_list* on_rewind;
-	lua::state::callback_list* on_idle;
-	lua::state::callback_list* on_timer;
-	lua::state::callback_list* on_frame_emulated;
-	lua::state::callback_list* on_readwrite;
-	lua::state::callback_list* on_startup;
-	lua::state::callback_list* on_pre_load;
-	lua::state::callback_list* on_post_load;
-	lua::state::callback_list* on_err_load;
-	lua::state::callback_list* on_pre_save;
-	lua::state::callback_list* on_post_save;
-	lua::state::callback_list* on_err_save;
-	lua::state::callback_list* on_input;
-	lua::state::callback_list* on_snoop;
-	lua::state::callback_list* on_snoop2;
-	lua::state::callback_list* on_button;
-	lua::state::callback_list* on_quit;
-	lua::state::callback_list* on_keyhook;
-	lua::state::callback_list* on_movie_lost;
-	lua::state::callback_list* on_pre_rewind;
-	lua::state::callback_list* on_post_rewind;
-	lua::state::callback_list* on_set_rewind;
-	lua::state::callback_list* on_latch;
-	lua::state::callback_list* on_frob_with_value;
-
 	void callback_do_paint(struct lua::render_context* ctx, bool non_synthethic) throw();
 	void callback_do_video(struct lua::render_context* ctx, bool& kill_frame, uint32_t& hscl, uint32_t& vscl)
 		throw();
@@ -92,6 +63,7 @@ struct lua_state
 	void do_eval_lua(const std::string& c);
 	void do_run_lua(const std::string& c);
 	void run_sysrc_lua(bool rerun);
+	void set_r16m_dump(FILE* fp);
 
 	bool requests_repaint;
 	bool requests_subframe_paint;
@@ -114,6 +86,38 @@ struct lua_state
 	std::list<std::string> startup_scripts;
 	std::map<std::string, std::u32string> watch_vars;
 private:
+	lua::state::callback_list* on_paint;
+	lua::state::callback_list* on_video;
+	lua::state::callback_list* on_reset;
+	lua::state::callback_list* on_frame;
+	lua::state::callback_list* on_rewind;
+	lua::state::callback_list* on_idle;
+	lua::state::callback_list* on_timer;
+	lua::state::callback_list* on_frame_emulated;
+	lua::state::callback_list* on_readwrite;
+	lua::state::callback_list* on_startup;
+	lua::state::callback_list* on_pre_load;
+	lua::state::callback_list* on_post_load;
+	lua::state::callback_list* on_err_load;
+	lua::state::callback_list* on_pre_save;
+	lua::state::callback_list* on_post_save;
+	lua::state::callback_list* on_err_save;
+	lua::state::callback_list* on_input;
+	lua::state::callback_list* on_snoop;
+	lua::state::callback_list* on_snoop2;
+	lua::state::callback_list* on_button;
+	lua::state::callback_list* on_quit;
+	lua::state::callback_list* on_keyhook;
+	lua::state::callback_list* on_movie_lost;
+	lua::state::callback_list* on_pre_rewind;
+	lua::state::callback_list* on_post_rewind;
+	lua::state::callback_list* on_set_rewind;
+	lua::state::callback_list* on_latch;
+	lua::state::callback_list* on_frob_with_value;
+	unsigned char r16m_fbuf[16];
+	uint64_t r16m_empty_frame_count;
+	FILE* r16m_capture;
+
 	void do_reset();
 	void do_evaluate(const std::string& a);
 	bool run_lua_fragment();
