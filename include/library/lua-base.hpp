@@ -419,18 +419,29 @@ public:
  * Parameter args: Arguments to pass to the callback.
  */
 	template<typename... T>
-	bool callback(const std::list<char>& cblist, T... args)
+	bool callback(std::list<char>& cblist, const char*& running_cb, bool running_cb_f, T... args)
 	{
 		bool any = false;
-		for(auto& i : cblist) {
-			pushlightuserdata(const_cast<char*>(&i));
+		for(auto i = cblist.begin(); i != cblist.end();) {
+			pushlightuserdata(const_cast<char*>(&*i));
 			rawget(LUA_REGISTRYINDEX);
 			int t = type(-1);
 			if(t != LUA_TFUNCTION) {
 				pop(1);
 			} else {
+				//Note the currently running CB so that unregister treats it specially if it is
+				//unrgistered.
+				running_cb = &*i;
 				_callback(0, args...);
+				running_cb = NULL;
 				any = true;
+			}
+			//Currently iterated function may be erased. The memory has to be freed in that case.
+			if(running_cb_f) {
+				running_cb_f = false;
+				i = cblist.erase(i);
+			} else {
+				i++;
 			}
 		}
 		return any;
@@ -469,7 +480,7 @@ public:
 		void _register(state& L);	//Reads callback from top of lua stack.
 		void _unregister(state& L);	//Reads callback from top of lua stack.
 		template<typename... T> bool callback(T... args) {
-			bool any = L.callback(callbacks, args...);
+			bool any = L.callback(callbacks, running_cb, running_cb_f, args...);
 			if(fn_cbname != "" && L.callback(fn_cbname, args...))
 				any = true;
 			return any;
@@ -480,6 +491,8 @@ public:
 		callback_list(const callback_list&);
 		callback_list& operator=(const callback_list&);
 		std::list<char> callbacks;
+		const char* running_cb;
+		bool running_cb_f;
 		state& L;
 		std::string name;
 		std::string fn_cbname;

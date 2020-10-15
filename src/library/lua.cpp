@@ -630,6 +630,8 @@ void state::do_unregister(const std::string& name, callback_list& callback)
 state::callback_list::callback_list(state& _L, const std::string& _name, const std::string& fncbname)
 	: L(_L), name(_name), fn_cbname(fncbname)
 {
+	running_cb = NULL;
+	running_cb_f = false;
 	L.do_register(name, *this);
 }
 
@@ -663,7 +665,14 @@ void state::callback_list::_unregister(state& _L)
 			_L.pushlightuserdata(key);
 			_L.pushnil();
 			_L.rawset(LUA_REGISTRYINDEX);
-			i = callbacks.erase(i);
+			if(running_cb == &*i) {
+				//Unregistering currently running callback. Delay erasing the node until the
+				//callback finishes to avoid crashes.
+				running_cb_f = true;
+				i++;
+			} else {
+				i = callbacks.erase(i);
+			}
 		} else
 			i++;
 		_L.pop(1);
