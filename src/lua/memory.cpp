@@ -269,6 +269,7 @@ namespace
 		if(dc->cblist.count(key))
 			was = dc->cblist[key];
 		dc->cblist[key] = this;
+		if(was) was->prev = this;
 		next = was;
 		L->pop(1);
 	}

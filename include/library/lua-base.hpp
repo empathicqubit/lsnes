@@ -419,7 +419,7 @@ public:
  * Parameter args: Arguments to pass to the callback.
  */
 	template<typename... T>
-	bool callback(std::list<char>& cblist, const char*& running_cb, bool running_cb_f, T... args)
+	bool callback(std::list<char>& cblist, const char*& r_cb, bool& r_cb_f, T... args)
 	{
 		bool any = false;
 		for(auto i = cblist.begin(); i != cblist.end();) {
@@ -431,14 +431,14 @@ public:
 			} else {
 				//Note the currently running CB so that unregister treats it specially if it is
 				//unrgistered.
-				running_cb = &*i;
+				r_cb = &*i;
 				_callback(0, args...);
-				running_cb = NULL;
+				r_cb = NULL;
 				any = true;
 			}
 			//Currently iterated function may be erased. The memory has to be freed in that case.
-			if(running_cb_f) {
-				running_cb_f = false;
+			if(r_cb_f) {
+				r_cb_f = false;
 				i = cblist.erase(i);
 			} else {
 				i++;
