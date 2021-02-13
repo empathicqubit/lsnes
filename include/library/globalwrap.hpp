@@ -15,6 +15,8 @@ public:
  */
 	globalwrap()
 	{
+		storage = NULL;
+		state = 0;
 		(*this)();
 	}
 /**
