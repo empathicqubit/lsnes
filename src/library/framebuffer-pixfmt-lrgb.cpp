@@ -46,7 +46,7 @@ void _pixfmt_lrgb::decode(uint32_t* target, const uint8_t* src, size_t width,
 {
 	const uint32_t* _src = reinterpret_cast<const uint32_t*>(src);
 	for(size_t i = 0; i < width; i++)
-		target[i] = auxp.pcache[_src[i] & 0x7FFFF];
+		target[i] = convert_lowcolor(_src[i], auxp.rshift, auxp.gshift, auxp.bshift);
 }
 
 void _pixfmt_lrgb::decode(uint64_t* target, const uint8_t* src, size_t width,
@@ -54,16 +54,12 @@ void _pixfmt_lrgb::decode(uint64_t* target, const uint8_t* src, size_t width,
 {
 	const uint32_t* _src = reinterpret_cast<const uint32_t*>(src);
 	for(size_t i = 0; i < width; i++)
-		target[i] = auxp.pcache[_src[i] & 0x7FFFF];
+		target[i] = convert_hicolor(_src[i], auxp.rshift, auxp.gshift, auxp.bshift);
 }
 
 void _pixfmt_lrgb::set_palette(auxpalette<false>& auxp, uint8_t rshift, uint8_t gshift,
 	uint8_t bshift)
 {
-	auxp.pcache.resize(0x80000);
-	for(size_t i = 0; i < 0x80000; i++) {
-		auxp.pcache[i] = convert_lowcolor(i, rshift, gshift, bshift);
-	}
 	auxp.rshift = rshift;
 	auxp.gshift = gshift;
 	auxp.bshift = bshift;
@@ -72,10 +68,6 @@ void _pixfmt_lrgb::set_palette(auxpalette<false>& auxp, uint8_t rshift, uint8_t 
 void _pixfmt_lrgb::set_palette(auxpalette<true>& auxp, uint8_t rshift, uint8_t gshift,
 	uint8_t bshift)
 {
-	auxp.pcache.resize(0x80000);
-	for(size_t i = 0; i < 0x80000; i++) {
-		auxp.pcache[i] = convert_hicolor(i, rshift, gshift, bshift);
-	}
 	auxp.rshift = rshift;
 	auxp.gshift = gshift;
 	auxp.bshift = bshift;
