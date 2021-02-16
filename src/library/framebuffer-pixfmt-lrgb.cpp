@@ -7,28 +7,29 @@ _pixfmt_lrgb::~_pixfmt_lrgb() throw()
 {
 }
 
+template<typename T> static inline T convert_xcolor(uint32_t word, uint8_t rshift, uint8_t gshift,
+	uint8_t bshift, T A, T B)
+{
+	const int sh = 6 * sizeof(T);
+	T l = A * ((word >> 15) & 0xF);
+	T r = (word >> 0) & 0x1F;
+	T g = (word >> 5) & 0x1F;
+	T b = (word >> 10) & 0x1F;
+	T x = (l*r+B) >> sh << rshift;
+	x += (l*g+B) >> sh << gshift;
+	x += (l*b+B) >> sh << bshift;
+	return x;
+}
+
 static inline uint32_t convert_lowcolor(uint32_t word, uint8_t rshift, uint8_t gshift, uint8_t bshift)
 {
-	uint32_t l = ((word >> 15) & 0xF);
-	uint32_t r = l * ((word >> 0) & 0x1F);
-	uint32_t g = l * ((word >> 5) & 0x1F);
-	uint32_t b = l * ((word >> 10) & 0x1F);
-	uint32_t x = (((r << 8) - r + 232) / 465) << rshift;
-	x += (((g << 8) - g + 232) / 465) << gshift;
-	x += (((b << 8) - b + 232) / 465) << bshift;
-	return x;
+	return convert_xcolor<uint32_t>(word, rshift, gshift, bshift, 9200409, 8370567);
 }
 
 static inline uint64_t convert_hicolor(uint32_t word, uint8_t rshift, uint8_t gshift, uint8_t bshift)
 {
-	uint64_t l = ((word >> 15) & 0xF);
-	uint64_t b = l * ((word >> 0) & 0x1F);
-	uint64_t g = l * ((word >> 5) & 0x1F);
-	uint64_t r = l * ((word >> 10) & 0x1F);
-	uint64_t x = (((r << 16) - r + 232) / 465) << rshift;
-	x += (((g << 16) - g + 232) / 465) << gshift;
-	x += (((b << 16) - b + 232) / 465) << bshift;
-	return x;
+	return convert_xcolor<uint64_t>(word, rshift, gshift, bshift, 39669812040285683ULL,
+		140434827090047ULL);
 }
 
 void _pixfmt_lrgb::decode(uint32_t* target, const uint8_t* src, size_t width)
