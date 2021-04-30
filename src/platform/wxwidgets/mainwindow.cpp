@@ -1080,6 +1080,10 @@ wxwin_mainwindow::wxwin_mainwindow(emulator_instance& _inst, bool fscreen)
 	toplevel->Add(gpanel = new panel(this, inst), 1, wxGROW);
 	toplevel->Add(spanel = new wxwin_status::panel(this, inst, gpanel, 20), 1, wxGROW);
 	spanel_shown = true;
+        if(getenv("LSNES_HIDE_STATUSPANEL")) {
+            spanel_shown = false;
+            spanel->Hide();
+        }
 	toplevel->SetSizeHints(this);
 	SetSizer(toplevel);
 	Fit();

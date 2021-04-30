@@ -64,7 +64,7 @@ FONT_SRC=unifontfull-5.1.20080820.hex
 # Lua package to use.
 # - Usually either 'lua' or 'lua5.2'.
 # - Default value is 'lua'.
-LUA=lua
+LUA=lua5.2
 
 # Regex package to use.
 # Currently supported:
@@ -88,7 +88,7 @@ GRAPHICS=WXWIDGETS
 # - DUMMY: No sound.
 # - PORTAUDIO: Portaudio.
 # - LIBAO: Libao.
-SOUND=PORTAUDIO
+SOUND=DUMMY
 
 # Joystick library to use.
 # Currently supported:

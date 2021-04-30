@@ -1,6 +1,6 @@
 [submodule "bsnes"]
 	path = bsnes
-	url = ./
+	url = .
 [submodule "gambatte"]
 	path = gambatte
-	url = ./
+	url = .

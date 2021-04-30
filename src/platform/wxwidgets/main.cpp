@@ -605,7 +605,9 @@ bool lsnes_app::OnInit()
 	lsnes_instance.mdumper->set_output(&messages.getstream());
 
 	msg_window = new wxwin_messages(lsnes_instance);
-	msg_window->Show();
+        if(!getenv("LSNES_HIDE_MESSAGES")) {
+            msg_window->Show();
+        }
 
 	init_main_callbacks();
 
